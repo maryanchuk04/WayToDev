@@ -1,0 +1,33 @@
+.particles-container{
+  min-height: 100vh;
+  width: 100%;
+  background-color: black;
+  position: relative;
+}
+
+#particles-js{
+  height: 100vh;
+}
+
+.particles-container .preview-information .container{
+  position: absolute;
+  color : white;
+  width: 100%;
+  right: 10%;
+  top : 35%;
+  text-align: right;
+}
+
+.preview-information h1{
+  font-size: 130px;
+}
+
+.preview-information p{
+  font-size: 40px;
+}
+
+.preview-information .waves{
+  width: 100%;
+  bottom : 0;
+  position: absolute;
+}
