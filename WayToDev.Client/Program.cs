@@ -1,12 +1,15 @@
 using Microsoft.EntityFrameworkCore;
-using WayToDev.Db.EF;
+using WayToDev.Db;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ConnString"),
-    b => b.MigrationsAssembly("WayToDev.Db")));
+
+builder.Services.AddDbContext<ApplicationContext>(
+    options => options.UseSqlServer(builder.Configuration.GetConnectionString("ConnString"),
+        b => b.MigrationsAssembly("WayToDev.Db")));
 
 
 var app = builder.Build();

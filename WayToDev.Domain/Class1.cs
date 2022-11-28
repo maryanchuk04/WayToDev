@@ -1,4 +1,4 @@
-﻿namespace WayToDev.Domain;
+﻿ namespace WayToDev.Domain;
 
 public class Class1
 {
