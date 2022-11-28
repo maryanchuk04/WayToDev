@@ -1,0 +1,41 @@
+ul{
+ list-style: none;
+}
+
+
+.login {
+  color : #ffffff !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px;
+  margin: auto;
+  width: 75%;
+  border-radius: 40px;
+  border: 3px solid #daab26 ;
+  background: #d4b34e;
+  box-shadow:  20px 20px 60px #71a885,
+             -20px -20px 60px #d2d8d4;
+}
+
+.login label{
+  font-weight: 700;
+}
+
+.submit{
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: 0;
+  transition: 0.4s ;
+  background: #ffffff;
+  width: 200px;
+  box-shadow:  20px 20px 60px #7a9b85,
+             -20px -20px 60px #a6d1b5;
+}
+
+.submit:hover{
+  background-color: #2f2f2f;
+  color:white;
+  transform: scale(1.1);
+}
+

@@ -1,0 +1,56 @@
+.particles-container{
+  min-height: 100vh;
+  width: 100%;
+  margin-top: -12vh;
+  background-color: #d9ab26;
+  position: relative;
+}
+
+#particles-js{
+  height: 100vh;
+}
+
+.particles-container .preview-information .container{
+  position: absolute;
+  color : #fff;
+  width: 100%;
+  right: 10%;
+  top : 35%;
+  text-align: right;
+}
+
+.preview-information h1{
+  font-size: 130px;
+}
+
+.preview-information p{
+  font-size: 40px;
+}
+
+.preview-information .waves{
+  width: 100%;
+  bottom : 0;
+  position: absolute;
+}
+
+.custom-shape-divider-bottom-1669194348 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  transform: rotate(180deg);
+}
+
+.custom-shape-divider-bottom-1669194348 svg {
+  position: relative;
+  display: block;
+  width: calc(100% + 1.3px);
+  height: 300px;
+}
+
+.custom-shape-divider-bottom-1669194348 .shape-fill {
+  fill: #FFFFFF;
+}
+

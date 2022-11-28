@@ -1,0 +1,21 @@
+.main-button{
+  padding: 20px;
+  background-color: rgba(24, 23, 23, 0.1);
+  color: #fff;
+  border:0;
+  border-radius: 30% 70% 38% 62% / 67% 31% 69% 33% ;
+  margin: 10px 0;
+  transition: 0.5s;
+  /* box-shadow:  32px 32px 84px #b5b5b5,
+             -32px -32px 84px #ffffff; */
+  cursor: pointer;
+  box-shadow:  32px 32px 84px #ebd59e,
+             -32px -32px 84px #ebd59e;
+  text-shadow:  42px 12px 84px black,
+  -22px -12px 84px black;
+}
+
+.main-button:hover{
+  transform: scale(1.2);
+
+}

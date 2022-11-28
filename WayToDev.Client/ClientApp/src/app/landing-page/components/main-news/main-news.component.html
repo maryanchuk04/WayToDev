@@ -1,0 +1,6 @@
+<div class="container">
+  <h1>News</h1>
+  <div class="news-container row">
+    <app-news-short-info class="col-4" *ngFor="let item of newsList" [news] = "item"></app-news-short-info>
+  </div>
+</div>

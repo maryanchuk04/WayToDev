@@ -1,0 +1,5 @@
+<ng-content *ngIf="!condition; else elseTemplate"></ng-content>
+<ng-template #elseTemplate>
+  <app-spinner></app-spinner>
+</ng-template>
+
