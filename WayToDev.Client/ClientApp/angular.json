@@ -131,5 +131,8 @@
       }
     }
   },
-  "defaultProject": "WayToDev"
+  "defaultProject": "WayToDev",
+  "cli": {
+    "analytics": "d1cfa796-9f3c-41cc-a8eb-fee0c638c38b"
+  }
 }
