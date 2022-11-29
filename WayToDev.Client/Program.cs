@@ -99,6 +99,13 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseSwagger();
+app.UseCors(x =>
+{
+    x.AllowAnyMethod()
+        .AllowAnyHeader()
+        .SetIsOriginAllowed(origin => true) // allow any origin
+        .AllowCredentials();
+});
 
 app.MapControllerRoute(
     name: "default",

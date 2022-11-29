@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { LoginModel } from '../models/loginModel';
 
 @Component({
   selector: 'app-sign-in-form',
@@ -11,7 +13,7 @@ export class SignInFormComponent implements OnInit {
   public signInForm!: FormGroup;
   public submitted = false;
 
-  constructor(private formBuilder: FormBuilder, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.signInForm = this.formBuilder.group({
@@ -28,11 +30,14 @@ export class SignInFormComponent implements OnInit {
   }
 
   onLogin(): void {
+
     this.submitted = true;
     if(this.signInForm.valid){
       console.log(this.signInForm);
-      //request to back
-      this.router.navigate(['/'])
+      let res = this.authService.authenticate(new LoginModel(this.signInForm.value.email, this.signInForm.value.password));
+      res.subscribe((data)=>{
+        console.log(data)
+      })
     }
 
   }
