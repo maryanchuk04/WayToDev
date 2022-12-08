@@ -7,7 +7,7 @@ import { AlertComponent } from './alert/alert/alert.component';
 import { AlertWrapperComponent } from './alert/alert-wrapper/alert-wrapper.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar'
 import { AlertService } from './alert/alert.service';
-
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +15,7 @@ import { AlertService } from './alert/alert.service';
     SpinnerComponent,
     AlertComponent,
     AlertWrapperComponent,
-
+    SearchComponent
   ],
   imports: [
     CommonModule,
@@ -23,7 +23,8 @@ import { AlertService } from './alert/alert.service';
     MatSnackBarModule
   ],
   exports :[
-    SpinnerWrapperComponent
+    SpinnerWrapperComponent,
+    SearchComponent
   ],
   providers : [
     AlertService

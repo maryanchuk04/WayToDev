@@ -35,4 +35,20 @@ public class NewsDao : Dao<News>,INewsDao
         await Context.SaveChangesAsync();
     }
 
+    public News GetById(Guid id)
+    {
+        var news = Context.NewsSet.FirstOrDefault(x => x.Id == id);
+        if (news == null)
+        {
+            throw new NewsNotFoundException("News with this id is not exist");
+        }
+
+        return news;
+    }
+
+    public List<News> GetNews()
+    {
+        return Context.NewsSet
+            .ToList();
+    }
 }

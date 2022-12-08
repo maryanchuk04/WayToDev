@@ -7,4 +7,6 @@ public interface INewsDao
     Task Create(News news);
     Task Update(News news);
     Task Delete(Guid id);
+    News GetById(Guid id);
+    List<News> GetNews();
 }

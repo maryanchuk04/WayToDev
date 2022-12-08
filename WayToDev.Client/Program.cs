@@ -14,17 +14,22 @@ using WayToDev.Domain.Interfaces.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+#region ConfigureServices
+
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("ConnString"),
         b => b.MigrationsAssembly("WayToDev.Db")));
+
 builder.Services.AddAutoMapper(typeof(UserMapperProfile).GetTypeInfo().Assembly);
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddScoped<ITokenDao, TokenDao>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IAccountDao, AccountDao>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<INewsService, NewsService>();
+builder.Services.AddScoped<INewsDao, NewsDao>();
 
 builder.Services.AddSwaggerGen(options =>
 {
@@ -85,6 +90,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 builder.Services.AddAuthorization();
+
+#endregion
+
 
 var app = builder.Build();
 app.UseSwaggerUI();

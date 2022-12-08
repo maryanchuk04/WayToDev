@@ -50,20 +50,26 @@ public class AuthController : ControllerBase
     [HttpPost("registration")]
     public async Task<IActionResult> Registration(RegistrViewModel registerViewModel)
     {
-        var result = await _authService.Registration(_mapper.Map<RegistrViewModel, RegistrDto>(registerViewModel));
-        var cookieOptions = new CookieOptions
+        try
         {
-            HttpOnly = true,
-            Expires = DateTime.Now.AddDays(7),
-            Secure = true,
-        };
+            var result = await _authService.Registration(_mapper.Map<RegistrViewModel, RegistrDto>(registerViewModel));
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTime.Now.AddDays(7),
+                Secure = true,
+            };
 
-        HttpContext.Response.Cookies.Delete("refreshToken");
-        HttpContext.Response.Cookies.Append("refreshToken", result.RefreshToken, cookieOptions);
-        return Ok(new { Token = result.JwtToken });
+            HttpContext.Response.Cookies.Delete("refreshToken");
+            HttpContext.Response.Cookies.Append("refreshToken", result.RefreshToken, cookieOptions);
+            return Ok(new { Token = result.JwtToken });
+        }
+        catch (AuthenticateException e)
+        {
+            return BadRequest(new
+            {
+                error = e.Message
+            });
+        }
     }
-
-    
-    
-
 }
