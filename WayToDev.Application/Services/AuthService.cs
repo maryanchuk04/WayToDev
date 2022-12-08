@@ -38,10 +38,9 @@ public class AuthService : IAuthService
         return new AuthenticateResponseModel(jwt, refreshToken.Token);
     }
 
-    public async Task<AuthenticateResponseModel> Registration(RegistrDto registrDto)
+    public async Task<AuthenticateResponseModel> Registration(RegistrDto registrationDto)
     {
-        var isExist = _accountDao.IsExist(registrDto.Email);
-        if (isExist)
+        if (_accountDao.IsExist(registrationDto.Email))
         {
             throw new AuthenticateException("Account already exist");
         }
@@ -49,13 +48,13 @@ public class AuthService : IAuthService
         var newAccount = new Account()
         {
             IsBlocked = false,
-            User = new User()
+            User = new User
             {
-                Email = registrDto.Email,
-                FirstName = registrDto.UserName
+                Email = registrationDto.Email,
+                FirstName = registrationDto.UserName
             },
             RefreshTokens = new List<UserToken>(),
-            Password = HashPassword(registrDto.Password)
+            Password = HashPassword(registrationDto.Password)
         };
         var jwtToken = _tokenService.GenerateAccessToken(newAccount);
         var refreshToken = _tokenService.GenerateRefreshToken();

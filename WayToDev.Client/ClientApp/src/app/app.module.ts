@@ -16,9 +16,6 @@ import { NewsModule } from './news/news.module';
 import { AuthModule } from './auth/auth.module';
 import { MainNewsComponent } from './landing-page/components/main-news/main-news.component';
 import { NewsShortInfoComponent } from './landing-page/components/main-news/components/news-short-info/news-short-info.component';
-import { SpinnerComponent } from './ui/spinner/spinner/spinner.component';
-import { SpinnerWrapperComponent } from './ui/spinner/spinner-wrapper/spinner-wrapper.component';
-import { SpinnerModule } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
 
 @NgModule({
@@ -38,7 +35,6 @@ import { IconModule } from '@coreui/icons-angular';
     BrowserAnimationsModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot(),
-    SpinnerModule,
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,

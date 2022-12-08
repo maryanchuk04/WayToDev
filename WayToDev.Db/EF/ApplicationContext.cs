@@ -14,4 +14,6 @@ public class ApplicationContext : DbContext
     public DbSet<Company> Companies { get; set; }
     public DbSet<Account> Accounts { get; set; }
     public DbSet<UserToken> UserTokens { get; set; }
+    public DbSet<News> NewsSet { get; set; }
+    
 }
