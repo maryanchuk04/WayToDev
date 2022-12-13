@@ -15,5 +15,12 @@ public class ApplicationContext : DbContext
     public DbSet<Account> Accounts { get; set; }
     public DbSet<AccountToken> UserTokens { get; set; }
     public DbSet<News> NewsSet { get; set; }
-    
+    public DbSet<Article> Articles { get; set; }
+    public DbSet<CompanyFeedback> CompanyFeedbacks { get; set; }
+    public DbSet<Feedback> Feedbacks { get; set; }
+    public DbSet<Room> Rooms { get; set; }
+    public DbSet<UserRoom> UserRooms { get; set; }
+    public DbSet<Tag> Tags { get; set; }
+    public DbSet<Message> Messages { get; set; }
+
 }
