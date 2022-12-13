@@ -1,6 +1,6 @@
-using WayToDev.Domain.DTOs;
+using WayToDev.Core.DTOs;
 
-namespace WayToDev.Domain.Interfaces.Services;
+namespace WayToDev.Core.Interfaces.Services;
 
 public interface INewsService
 {

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WayToDev.Domain.Entities;
+namespace WayToDev.Core.Entities;
 
 [Table("News")]
 public class News : BaseEntity

@@ -1,26 +1,26 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using WayToDev.Db.Daos.Base;
-using WayToDev.Domain.Entities;
-using WayToDev.Domain.Interfaces.DAOs;
+using WayToDev.Core.Entities;
+using WayToDev.Core.Interfaces.DAOs;
 
 namespace WayToDev.Db.Daos;
 
-public class TokenDao : Dao<UserToken>, ITokenDao
+public class TokenDao : Dao<AccountToken>, ITokenDao
 {
     public TokenDao(ApplicationContext context, IMapper mapper = null) : base(context, mapper)
     {
     }
 
 
-    public UserToken GetRefreshToken(string token)
+    public AccountToken GetRefreshToken(string token)
     {
         return Context.UserTokens.SingleOrDefault(x => x.Token == token);
     }
 
-    public async Task Update(UserToken userToken)
+    public async Task Update(AccountToken accountToken)
     {
-        base.Update(userToken);
+        base.Update(accountToken);
         await Context.SaveChangesAsync();
     }
 

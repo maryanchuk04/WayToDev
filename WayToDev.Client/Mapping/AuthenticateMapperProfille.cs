@@ -1,6 +1,6 @@
 using AutoMapper;
 using WayToDev.Client.ViewModels;
-using WayToDev.Domain.DTOs;
+using WayToDev.Core.DTOs;
 
 namespace WayToDev.Client.Mapping;
 

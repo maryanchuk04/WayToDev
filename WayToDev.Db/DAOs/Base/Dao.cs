@@ -1,6 +1,6 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using WayToDev.Domain.Interfaces.DAOs.Base;
+using WayToDev.Core.Interfaces.DAOs.Base;
 
 namespace WayToDev.Db.Daos.Base;
 

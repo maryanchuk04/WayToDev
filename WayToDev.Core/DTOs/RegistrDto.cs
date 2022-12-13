@@ -1,4 +1,4 @@
-namespace WayToDev.Domain.DTOs;
+namespace WayToDev.Core.DTOs;
 
 public class RegistrDto
 {

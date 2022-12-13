@@ -1,4 +1,4 @@
-namespace WayToDev.Domain.Enums;
+namespace WayToDev.Core.Enums;
 
 public enum Gender
 {

@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WayToDev.Client", "WayToDev.Client\WayToDev.Client.csproj", "{2F749000-6C55-4D23-82C3-8E1F771CAD5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WayToDev.Domain", "WayToDev.Domain\WayToDev.Domain.csproj", "{093A9E5D-1BBA-4120-A70B-915571123F3C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WayToDev.Core", "WayToDev.Core\WayToDev.Core.csproj", "{093A9E5D-1BBA-4120-A70B-915571123F3C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WayToDev.Application", "WayToDev.Application\WayToDev.Application.csproj", "{07FB3E28-4DD5-4387-926D-9220C376B665}"
 EndProject

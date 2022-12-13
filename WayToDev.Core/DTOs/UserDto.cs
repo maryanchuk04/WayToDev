@@ -1,6 +1,6 @@
-using WayToDev.Domain.Enums;
+using WayToDev.Core.Enums;
 
-namespace WayToDev.Domain.DTOs;
+namespace WayToDev.Core.DTOs;
 
 public class UserDto
 {

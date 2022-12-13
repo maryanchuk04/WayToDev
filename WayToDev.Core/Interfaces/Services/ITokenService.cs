@@ -1,12 +1,12 @@
-using WayToDev.Domain.DTOs;
-using WayToDev.Domain.Entities;
+using WayToDev.Core.DTOs;
+using WayToDev.Core.Entities;
 
-namespace WayToDev.Domain.Interfaces.Services;
+namespace WayToDev.Core.Interfaces.Services;
 
 public interface ITokenService
 {
     string GenerateAccessToken(Account account);
-    UserToken GenerateRefreshToken();
+    AccountToken GenerateRefreshToken();
     Task<AuthenticateResponseModel> RefreshToken(string token);
     Task<bool> RevokeToken(string token);
 }

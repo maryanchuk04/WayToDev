@@ -1,8 +1,8 @@
 using WayToDev.Application.Exceptions;
-using WayToDev.Domain.DTOs;
-using WayToDev.Domain.Entities;
-using WayToDev.Domain.Interfaces.DAOs;
-using WayToDev.Domain.Interfaces.Services;
+using WayToDev.Core.DTOs;
+using WayToDev.Core.Entities;
+using WayToDev.Core.Interfaces.DAOs;
+using WayToDev.Core.Interfaces.Services;
 
 namespace WayToDev.Application.Services;
 
@@ -53,7 +53,7 @@ public class AuthService : IAuthService
                 Email = registrationDto.Email,
                 FirstName = registrationDto.UserName
             },
-            RefreshTokens = new List<UserToken>(),
+            RefreshTokens = new List<AccountToken>(),
             Password = HashPassword(registrationDto.Password)
         };
         var jwtToken = _tokenService.GenerateAccessToken(newAccount);

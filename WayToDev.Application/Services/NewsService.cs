@@ -1,8 +1,8 @@
 using AutoMapper;
-using WayToDev.Domain.DTOs;
-using WayToDev.Domain.Entities;
-using WayToDev.Domain.Interfaces.DAOs;
-using WayToDev.Domain.Interfaces.Services;
+using WayToDev.Core.DTOs;
+using WayToDev.Core.Entities;
+using WayToDev.Core.Interfaces.DAOs;
+using WayToDev.Core.Interfaces.Services;
 
 namespace WayToDev.Application.Services;
 

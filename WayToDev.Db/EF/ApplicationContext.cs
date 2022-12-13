@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using WayToDev.Domain.Entities;
+using WayToDev.Core.Entities;
 
 namespace WayToDev.Db;
 
@@ -13,7 +13,7 @@ public class ApplicationContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Company> Companies { get; set; }
     public DbSet<Account> Accounts { get; set; }
-    public DbSet<UserToken> UserTokens { get; set; }
+    public DbSet<AccountToken> UserTokens { get; set; }
     public DbSet<News> NewsSet { get; set; }
     
 }

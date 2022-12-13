@@ -2,8 +2,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using WayToDev.Application.Exceptions;
 using WayToDev.Client.ViewModels;
-using WayToDev.Domain.DTOs;
-using WayToDev.Domain.Interfaces.Services;
+using WayToDev.Core.DTOs;
+using WayToDev.Core.Interfaces.Services;
 
 namespace WayToDev.Client.Controllers;
 

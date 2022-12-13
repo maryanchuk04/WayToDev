@@ -1,4 +1,4 @@
-namespace WayToDev.Domain.Interfaces.DAOs.Base;
+namespace WayToDev.Core.Interfaces.DAOs.Base;
 
 public interface IDao<T>
     where T : class

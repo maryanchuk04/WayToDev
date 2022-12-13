@@ -6,11 +6,10 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using WayToDev.Application.Services;
 using WayToDev.Client.Mapping;
+using WayToDev.Core.Interfaces.DAOs;
+using WayToDev.Core.Interfaces.Services;
 using WayToDev.Db;
 using WayToDev.Db.Daos;
-using WayToDev.Domain.Interfaces.DAOs;
-using WayToDev.Domain.Interfaces.Services;
-
 
 var builder = WebApplication.CreateBuilder(args);
 

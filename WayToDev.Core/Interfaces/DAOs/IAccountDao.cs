@@ -1,6 +1,6 @@
-using WayToDev.Domain.Entities;
+using WayToDev.Core.Entities;
 
-namespace WayToDev.Domain.Interfaces.DAOs;
+namespace WayToDev.Core.Interfaces.DAOs;
 
 public interface IAccountDao
 {

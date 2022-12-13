@@ -1,8 +1,8 @@
 using AutoMapper;
 using WayToDev.Application.Exceptions;
 using WayToDev.Db.Daos.Base;
-using WayToDev.Domain.Entities;
-using WayToDev.Domain.Interfaces.DAOs;
+using WayToDev.Core.Entities;
+using WayToDev.Core.Interfaces.DAOs;
 
 namespace WayToDev.Db.Daos;
 

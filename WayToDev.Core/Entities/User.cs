@@ -1,6 +1,6 @@
-using WayToDev.Domain.Enums;
+using WayToDev.Core.Enums;
 
-namespace WayToDev.Domain.Entities;
+namespace WayToDev.Core.Entities;
 
 public class User : BaseEntity
 {

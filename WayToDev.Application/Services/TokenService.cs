@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using WayToDev.Application.Exceptions;
-using WayToDev.Domain.DTOs;
-using WayToDev.Domain.Entities;
-using WayToDev.Domain.Interfaces.DAOs;
-using WayToDev.Domain.Interfaces.Services;
+using WayToDev.Core.DTOs;
+using WayToDev.Core.Entities;
+using WayToDev.Core.Interfaces.DAOs;
+using WayToDev.Core.Interfaces.Services;
 
 namespace WayToDev.Application.Services;
 
@@ -54,14 +54,14 @@ public class TokenService :  ITokenService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    public UserToken GenerateRefreshToken()
+    public AccountToken GenerateRefreshToken()
     {
 
         var randomNumber = new byte[32];
         using var rng = RandomNumberGenerator.Create();
         rng.GetBytes(randomNumber);
 
-        return new UserToken
+        return new AccountToken
         {
             Token = Convert.ToBase64String(randomNumber),
             Expires = DateTime.Now.AddDays(7),

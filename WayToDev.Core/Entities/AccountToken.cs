@@ -1,6 +1,6 @@
-namespace WayToDev.Domain.Entities;
+namespace WayToDev.Core.Entities;
 
-public class UserToken : BaseEntity
+public class AccountToken : BaseEntity
 {
     public Guid AccountId { get; set; }
     public virtual Account Account { get; set; }

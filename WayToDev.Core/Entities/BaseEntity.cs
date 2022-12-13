@@ -1,4 +1,4 @@
-namespace WayToDev.Domain.Entities;
+namespace WayToDev.Core.Entities;
 
 public class BaseEntity
 {

@@ -1,7 +1,7 @@
 using AutoMapper;
 using WayToDev.Client.ViewModels;
-using WayToDev.Domain.DTOs;
-using WayToDev.Domain.Entities;
+using WayToDev.Core.DTOs;
+using WayToDev.Core.Entities;
 
 namespace WayToDev.Client.Mapping;
 
