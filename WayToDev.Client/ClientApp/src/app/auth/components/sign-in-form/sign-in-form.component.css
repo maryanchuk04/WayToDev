@@ -14,8 +14,8 @@ ul{
   border-radius: 40px;
   border: 3px solid #2B2D42 ;
   background: #8d99ae;
-  box-shadow:  20px 20px 60px #71a885,
-             -20px -20px 60px #d2d8d4;
+  box-shadow:  20px 20px 60px #8d99ae,
+             -20px -20px 60px #edf2f4;
 }
 
 .login label{
@@ -29,8 +29,8 @@ ul{
   transition: 0.4s ;
   background: #ffffff;
   width: 200px;
-  box-shadow:  20px 20px 60px #7a9b85,
-             -20px -20px 60px #a6d1b5;
+  box-shadow:  20px 20px 60px #ffe3e7,
+             -20px -20px 60px #ffe3e7;
 }
 
 .submit:hover{

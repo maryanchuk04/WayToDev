@@ -1,9 +1,9 @@
 .news-preview{
-  background-color: #26DAAB;
+  background-color: #edf2f4;
   color : #000000;
   padding: 15px;
   border-radius: 15px;
-  box-shadow: 0 3px 10px rgb(0 0 0 / 0.8);
+  box-shadow: 0 3px 10px rgba(12, 35, 69, 0.3);
 }
 
 .news-preview h3{
@@ -17,9 +17,6 @@
   margin: 20px 0;
   overflow: hidden;
 }
-
-
-
 
 .news-preview .picture img{
   width: 100%;
@@ -37,14 +34,14 @@
 }
 
 .news-preview a p:hover{
-  color : #ffffff;
+  color : #ff0000;
 }
 
 .news-preview a{
   display: flex;
   justify-content: flex-end;
   text-align: right;
-  transition: 0.5s;
+  transition: 0.3s;
   align-items: center;
 }
 

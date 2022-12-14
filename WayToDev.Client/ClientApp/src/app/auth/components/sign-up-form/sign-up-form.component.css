@@ -7,8 +7,8 @@
   grid-template-columns: 45% 55%;
 
   border: 3px solid #2B2D42 ;
-  box-shadow:  20px 20px 60px #8d99ae,
-             -20px -20px 60px #8d99ae;
+  box-shadow:  10px 10px 60px #8d99ae,
+             -10px -10px 60px #8d99ae;
 }
 
 .preview-form{
@@ -30,17 +30,19 @@
 }
 
 #sign-up-button{
+  margin-top: 10px;
   width: 40%;
   border: 0;
-  padding: 10px;
-  font-size: 24px;
+  padding: 5px;
+
   font-weight: 500;
   border-radius: 10px;
   transition: 0.4s;
 }
 
 #sign-up-button:hover{
-  color: #ffffff;
-  background-color: #ef233c;
+  background-color: #2f2f2f;
+  color:white;
+  transform: scale(1.1);
 }
 

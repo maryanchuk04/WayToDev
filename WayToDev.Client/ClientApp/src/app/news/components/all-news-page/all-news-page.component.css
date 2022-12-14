@@ -1,33 +1,9 @@
-.custom-shape-divider-top-1669205222 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  overflow: hidden;
-  line-height: 0;
-}
-
-.custom-shape-divider-top-1669205222 svg {
-  position: relative;
-  display: block;
-  width: calc(268% + 1.3px);
-  height: 130px;
-}
-
-.custom-shape-divider-top-1669205222 .shape-fill {
-  fill: #FFFFFF;
-}
-
-.news{
-  position: relative;
-}
-
 
 .search{
   width: 100%;
-  padding: 20px;
+  padding: 10px;
   border-radius: 20px;
-  background-color: #cab680;
+  background-color: #8d99ae;
 }
 
 .search input{
@@ -36,5 +12,5 @@
   font-size: 24px;
   border-radius: 15px;
   border: 0;
-  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+  box-shadow: 5px 5px 10px rgba(255, 255, 255, 0.2);
 }
