@@ -1,14 +1,14 @@
 .sing-up-form{
   display: flex;
   flex-direction: column;
-  background-color: #f6eac9 ;
+  background-color: #8d99ae;
   border-radius: 40px;
   display: grid;
   grid-template-columns: 45% 55%;
 
-  border: 3px solid #daab26 ;
-  box-shadow:  20px 20px 60px #71a885,
-             -20px -20px 60px #d2d8d4;
+  border: 3px solid #2B2D42 ;
+  box-shadow:  20px 20px 60px #8d99ae,
+             -20px -20px 60px #8d99ae;
 }
 
 .preview-form{
@@ -41,6 +41,6 @@
 
 #sign-up-button:hover{
   color: #ffffff;
-  background-color: #71a885;
+  background-color: #ef233c;
 }
 

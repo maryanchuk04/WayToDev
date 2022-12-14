@@ -1,6 +1,6 @@
 .main-button{
   padding: 20px;
-  background-color: rgba(24, 23, 23, 0.1);
+  background-color: transparent;
   color: #fff;
   border:0;
   border-radius: 30% 70% 38% 62% / 67% 31% 69% 33% ;
@@ -9,10 +9,9 @@
   /* box-shadow:  32px 32px 84px #b5b5b5,
              -32px -32px 84px #ffffff; */
   cursor: pointer;
-  box-shadow:  32px 32px 84px #ebd59e,
-             -32px -32px 84px #ebd59e;
-  text-shadow:  42px 12px 84px black,
-  -22px -12px 84px black;
+  text-shadow: 5px 2px 16px #8d99ae, 41px -32px 9px #8d99ae;
+  /* text-shadow:  42px 12px 84px black,
+  -22px -12px 84px black; */
 }
 
 .main-button:hover{

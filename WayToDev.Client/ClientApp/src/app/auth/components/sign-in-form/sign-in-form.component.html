@@ -14,14 +14,6 @@
       <input type="password" class="form-control mb-2 mt-1" id="inputPassword" formControlName="password" placeholder="Enter Password">
       <div *ngIf="submitted && formControl.password.errors" class="text-danger">
         <div *ngIf="formControl.password.errors.required">Password is required.</div>
-        <div *ngIf="formControl.password.errors.pattern">
-          <ul >
-            <li>Password should be alphanumeric</li>
-            <li>A letter of the password should be capital</li>
-            <li>Password must contain a special character (@, $, !, &, etc)</li>
-            <li>Password length must be greater than 7 characters</li>
-          </ul>
-        </div>
       </div>
     </div>
   </div>
