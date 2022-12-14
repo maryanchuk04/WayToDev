@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { LoginModel } from '../models/loginModel';
+import { LoginModel } from '../../models/loginModel';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-sign-in-form',
@@ -13,7 +14,9 @@ export class SignInFormComponent implements OnInit {
   public signInForm!: FormGroup;
   public submitted = false;
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private authService: AuthService) { }
+  constructor(private formBuilder: FormBuilder,
+    private router: Router,
+    private authService: AuthService) { }
 
   ngOnInit(): void {
     this.signInForm = this.formBuilder.group({
@@ -29,15 +32,20 @@ export class SignInFormComponent implements OnInit {
     return this.signInForm.controls;
   }
 
-  onLogin(): void {
+  onLogin() {
 
     this.submitted = true;
     if(this.signInForm.valid){
       console.log(this.signInForm);
-      let res = this.authService.authenticate(new LoginModel(this.signInForm.value.email, this.signInForm.value.password));
-      res.subscribe((data)=>{
-        console.log(data)
-      })
+      this.authService.authenticate(new LoginModel(this.signInForm.value.email, this.signInForm.value.password))
+        .subscribe((response: HttpResponse<any>)=>{
+          console.log(response)
+          if(response.ok){
+            localStorage.setItem("token", JSON.stringify(response.body));
+            this.router.navigate(["/profile"]);
+          }
+        });
+
     }
 
   }

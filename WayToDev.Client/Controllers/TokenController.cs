@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using WayToDev.Domain.Interfaces.Services;
+using WayToDev.Core.Interfaces.Services;
 
 namespace WayToDev.Client.Controllers;
 

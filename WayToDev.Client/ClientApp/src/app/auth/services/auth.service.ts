@@ -1,9 +1,10 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { AuthModule } from '../auth.module';
-import { LoginModel } from '../components/models/loginModel';
-import { RegistrationModel } from '../components/models/registrationModel';
+import { catchError, Observable, throwError } from 'rxjs';
+import { LoginModel } from '../models/loginModel';
+import { RegistrationModel } from '../models/registrationModel';
+import { AlertService } from 'src/app/ui/alert/alert.service';
+
 
 @Injectable({
   providedIn: "root"
@@ -11,16 +12,35 @@ import { RegistrationModel } from '../components/models/registrationModel';
 
 export class AuthService {
   apiUrl: string = "https://localhost:7218/api/authenticate";
-  headers = new HttpHeaders().set('Content-Type', 'application/json');
+  httpOptions : Object = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    }),
+    responseType: 'json',
+    observe : "response"
+  };
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(
+    private httpClient: HttpClient,
+    private alertService: AlertService) { }
 
   registration(registrationModel: RegistrationModel): Observable<any>{
-    return this.httpClient.post(this.apiUrl + "/registration", registrationModel);
+
+    return this.httpClient.post<any>(this.apiUrl + "/registration", registrationModel, this.httpOptions).pipe(catchError(this.handleError));
   }
 
   authenticate(loginModel: LoginModel){
-    return this.httpClient.post(this.apiUrl , loginModel);
+    return this.httpClient.post<any>(this.apiUrl , loginModel, this.httpOptions).pipe(catchError(this.handleError))
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.status === 0) {
+      console.error('An error occurred:', error.error);
+    } else {
+      console.log(
+        `Backend returned code ${error.status}, body was: `, error.error);
+    }
+    return throwError(() => new Error('Something bad happened; please try again later.'));
   }
 
 }

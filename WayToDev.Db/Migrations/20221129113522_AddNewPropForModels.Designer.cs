@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WayToDev.Db;
+using WayToDev.Db.EF;
 
 #nullable disable
 
@@ -24,7 +25,7 @@ namespace WayToDev.Db.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("WayToDev.Domain.Entities.Account", b =>
+            modelBuilder.Entity("WayToDev.Core.Entities.Account", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -48,7 +49,7 @@ namespace WayToDev.Db.Migrations
                     b.ToTable("Accounts");
                 });
 
-            modelBuilder.Entity("WayToDev.Domain.Entities.Company", b =>
+            modelBuilder.Entity("WayToDev.Core.Entities.Company", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -76,7 +77,7 @@ namespace WayToDev.Db.Migrations
                     b.ToTable("Companies");
                 });
 
-            modelBuilder.Entity("WayToDev.Domain.Entities.User", b =>
+            modelBuilder.Entity("WayToDev.Core.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -104,7 +105,7 @@ namespace WayToDev.Db.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("WayToDev.Domain.Entities.UserToken", b =>
+            modelBuilder.Entity("WayToDev.Core.Entities.UserToken", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -136,20 +137,20 @@ namespace WayToDev.Db.Migrations
                     b.ToTable("UserTokens");
                 });
 
-            modelBuilder.Entity("WayToDev.Domain.Entities.Account", b =>
+            modelBuilder.Entity("WayToDev.Core.Entities.Account", b =>
                 {
-                    b.HasOne("WayToDev.Domain.Entities.User", "User")
+                    b.HasOne("WayToDev.Core.Entities.User", "User")
                         .WithOne("Account")
-                        .HasForeignKey("WayToDev.Domain.Entities.Account", "UserId")
+                        .HasForeignKey("WayToDev.Core.Entities.Account", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("WayToDev.Domain.Entities.Company", b =>
+            modelBuilder.Entity("WayToDev.Core.Entities.Company", b =>
                 {
-                    b.HasOne("WayToDev.Domain.Entities.Account", "Account")
+                    b.HasOne("WayToDev.Core.Entities.Account", "Account")
                         .WithMany()
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -158,9 +159,9 @@ namespace WayToDev.Db.Migrations
                     b.Navigation("Account");
                 });
 
-            modelBuilder.Entity("WayToDev.Domain.Entities.UserToken", b =>
+            modelBuilder.Entity("WayToDev.Core.Entities.UserToken", b =>
                 {
-                    b.HasOne("WayToDev.Domain.Entities.Account", "Account")
+                    b.HasOne("WayToDev.Core.Entities.Account", "Account")
                         .WithMany("RefreshTokens")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -169,12 +170,12 @@ namespace WayToDev.Db.Migrations
                     b.Navigation("Account");
                 });
 
-            modelBuilder.Entity("WayToDev.Domain.Entities.Account", b =>
+            modelBuilder.Entity("WayToDev.Core.Entities.Account", b =>
                 {
                     b.Navigation("RefreshTokens");
                 });
 
-            modelBuilder.Entity("WayToDev.Domain.Entities.User", b =>
+            modelBuilder.Entity("WayToDev.Core.Entities.User", b =>
                 {
                     b.Navigation("Account")
                         .IsRequired();

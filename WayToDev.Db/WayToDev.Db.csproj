@@ -16,8 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\WayToDev.Application\WayToDev.Application.csproj" />
-      <ProjectReference Include="..\WayToDev.Domain\WayToDev.Domain.csproj" />
+      <ProjectReference Include="..\WayToDev.Core\WayToDev.Core.csproj" />
     </ItemGroup>
 
 </Project>

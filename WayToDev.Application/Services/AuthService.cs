@@ -1,30 +1,34 @@
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using WayToDev.Application.Exceptions;
-using WayToDev.Domain.DTOs;
-using WayToDev.Domain.Entities;
-using WayToDev.Domain.Interfaces.DAOs;
-using WayToDev.Domain.Interfaces.Services;
+using WayToDev.Core.DTOs;
+using WayToDev.Core.Entities;
+using WayToDev.Core.Interfaces.Services;
+using WayToDev.Db.EF;
 
 namespace WayToDev.Application.Services;
 
-public class AuthService : IAuthService
+public class AuthService : Dao<Account>, IAuthService
 {
     private readonly ITokenService _tokenService;
-    private readonly IAccountDao _accountDao;
 
-    public AuthService(ITokenService tokenService, IAccountDao accountDao)
+    public AuthService(ApplicationContext context, ITokenService tokenService, IMapper mapper = null) 
+        : base(context, mapper)
     {
         _tokenService = tokenService;
-        _accountDao = accountDao;
     }
-
+    
     public async Task<AuthenticateResponseModel> Authenticate(string email, string password)
     {
-        var account = _accountDao.FindByEmail(email);
+        var account = Context.Accounts
+            .Include(x=>x.User)
+            .FirstOrDefault(x => x.User.Email == email);
 
         if (account == null)
         {
             throw new AuthenticateException("Incorrect login or password");
         }
+        
         if (!VerifyPassword(password, account.Password))
         {
             throw new AuthenticateException("Incorrect login or password");
@@ -34,14 +38,14 @@ public class AuthService : IAuthService
         var refreshToken = _tokenService.GenerateRefreshToken();
 
         account.RefreshTokens.Add(refreshToken);
-        await _accountDao.Update(account);
+        Update(account);
+        await Context.SaveChangesAsync();
         return new AuthenticateResponseModel(jwt, refreshToken.Token);
     }
 
-    public async Task<AuthenticateResponseModel> Registration(RegistrDto registrDto)
+    public async Task<AuthenticateResponseModel> Registration(RegistrDto registrationDto)
     {
-        var isExist = _accountDao.IsExist(registrDto.Email);
-        if (isExist)
+        if (Context.Users.Any(x=>x.Email==registrationDto.Email))
         {
             throw new AuthenticateException("Account already exist");
         }
@@ -49,22 +53,25 @@ public class AuthService : IAuthService
         var newAccount = new Account()
         {
             IsBlocked = false,
-            User = new User()
+            User = new User
             {
-                Email = registrDto.Email,
-                FirstName = registrDto.UserName
+                Email = registrationDto.Email,
+                FirstName = registrationDto.UserName
             },
-            RefreshTokens = new List<UserToken>(),
-            Password = HashPassword(registrDto.Password)
+            RefreshTokens = new List<AccountToken>(),
+            Password = HashPassword(registrationDto.Password)
         };
         var jwtToken = _tokenService.GenerateAccessToken(newAccount);
         var refreshToken = _tokenService.GenerateRefreshToken();
         newAccount.RefreshTokens.Add(refreshToken);
-        await _accountDao.Create(newAccount);
+        Insert(newAccount);
+        await Context.SaveChangesAsync();
         return new AuthenticateResponseModel(jwtToken, refreshToken.Token);
     }
     
     private bool VerifyPassword(string passwordFromRequest, string password) => BCrypt.Net.BCrypt.Verify(passwordFromRequest,password);
 
     private string HashPassword(string password) => BCrypt.Net.BCrypt.HashPassword(password);
+
+    
 }

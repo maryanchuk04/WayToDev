@@ -1,6 +1,6 @@
 .news-preview{
-  background-color: rgb(34, 27, 34);
-  color : #ffffff;
+  background-color: #26DAAB;
+  color : #000000;
   padding: 15px;
   border-radius: 15px;
   box-shadow: 0 3px 10px rgb(0 0 0 / 0.8);
@@ -51,4 +51,3 @@
 .news-preview p i{
   margin-left: 5px;
 }
-

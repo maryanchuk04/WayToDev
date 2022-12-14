@@ -6,25 +6,26 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using WayToDev.Application.Services;
 using WayToDev.Client.Mapping;
-using WayToDev.Db;
-using WayToDev.Db.Daos;
-using WayToDev.Domain.Interfaces.DAOs;
-using WayToDev.Domain.Interfaces.Services;
+using WayToDev.Core.Interfaces.DAOs;
+using WayToDev.Core.Interfaces.Services;
 
+using WayToDev.Db.EF;
 
 var builder = WebApplication.CreateBuilder(args);
+
+#region ConfigureServices
 
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("ConnString"),
         b => b.MigrationsAssembly("WayToDev.Db")));
+
 builder.Services.AddAutoMapper(typeof(UserMapperProfile).GetTypeInfo().Assembly);
 builder.Services.AddTransient<ITokenService, TokenService>();
-builder.Services.AddScoped<ITokenDao, TokenDao>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddScoped<IAccountDao, AccountDao>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<INewsService, NewsService>();
 
 builder.Services.AddSwaggerGen(options =>
 {
@@ -85,6 +86,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 builder.Services.AddAuthorization();
+
+#endregion
+
 
 var app = builder.Build();
 app.UseSwaggerUI();
