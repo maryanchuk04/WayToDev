@@ -1,8 +1,9 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using WayToDev.Core.Interfaces.DAOs.Base;
+using WayToDev.Db.EF;
 
-namespace WayToDev.Db.Daos.Base;
+namespace WayToDev.Application.Services;
 
 public class Dao<T> : IDao<T>
     where T : class

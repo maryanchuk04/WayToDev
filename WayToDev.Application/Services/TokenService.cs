@@ -4,37 +4,33 @@ using System.Security.Cryptography;
 using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using WayToDev.Application.Exceptions;
 using WayToDev.Core.DTOs;
 using WayToDev.Core.Entities;
-using WayToDev.Core.Interfaces.DAOs;
+using WayToDev.Core.Exceptions;
 using WayToDev.Core.Interfaces.Services;
+using WayToDev.Db.EF;
 
 namespace WayToDev.Application.Services;
 
-public class TokenService :  ITokenService
+public class TokenService :  Dao<AccountToken>, ITokenService
 {
     private readonly IConfiguration _configuration;
-    private readonly ITokenDao _tokenDao;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IMapper _mapper;
-    private readonly IAccountDao _accountDao;
 
-    public TokenService(IConfiguration configuration,
-        IHttpContextAccessor httpContextAccessor,
-        IMapper mapper,
-        ITokenDao tokenDao,
-        IAccountDao accountDao)
+    public TokenService(ApplicationContext context,
+        IConfiguration configuration, 
+        IHttpContextAccessor httpContextAccessor, 
+        IMapper mapper = null) 
+        : base(context, mapper)
     {
         _configuration = configuration;
         _httpContextAccessor = httpContextAccessor;
-        _mapper = mapper;
-        _tokenDao = tokenDao;
-        _accountDao = accountDao;
     }
-
+    
     public string GenerateAccessToken(Account account)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -71,13 +67,17 @@ public class TokenService :  ITokenService
 
     public async Task<AuthenticateResponseModel> RefreshToken(string token)
     {
-        var account = _tokenDao.GetAccountByToken(token);
+        var account = Context.Accounts
+            .Include(a => a.RefreshTokens)
+            .SingleOrDefault(a => a.RefreshTokens.Any(t => t.Token.Equals(token)));
+        
         if (account == null)
         {
             throw new AccountNotFoundException("Account with this token, not found");
         }
 
         var refreshToken = account.RefreshTokens.Single(x => x.Token == token);
+        
         if (refreshToken.Expires < DateTime.Now && refreshToken.Revoked == null)
         {
             return null;
@@ -88,8 +88,10 @@ public class TokenService :  ITokenService
         refreshToken.ReplacedByToken = newRefreshToken.Token;
         account.RefreshTokens.Add(newRefreshToken);
 
-        await _accountDao.Update(account);
-        await _tokenDao.Update(refreshToken);
+        Context.Update(account);
+        Update(refreshToken);
+        await Context.SaveChangesAsync();
+        
         // generate new jwt
         var jwtToken = GenerateAccessToken(account);
         return new AuthenticateResponseModel(jwtToken, newRefreshToken.Token);
@@ -97,15 +99,21 @@ public class TokenService :  ITokenService
 
     public async Task<bool> RevokeToken(string token)
     {
-        var refreshToken = _tokenDao.GetRefreshToken(token);
-
+        var refreshToken = Context.AccountTokens.SingleOrDefault(x => x.Token == token);
+        if (refreshToken == null)
+        {
+            throw new TokenException("Refresh token is not exist");
+        }
+        
         if (refreshToken.Revoked == null && DateTime.UtcNow >= refreshToken.Expires)
         {
             return false;
         }
 
         refreshToken.Revoked = DateTime.Now;
-        await _tokenDao.Update(refreshToken);
+        Update(refreshToken);
+        await Context.SaveChangesAsync();
+        
         _httpContextAccessor.HttpContext?.Response.Cookies.Delete("refreshToken");
         return true;
     }

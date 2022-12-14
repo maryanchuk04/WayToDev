@@ -8,8 +8,8 @@ using WayToDev.Application.Services;
 using WayToDev.Client.Mapping;
 using WayToDev.Core.Interfaces.DAOs;
 using WayToDev.Core.Interfaces.Services;
-using WayToDev.Db;
-using WayToDev.Db.Daos;
+
+using WayToDev.Db.EF;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,12 +23,9 @@ builder.Services.AddDbContext<ApplicationContext>(
 
 builder.Services.AddAutoMapper(typeof(UserMapperProfile).GetTypeInfo().Assembly);
 builder.Services.AddTransient<ITokenService, TokenService>();
-builder.Services.AddScoped<ITokenDao, TokenDao>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddScoped<IAccountDao, AccountDao>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<INewsService, NewsService>();
-builder.Services.AddScoped<INewsDao, NewsDao>();
 
 builder.Services.AddSwaggerGen(options =>
 {

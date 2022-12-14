@@ -1,25 +1,23 @@
 using AutoMapper;
 using WayToDev.Core.DTOs;
 using WayToDev.Core.Entities;
+using WayToDev.Core.Exceptions;
 using WayToDev.Core.Interfaces.DAOs;
 using WayToDev.Core.Interfaces.Services;
+using WayToDev.Db.EF;
 
 namespace WayToDev.Application.Services;
 
-public class NewsService : INewsService
+public class NewsService : Dao<News>, INewsService
 {
-    private readonly INewsDao _newsDao;
-    private readonly IMapper _mapper;
-    
-    public NewsService(INewsDao newsDao, IMapper mapper)
+    public NewsService(ApplicationContext context, IMapper mapper = null) : base(context, mapper)
     {
-        _newsDao = newsDao;
-        _mapper = mapper;
     }
     
     public async Task Create(NewsDto newsDto)
     {
-        await _newsDao.Create(_mapper.Map<NewsDto, News>(newsDto));
+        Insert(Mapper.Map<NewsDto, News>(newsDto));
+        await Context.SaveChangesAsync();
     }
 
     public async Task Update(NewsDto newsDto)
@@ -28,16 +26,22 @@ public class NewsService : INewsService
         {
             throw new ArgumentException("NewsDto is null");
         }
-        await _newsDao.Update(_mapper.Map<NewsDto, News>(newsDto));
+
+        Update(Mapper.Map<NewsDto, News>(newsDto));
+        await Context.SaveChangesAsync();
     }
 
     public NewsDto GetNewsById(Guid id)
     {
-        return _mapper.Map<News, NewsDto>(_newsDao.GetById(id));
+        var news = Context.NewsSet.FirstOrDefault(x => x.Id == id);
+        if (news == null)
+        {
+            throw new NewsNotFoundException("News with this id is not exist");
+        }
+
+        return Mapper.Map<News, NewsDto>(news);
     }
 
-    public List<NewsDto> GetNews()
-    {
-        return _mapper.Map<List<News>, List<NewsDto>>(_newsDao.GetNews());
-    }
+    public List<NewsDto> GetNews() => Mapper.Map<List<News>, List<NewsDto>>(Context.NewsSet.ToList());
+    
 }

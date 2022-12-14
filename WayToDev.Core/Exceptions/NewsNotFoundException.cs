@@ -1,4 +1,4 @@
-namespace WayToDev.Application.Exceptions;
+namespace WayToDev.Core.Exceptions;
 
 public class NewsNotFoundException : Exception
 {

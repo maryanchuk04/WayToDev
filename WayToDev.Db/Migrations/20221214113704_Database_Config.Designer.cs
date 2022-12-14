@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WayToDev.Db.EF;
 
@@ -11,9 +12,10 @@ using WayToDev.Db.EF;
 namespace WayToDev.Db.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20221214113704_Database_Config")]
+    partial class Database_Config
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -134,14 +136,9 @@ namespace WayToDev.Db.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("TechStackId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
-
-                    b.HasIndex("TechStackId");
 
                     b.ToTable("Companies");
                 });
@@ -292,7 +289,7 @@ namespace WayToDev.Db.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TechStacks");
+                    b.ToTable("TechStack");
                 });
 
             modelBuilder.Entity("WayToDev.Core.Entities.User", b =>
@@ -385,15 +382,7 @@ namespace WayToDev.Db.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WayToDev.Core.Entities.TechStack", "TechStack")
-                        .WithMany()
-                        .HasForeignKey("TechStackId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Account");
-
-                    b.Navigation("TechStack");
                 });
 
             modelBuilder.Entity("WayToDev.Core.Entities.CompanyFeedback", b =>

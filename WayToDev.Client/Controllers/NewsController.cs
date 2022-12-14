@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using WayToDev.Application.Exceptions;
 using WayToDev.Client.ViewModels;
 using WayToDev.Core.DTOs;
+using WayToDev.Core.Exceptions;
 using WayToDev.Core.Interfaces.Services;
 
 namespace WayToDev.Client.Controllers;
