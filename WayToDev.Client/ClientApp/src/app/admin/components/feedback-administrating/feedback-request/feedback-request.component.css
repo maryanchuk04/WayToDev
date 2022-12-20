@@ -1,0 +1,52 @@
+.feedback-request{
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.3);
+    padding: 20px;
+    width: 90%;
+    margin: 20px auto;
+    border-radius: 20px;
+    display: grid;
+    grid-template-columns: 39% 20% 39%;
+    position: relative;
+    grid-gap: 1%;
+    align-items: center;
+}
+
+.feedback-request .from-user{
+    display: flex;
+    align-items: center;
+}
+
+.feedback-request .to-company{
+    display: flex;
+    align-items: center;
+}
+
+
+.feedback-request .box{
+    height: fit-content;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+}
+
+.feedback-request .box img{
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+
+}
+.feedback-request i{
+    font-size: 50px;
+    margin: 10px 0 ;
+}
+
+.feedback-request .feedback-info{
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 30px ;
+}

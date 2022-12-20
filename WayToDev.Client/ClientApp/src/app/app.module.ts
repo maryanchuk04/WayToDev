@@ -17,7 +17,7 @@ import { AuthModule } from './auth/auth.module';
 import { MainNewsComponent } from './landing-page/components/main-news/main-news.component';
 import { NewsShortInfoComponent } from './landing-page/components/main-news/components/news-short-info/news-short-info.component';
 import { IconModule } from '@coreui/icons-angular';
-
+import { AdminModule } from './admin/admin.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,7 +42,8 @@ import { IconModule } from '@coreui/icons-angular';
     }),
     NewsModule,
     AuthModule,
-    IconModule
+    IconModule,
+    AdminModule
   ],
   providers: [],
   bootstrap: [AppComponent]
