@@ -3,7 +3,7 @@ import { CompaniesAdministratingComponent } from '../companies-administrating/co
 import { FeedbackAdministratingComponent } from '../feedback-administrating/feedback-administrating.component';
 import { UsersAdministratingComponent } from '../users-administrating/users-administrating.component';
 import { AdminMenu } from '../../models/adminMenu';
-
+import { NewsAdministratingComponent } from '../news-administrating/news-administrating.component';
 
 @Component({
   selector: 'app-admin-page',
@@ -15,12 +15,14 @@ export class AdminPageComponent implements OnInit {
   menuList: AdminMenu[] = [
     { name : "Users", index : 0 },
     { name : "Companies", index : 1 },
-    { name : "Feedbacks", index : 2 }
+    { name : "Feedbacks", index : 2 },
+    { name : "News", index: 3}
   ];
 
   components = [UsersAdministratingComponent,
       CompaniesAdministratingComponent,
-      FeedbackAdministratingComponent]
+      FeedbackAdministratingComponent,
+      NewsAdministratingComponent]
 
   currentComponent: any;
 

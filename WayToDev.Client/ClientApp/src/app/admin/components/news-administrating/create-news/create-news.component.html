@@ -1,0 +1,23 @@
+<div class = "create-news">
+  <h2 class = 'text-center'>Create news</h2>
+  <hr>
+  <form [formGroup]="createForm"  class="content" (ngSubmit) = "onSubmit()">
+    <mat-form-field class="example-full-width">
+      <mat-label>Title</mat-label>
+      <input  matInput placeholder="Ex. New cool news..." formControlName = "title" required>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Short description</mat-label>
+      <textarea  matInput placeholder="Input short description about news" formControlName="shortDescription" rows="5" required></textarea>
+    </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Text(Only in this news own page)</mat-label>
+        <textarea matInput formControlName = "text" placeholder="Input text about news" rows="7" required></textarea>
+      </mat-form-field>
+      <button type="button" class = 'mb-2' mat-raised-button (click)="fileInput.click()">Choose image</button>
+      <input hidden (change)="onFileSelected($event)" #fileInput type="file" >
+      <span class="file-name">{{selectedFile?.name}}</span>
+      <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+    <button mat-raised-button color ='accent' [disabled]="createForm.invalid">Submit</button>
+  </form>
+</div>
