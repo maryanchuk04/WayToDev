@@ -1,0 +1,13 @@
+<div class="user-item">
+    <div class="image">
+        <img [src]="user.image" [alt] = "'hello'+ user.userName">
+    </div>
+    <div class="info">
+        <h3>{{user.userName}}</h3>
+        <p class = "disabled" *ngIf="user.isDisabled">DISABLED</p>
+        <p class = "active" *ngIf="!user.isDisabled">ACTIVE</p>
+    </div>
+    <div class="more" >
+        <a [routerLink] = "'users/' + user.id">More</a>
+    </div>
+</div>

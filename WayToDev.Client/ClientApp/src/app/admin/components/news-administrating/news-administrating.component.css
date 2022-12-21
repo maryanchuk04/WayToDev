@@ -1,0 +1,14 @@
+.head{
+  display: grid;
+  grid-template-columns: 40% 1fr;
+
+}
+
+.head .btns{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.content{
+  margin: auto;
+}

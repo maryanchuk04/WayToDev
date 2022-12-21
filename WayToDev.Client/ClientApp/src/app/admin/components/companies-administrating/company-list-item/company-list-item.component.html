@@ -1,0 +1,10 @@
+<div class="company-item">
+  <div class="logo">
+    <img [src]="company.logo" [alt]="'company='+ company.name">
+  </div>
+  <div class="info">
+      <h3>{{company.name}}</h3>
+      <p class = "disabled" *ngIf="company.isDisabled">DISABLED</p>
+      <p class = "active" *ngIf="!company.isDisabled">ACTIVE</p>
+  </div>
+</div>

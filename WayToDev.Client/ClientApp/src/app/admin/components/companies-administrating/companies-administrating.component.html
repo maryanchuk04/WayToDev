@@ -1,0 +1,10 @@
+<div class="container">
+  <div class="head">
+      <h2>Administration of companies</h2>
+      <app-search placeholder="Search company..."></app-search>
+  </div>
+  <hr>
+  <div class="content">
+      <app-company-list-item *ngFor="let item of companiesList" [company] = "item"></app-company-list-item>
+  </div>
+</div>

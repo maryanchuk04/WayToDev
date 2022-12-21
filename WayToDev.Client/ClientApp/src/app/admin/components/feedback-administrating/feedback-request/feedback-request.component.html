@@ -1,0 +1,23 @@
+<div class="feedback-request">
+    <div class="from-user">
+        <h2>From: </h2>
+        <div class="box">
+            <h5>{{feedback.fromUser.userName}}</h5>
+            <img [src]="feedback.fromUser.image" alt="">
+        </div>
+    </div>
+    <div class="feedback-info">
+        <i class = "fas fa-arrow-right"></i>
+        <button mat-raised-button color ='accent' (click)="review()">
+            Review
+        </button>
+    </div>
+
+    <div class="to-company">
+        <h2>To: </h2>
+        <div class="box">
+            <h5>{{feedback.company.name}}</h5>
+            <img [src]="feedback.company.logo" alt="">
+        </div>
+    </div>
+</div>
