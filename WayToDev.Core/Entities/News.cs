@@ -10,5 +10,6 @@ public class News : BaseEntity
     public string Text { get; set; }
     public DateTime Date { get; } = DateTime.Now;
     public Guid UserId { get; set; }
-    public string Image { get; set; }
+    public Image? Image { get; set; }
+    public Guid ImageId { get; set; }
 }

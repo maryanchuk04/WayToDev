@@ -10,8 +10,11 @@ public class NewsMapperProfile : Profile
     public NewsMapperProfile()
     {
         CreateMap<News, NewsDto>();
-        CreateMap<NewsDto, News>();
+        CreateMap<NewsDto, News>()
+            .ForMember(dest=>dest.Image, opts => opts.MapFrom(src=>src.Image));
         CreateMap<NewsViewModel, NewsDto>();
         CreateMap<NewsDto, NewsViewModel>();
+        CreateMap<string, Image>()
+            .ForMember(dest => dest.ImageUrl, opts => opts.MapFrom(x => x));
     }
 }

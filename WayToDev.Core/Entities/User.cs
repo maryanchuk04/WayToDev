@@ -10,4 +10,5 @@ public class User : BaseEntity
     public DateTime? Birthday { get; set; }
     public Gender? Gender { get; set; }
     public Account Account { get; set; }
+    public Image? Image { get; set; }
 }
