@@ -14,10 +14,11 @@ public class NewsService : Dao<News>, INewsService
     {
     }
     
-    public async Task Create(NewsDto newsDto)
+    public async Task<NewsDto> Create(NewsDto newsDto)
     {
-        Insert(Mapper.Map<NewsDto, News>(newsDto));
+        var news = Insert(Mapper.Map<NewsDto, News>(newsDto));
         await Context.SaveChangesAsync();
+        return Mapper.Map<News, NewsDto>(news);
     }
 
     public async Task Update(NewsDto newsDto)
@@ -43,5 +44,11 @@ public class NewsService : Dao<News>, INewsService
     }
 
     public List<NewsDto> GetNews() => Mapper.Map<List<News>, List<NewsDto>>(Context.NewsSet.ToList());
-    
+    public async Task Delete(Guid id)
+    {
+        var news = Context.NewsSet.FirstOrDefault(x => x.Id == id);
+        base.Delete(news);
+        
+        await Context.SaveChangesAsync();
+    }
 }
