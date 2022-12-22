@@ -1,0 +1,16 @@
+<div class="container chat-zone">
+  <div class="chat-header">
+    <img [src]="chat.image" alt="">
+    <h2>{{chat.title}}</h2>
+  </div>
+  <div class="messages-zone">
+    <app-message *ngFor="let item of chat.messages"
+      [class]="item.from.id == 'me' ?  'right' : 'left'"
+      [message]="item">
+    </app-message>
+  </div>
+  <form class="sender" [formGroup]="messageForm" (ngSubmit) = "sendMessage()" >
+    <input type="text" formControlName = "message" id="messageInput">
+    <button mat-fab [disabled]="messageForm.invalid"><i class='fas fa-paper-plane'></i></button>
+  </form>
+</div>
