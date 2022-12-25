@@ -5,10 +5,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using WayToDev.Application.Services;
+using WayToDev.Client.Hubs;
 using WayToDev.Client.Mapping;
+using WayToDev.Core.Entities;
 using WayToDev.Core.Interfaces.DAOs;
 using WayToDev.Core.Interfaces.Services;
-
+using WayToDev.Db.Bridge;
 using WayToDev.Db.EF;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,13 +22,14 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("ConnString"),
         b => b.MigrationsAssembly("WayToDev.Db")));
-
+builder.Services.AddSingleton<ISecurityContext, SecurityContextService>();
 builder.Services.AddAutoMapper(typeof(UserMapperProfile).GetTypeInfo().Assembly);
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<INewsService, NewsService>();
-
+builder.Services.AddSignalR();
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -111,11 +114,17 @@ app.UseCors(x =>
         .AllowCredentials();
 });
 
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<ChatHub>("/chatHub");
+    endpoints.MapControllerRoute("default", "{controller}/{action=Index}/{id?}");
+});
+
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html");
-;
 
 app.Run();
