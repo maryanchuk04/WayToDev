@@ -8,7 +8,7 @@ public class ChatHub : Hub
     private readonly IDictionary<string, string> _connections = new Dictionary<string, string>();
     private readonly ISecurityContext _securityContext;
     private readonly IMessageService _messageService;
-    
+
     public ChatHub(ISecurityContext securityContext, IMessageService messageService)
     {
         _securityContext = securityContext;
@@ -22,7 +22,7 @@ public class ChatHub : Hub
             var currentUserId = _securityContext.GetCurrentUserId();
             var res = await _messageService.Send(chatId, currentUserId, message);
 
-            await Clients.Group(chatId.ToString()).SendAsync("ReceiveMessage", res);
+            await Clients.Group(chatId.ToString()).SendAsync("SendMessage", res);
         }
     }
 
@@ -33,7 +33,7 @@ public class ChatHub : Hub
         await Clients.Group(chatId).SendAsync("JoinToRoom", "Was connected to room");
         await SendUsersConnected(chatId);
     }
-    
+
     public async Task JoinToUsersRooms(List<string> chatsIds)
     {
         foreach (var item in chatsIds)
@@ -42,7 +42,7 @@ public class ChatHub : Hub
         }
     }
 
-    
+
     private Task SendUsersConnected(string chatId)
     {
         var users = _connections.Values.Where(x => x == chatId);
