@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ChatPreview } from '../../models/chatPreview'
 import { Chat } from '../../models/chat'
 import { ChatService } from '../../services/chat.service'
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-chats-page',
   templateUrl: './chats-page.component.html',
   styleUrls: ['./chats-page.component.css']
 })
 export class ChatsPageComponent implements OnInit {
-  choosenChat: Chat;
+  choosenChat$: Observable<Chat>;
   loading: boolean = false;
   chatsList: ChatPreview[] = [
     {
@@ -201,7 +202,7 @@ export class ChatsPageComponent implements OnInit {
 
   chooseChat(chatItem: any){
     this.loading = true;
-    this.choosenChat = this.chatService.getChatById("sad");
+    this.choosenChat$ = this.chatService.getChatById("sad");
     this.loading = false;
   }
 

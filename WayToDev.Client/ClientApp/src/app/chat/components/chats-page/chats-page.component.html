@@ -12,12 +12,15 @@
         <i *ngIf="!drawer.opened" class = "fas fa-comment-dots"></i>
       </button>
 
-        <ng-container class = 'text-center h-100 m-auto' *ngIf="choosenChat == null; else elseTemplate">
+        <ng-container *ngIf="choosenChat$ == null; else elseTemplate">
+          <div class = 'd-flex justify-content-center w-100 align-items-center text-center h-100 m-auto flex-column'>
             <h1>Let`s start messaging</h1>
+            <h2>Choose the chat</h2>
+          </div>
         </ng-container>
         <ng-template class="h-100" #elseTemplate >
           <app-spinner-wrapper  [condition]="loading">
-            <app-chat-container [chat] = "choosenChat" ></app-chat-container>
+            <app-chat-container [chat$] = "choosenChat$" ></app-chat-container>
           </app-spinner-wrapper>
         </ng-template>
     </div>

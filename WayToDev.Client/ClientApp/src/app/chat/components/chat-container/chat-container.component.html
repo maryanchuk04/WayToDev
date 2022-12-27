@@ -1,10 +1,10 @@
-<div class="container chat-zone">
+<div class="container chat-zone"  *ngIf="chat$ | async as chat">
   <div class="chat-header">
     <img [src]="chat.image" alt="">
     <h2>{{chat.title}}</h2>
   </div>
-  <div class="messages-zone">
-    <app-message *ngFor="let item of chat.messages"
+  <div #scroll class="messages-zone">
+    <app-message  *ngFor="let item of messages"
       [class]="item.from.id == 'me' ?  'right' : 'left'"
       [message]="item">
     </app-message>
