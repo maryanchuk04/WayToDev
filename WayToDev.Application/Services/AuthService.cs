@@ -22,6 +22,7 @@ public class AuthService : Dao<Account>, IAuthService
     {
         var account = Context.Accounts
             .Include(x=>x.User)
+            .Include(x=>x.RefreshTokens)
             .FirstOrDefault(x => x.User.Email == email);
 
         if (account == null)

@@ -38,7 +38,7 @@ public class TokenService :  Dao<AccountToken>, ITokenService
 
         var claims = new[]
         {
-            new Claim(ClaimTypes.Name, $"{account.Id}")
+            new Claim(ClaimTypes.Name, $"{account.UserId}")
         };
 
         var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],

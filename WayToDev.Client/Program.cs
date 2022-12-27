@@ -27,6 +27,7 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<INewsService, NewsService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddSignalR();
 builder.Services.AddSwaggerGen(options =>
 {
