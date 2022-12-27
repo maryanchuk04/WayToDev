@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using WayToDev.Core.DTOs;
 using WayToDev.Core.Entities;
+using WayToDev.Core.Exceptions;
 using WayToDev.Core.Interfaces.Services;
 using WayToDev.Db.EF;
 
@@ -46,6 +47,7 @@ public class MessageService : Dao<Message>, IMessageService
             {
                 Title = temp?.FirstName + " " + temp?.LastName
             };
+            
             room.UserRooms = new List<UserRoom>
             {
                 new() { Room = room, UserId = senderId },
@@ -61,7 +63,7 @@ public class MessageService : Dao<Message>, IMessageService
             .FirstOrDefault(x => x.Id == room.Id);
 
         if (res == null)
-            throw new Exception("Messages Exceptions");
+            throw new MessagesExceptions("Messages Exceptions");
         
         return Mapper.Map<Room, RoomDto>(res);
     }

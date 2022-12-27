@@ -7,8 +7,6 @@ using Microsoft.OpenApi.Models;
 using WayToDev.Application.Services;
 using WayToDev.Client.Hubs;
 using WayToDev.Client.Mapping;
-using WayToDev.Core.Entities;
-using WayToDev.Core.Interfaces.DAOs;
 using WayToDev.Core.Interfaces.Services;
 using WayToDev.Db.Bridge;
 using WayToDev.Db.EF;
@@ -54,7 +52,10 @@ builder.Services.AddSwaggerGen(options =>
             },
             new List<string>()
         }
+        
     });
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -102,6 +103,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
@@ -113,13 +115,13 @@ app.UseCors(x =>
         .SetIsOriginAllowed(origin => true) // allow any origin
         .AllowCredentials();
 });
-
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapHub<ChatHub>("/chatHub");
     endpoints.MapControllerRoute("default", "{controller}/{action=Index}/{id?}");
 });
-
 
 app.MapControllerRoute(
     name: "default",

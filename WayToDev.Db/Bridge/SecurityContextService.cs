@@ -15,7 +15,7 @@ public class SecurityContextService : ISecurityContext
 
     public Guid GetCurrentUserId()
     {
-        Claim guidClaim = _HttpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Name);
+        var guidClaim = _HttpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Name);
 
         if(guidClaim == null || !Guid.TryParse(guidClaim.Value, out  var result))
         {
