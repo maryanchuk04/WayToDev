@@ -1,0 +1,33 @@
+.chat-preview-item{
+  background-color: #edf2f4;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-top: 1px solid #ffffff;
+  transition: 0.1s;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-preview-item:hover{
+  background-color: #d6aaae;
+}
+
+.chat-preview-item h5{
+  margin: 0;
+  font-weight: 700;
+}
+
+.chat-preview-item p{
+  margin-bottom:2px ;
+}
+
+.chat-preview-item .date{
+  color: #000000;
+  text-align: right;
+  font-size: 12px;
+}
+
+.chat-preview-item .last-message{
+  font-weight: 400;
+}
+
