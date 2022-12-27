@@ -18,7 +18,6 @@ export class ChatsPageComponent implements OnInit {
       lastMessage: {
         text: "Hello Maks, how are you?",
         when: "12/22/2022 10:16",
-        id: "messageId",
         from: {
           fullName : "Elon Mask",
           image: "https://upload.wikimedia.org/wikipedia/commons/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg",
@@ -31,7 +30,6 @@ export class ChatsPageComponent implements OnInit {
       lastMessage: {
         text: "Hello Maks, how are you?",
         when: "12/22/2022 10:16",
-        id: "messageId",
         from: {
           fullName : "Elon Mask",
           image: "https://upload.wikimedia.org/wikipedia/commons/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg",
@@ -44,7 +42,6 @@ export class ChatsPageComponent implements OnInit {
       lastMessage: {
         text: "Hello Maks, how are you?",
         when: "12/22/2022 10:16",
-        id: "messageId",
         from: {
           fullName : "Elon Mask",
           image: "https://upload.wikimedia.org/wikipedia/commons/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg",
@@ -57,7 +54,6 @@ export class ChatsPageComponent implements OnInit {
       lastMessage: {
         text: "Hello Maks, how are you?",
         when: "12/22/2022 10:16",
-        id: "messageId",
         from: {
           fullName : "Elon Mask",
           image: "https://upload.wikimedia.org/wikipedia/commons/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg",
@@ -70,7 +66,6 @@ export class ChatsPageComponent implements OnInit {
       lastMessage: {
         text: "Hello Maks, how are you?",
         when: "12/22/2022 10:16",
-        id: "messageId",
         from: {
           fullName : "Elon Mask",
           image: "https://upload.wikimedia.org/wikipedia/commons/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg",
@@ -83,7 +78,6 @@ export class ChatsPageComponent implements OnInit {
       lastMessage: {
         text: "Hello Maks, how are you?",
         when: "12/22/2022 10:16",
-        id: "messageId",
         from: {
           fullName : "Elon Mask",
           image: "https://upload.wikimedia.org/wikipedia/commons/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg",
@@ -96,7 +90,6 @@ export class ChatsPageComponent implements OnInit {
       lastMessage: {
         text: "Hello Maks, how are you?",
         when: "12/22/2022 10:16",
-        id: "messageId",
         from: {
           fullName : "Elon Mask",
           image: "https://upload.wikimedia.org/wikipedia/commons/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg",
@@ -109,7 +102,6 @@ export class ChatsPageComponent implements OnInit {
       lastMessage: {
         text: "Hello Maks, how are you?",
         when: "12/22/2022 10:16",
-        id: "messageId",
         from: {
           fullName : "Elon Mask",
           image: "https://upload.wikimedia.org/wikipedia/commons/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg",
@@ -122,7 +114,6 @@ export class ChatsPageComponent implements OnInit {
       lastMessage: {
         text: "Hello Maks, how are you?",
         when: "12/22/2022 10:16",
-        id: "messageId",
         from: {
           fullName : "Elon Mask",
           image: "https://upload.wikimedia.org/wikipedia/commons/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg",
@@ -135,7 +126,6 @@ export class ChatsPageComponent implements OnInit {
       lastMessage: {
         text: "Hello Maks, how are you?",
         when: "12/22/2022 10:16",
-        id: "messageId",
         from: {
           fullName : "Elon Mask",
           image: "https://upload.wikimedia.org/wikipedia/commons/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg",
@@ -148,7 +138,6 @@ export class ChatsPageComponent implements OnInit {
       lastMessage: {
         text: "Hello Maks, how are you?",
         when: "12/22/2022 10:16",
-        id: "messageId",
         from: {
           fullName : "Elon Mask",
           image: "https://upload.wikimedia.org/wikipedia/commons/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg",
@@ -161,7 +150,6 @@ export class ChatsPageComponent implements OnInit {
       lastMessage: {
         text: "Hello Maks, how are you?",
         when: "12/22/2022 10:16",
-        id: "messageId",
         from: {
           fullName : "Elon Mask",
           image: "https://upload.wikimedia.org/wikipedia/commons/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg",
@@ -174,7 +162,6 @@ export class ChatsPageComponent implements OnInit {
       lastMessage: {
         text: "Hello Maks, how are you?",
         when: "12/22/2022 10:16",
-        id: "messageId",
         from: {
           fullName : "Elon Mask",
           image: "https://upload.wikimedia.org/wikipedia/commons/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg",
@@ -187,7 +174,6 @@ export class ChatsPageComponent implements OnInit {
       lastMessage: {
         text: "Hello Maks, how are you?",
         when: "12/22/2022 10:16",
-        id: "messageId",
         from: {
           fullName : "Elon Mask",
           image: "https://upload.wikimedia.org/wikipedia/commons/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg",

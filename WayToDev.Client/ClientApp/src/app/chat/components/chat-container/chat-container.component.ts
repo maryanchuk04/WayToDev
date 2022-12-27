@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, ViewChild, AfterViewInit, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, AfterViewInit, ElementRef, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, tap } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Chat } from '../../models/chat';
 import { Message } from '../../models/message';
 
@@ -9,37 +9,48 @@ import { Message } from '../../models/message';
   templateUrl: './chat-container.component.html',
   styleUrls: ['./chat-container.component.css']
 })
-export class ChatContainerComponent implements OnInit, AfterViewInit {
-  @ViewChild('scroll', { static: true }) scroll: any;
+export class ChatContainerComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild("scroll") scroll: ElementRef;
   @Input() chat$: Observable<Chat>;
   messageForm: FormGroup;
   messages: Message[];
+  subscription: Subscription;
 
   constructor(private formBuilder: FormBuilder) {
     this.messageForm = this.formBuilder.group({
       message: ["", Validators.required]
     })
-
   }
 
   ngAfterViewInit() {
-
+    console.log(this.scroll);
+    this.scrollDown();
   }
 
   ngOnInit(): void {
-    this.chat$.subscribe(_ => {
+    this.subscription = this.chat$.subscribe(_ => {
       this.messages = _.messages;
-
     })
   }
 
   sendMessage() {
-    this.messages.push({ text: "Hello", when: "12/20/2003", id: "asdsadsa", from: { id: "me" } });
+    this.messages.push({
+      text: this.messageForm.controls["message"].value,
+      when: new Date().toLocaleString(),
+      from: { id: "me" }
+    });
+
     this.scrollDown();
+    this.messageForm.reset();
   }
 
   private scrollDown() {
-      this.scroll.nativeElement.scrollTop = this.scroll.nativeElement.scrollHeight;
+    setTimeout(() => {
+      this.scroll.nativeElement.scrollTo(0, this.scroll.nativeElement.scrollHeight);
+    }, 0);
   }
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 }

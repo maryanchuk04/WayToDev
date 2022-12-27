@@ -2,7 +2,7 @@
   height: 100%;
   display: grid;
   padding-bottom: 20px;
-  grid-template-rows: 100px 80% 70px;
+  grid-template-rows: 100px 80% 60px;
 }
 
 .chat-zone .chat-header{
@@ -43,6 +43,7 @@
   text-align: right;
 }
 
+
 .chat-zone .sender{
   height: 100%;
   display: flex;
@@ -51,6 +52,8 @@
   background-color: #9899a2;
   border-radius: 20px;
 }
+
+
 
 .chat-header img{
   height: 80px;
@@ -64,7 +67,6 @@
   width: 85%;
   border-radius: 10px;
   border: 0;
-  height: 70%;
   font-size: 18px;
   padding: 5px 10px;
 }
