@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using WayToDev.Application.Services;
+using WayToDev.Client.Hubs;
 using WayToDev.Client.Mapping;
-using WayToDev.Core.Interfaces.DAOs;
 using WayToDev.Core.Interfaces.Services;
-
+using WayToDev.Db.Bridge;
 using WayToDev.Db.EF;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,13 +20,14 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("ConnString"),
         b => b.MigrationsAssembly("WayToDev.Db")));
-
+builder.Services.AddSingleton<ISecurityContext, SecurityContextService>();
 builder.Services.AddAutoMapper(typeof(UserMapperProfile).GetTypeInfo().Assembly);
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<INewsService, NewsService>();
-
+builder.Services.AddSignalR();
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -51,7 +52,10 @@ builder.Services.AddSwaggerGen(options =>
             },
             new List<string>()
         }
+        
     });
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -99,6 +103,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
@@ -110,12 +115,18 @@ app.UseCors(x =>
         .SetIsOriginAllowed(origin => true) // allow any origin
         .AllowCredentials();
 });
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<ChatHub>("/chatHub");
+    endpoints.MapControllerRoute("default", "{controller}/{action=Index}/{id?}");
+});
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html");
-;
 
 app.Run();

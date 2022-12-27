@@ -3,6 +3,9 @@ using WayToDev.Core.Interfaces.Services;
 
 namespace WayToDev.Client.Controllers;
 
+/// <summary>
+/// Token Api controller
+/// </summary>
 [ApiController]
 [Route("api/token")]
 public class TokenController : ControllerBase
