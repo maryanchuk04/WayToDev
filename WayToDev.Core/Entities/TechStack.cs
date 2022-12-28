@@ -2,5 +2,8 @@ namespace WayToDev.Core.Entities;
 
 public class TechStack : BaseEntity
 {
-    public ICollection<Tag> TechTags { get; set; }
+    public User User { get; set; }
+
+    public Tag Tag { get; set; }
+    //maybe add description for every tag
 }
