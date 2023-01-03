@@ -15,7 +15,7 @@ import { SignUpFormComponent } from './components/sign-up-form/sign-up-form.comp
     SignInComponent,
     SignInFormComponent,
     SignUpComponent,
-    SignUpFormComponent,
+    SignUpFormComponent
   ],
   imports: [
     CommonModule,
@@ -23,6 +23,6 @@ import { SignUpFormComponent } from './components/sign-up-form/sign-up-form.comp
     ReactiveFormsModule,
     UiModule,
     HttpClientModule,
-  ]
+  ],
 })
 export class AuthModule { }

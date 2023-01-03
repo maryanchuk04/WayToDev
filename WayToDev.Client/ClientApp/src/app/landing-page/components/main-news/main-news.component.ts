@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NewsShortInfo } from 'src/app/models/newsShortInfo';
+import { ChatService } from 'src/app/services/chat.service';
 
 @Component({
   selector: 'app-main-news',
@@ -22,5 +23,4 @@ export class MainNewsComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }

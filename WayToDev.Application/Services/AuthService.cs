@@ -22,6 +22,7 @@ public class AuthService : Dao<Account>, IAuthService
     {
         var account = Context.Accounts
             .Include(x=>x.User)
+            .Include(x=>x.RefreshTokens)
             .FirstOrDefault(x => x.User.Email == email);
 
         if (account == null)
@@ -56,7 +57,8 @@ public class AuthService : Dao<Account>, IAuthService
             User = new User
             {
                 Email = registrationDto.Email,
-                FirstName = registrationDto.UserName
+                FirstName = registrationDto.UserName,
+                UserName = registrationDto.Email[..registrationDto.Email.IndexOf('@')]
             },
             RefreshTokens = new List<AccountToken>(),
             Password = HashPassword(registrationDto.Password)
@@ -65,6 +67,7 @@ public class AuthService : Dao<Account>, IAuthService
         var refreshToken = _tokenService.GenerateRefreshToken();
         newAccount.RefreshTokens.Add(refreshToken);
         Insert(newAccount);
+        
         await Context.SaveChangesAsync();
         return new AuthenticateResponseModel(jwtToken, refreshToken.Token);
     }

@@ -1,0 +1,13 @@
+.input-style{
+  width: 100%;
+  border: 0;
+  border-radius:10px ;
+  box-shadow: 1px 1px 10px #dddde0;
+  font-size: 18px;
+  padding: 5px 10px;
+  font-weight: 500;
+}
+
+.input-style:focus-visible{
+  outline: none;
+}
