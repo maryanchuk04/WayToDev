@@ -1,0 +1,68 @@
+<app-spinner-wrapper [condition] = "user == null">
+  <form [formGroup] = "profileForm" class="edit-profile pb-4" *ngIf = 'user != null'>
+    <div class="field">
+      <h5>Firstname & Lastname</h5>
+      <div class="controls">
+        <app-basic-field  [defaultValue]="user.firstName"></app-basic-field>
+        <app-basic-field [defaultValue]="user.lastName"></app-basic-field>
+      </div>
+    </div>
+    <hr>
+    <div class="field">
+      <div class="text">
+        <h5>Email address</h5>
+      </div>
+      <app-basic-field placeholder="Email..." [defaultValue]="user.email"></app-basic-field>
+    </div>
+    <hr>
+    <div class="field">
+      <h5>Birthday</h5>
+      <div>
+        <app-basic-field type = "date" [defaultValue]="user.birthday.substring(0,10)"></app-basic-field>
+      </div>
+    </div>
+    <hr>
+    <div class="photo-field">
+      <div class="text">
+        <h5>Photo</h5>
+        <p class = 'fw-light'>Upload photo for your profile</p>
+      </div>
+      <div class = "controls">
+        <div class="avatar">
+          <img [src]="user.imageUrl" [alt]="user.userName +'-avatar'">
+        </div>
+        <app-upload-image></app-upload-image>
+      </div>
+    </div>
+    <hr>
+    <div class="field">
+      <div class="text">
+        <h5>Bio</h5>
+        <p class = 'fw-light'>Write a short introduction</p>
+      </div>
+      <div class = "controls">
+        <textarea class = "input-style" rows="4" placeholder="Input information about you..."></textarea>
+      </div>
+    </div>
+    <hr>
+    <div class="field">
+      <div class="text">
+        <h5>Technologies stack</h5>
+        <p class = 'fw-light'>Add technologies which you knows</p>
+      </div>
+      <div class = 'tech-field'>
+        <mat-select class="input-style" placeholder="Choose Technology">
+          <mat-option *ngFor="let item of tags" [value]="item.tagName" (click) = "addTag(item)">
+            {{item.tagName}}
+          </mat-option>
+        </mat-select>
+        <app-techstack-field class="my-5" [techStack]="user.tags" (deleteEmitter)="removeTag($event)"></app-techstack-field>
+      </div>
+    </div>
+    <hr>
+    <!-- add company for user$ -->
+    <!-- add role -->
+
+  </form>
+</app-spinner-wrapper>
+

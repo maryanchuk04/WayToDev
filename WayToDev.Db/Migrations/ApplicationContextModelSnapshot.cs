@@ -293,11 +293,16 @@ namespace WayToDev.Db.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("ImageId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("TagName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ImageId");
 
                     b.ToTable("Tags");
                 });
@@ -499,6 +504,17 @@ namespace WayToDev.Db.Migrations
                 });
 
             modelBuilder.Entity("WayToDev.Core.Entities.Room", b =>
+                {
+                    b.HasOne("WayToDev.Core.Entities.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Image");
+                });
+
+            modelBuilder.Entity("WayToDev.Core.Entities.Tag", b =>
                 {
                     b.HasOne("WayToDev.Core.Entities.Image", "Image")
                         .WithMany()

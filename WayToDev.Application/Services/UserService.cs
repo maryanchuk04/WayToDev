@@ -24,6 +24,9 @@ public class UserService : Dao<User>, IUserService
         var user = Context.Users
             .Include(x => x.Account)
             .Include(x => x.Image)
+            .Include(x=>x.TechStack)
+                .ThenInclude(x=>x.Tag)
+                    .ThenInclude(x=>x.Image)
             .FirstOrDefault(x=>x.Id == userId);
 
         if (user == null)
@@ -59,7 +62,9 @@ public class UserService : Dao<User>, IUserService
         string lastName, 
         DateTime birthday, 
         string imageUrl, 
-        Gender gender)
+        Gender gender,
+        List<TagDto>tagDtos
+        )
     {
         var user = GetCurrentUser();
         user.UserName = userName;
@@ -73,14 +78,38 @@ public class UserService : Dao<User>, IUserService
         }
         else
             user.Image.ImageUrl = imageUrl;
-
+        
+        if(TechStackIsUpdated(tagDtos, user.TechStack.ToList()))
+            UpdateUserTechnologies(tagDtos.Select(x=>x.Id), user);
+        
         Update(user);
         await Context.SaveChangesAsync();
+    }
+
+    public void UpdateUserTechnologies(IEnumerable<Guid> technologiesIds, User user)
+    {
+        var techList = technologiesIds.Select(id => Context.Tags.First(x => x.Id == id)).ToList();
+        foreach (var tag in techList)
+        {
+            user.TechStack.Add(new TechStack
+            {
+                Tag = tag,
+                User = user
+            });
+        }
     }
 
     private User GetCurrentUser() => Context.Users
                                          .Include(x=>x.Image)
                                          .Include(x=>x.TechStack)
+                                            .ThenInclude(x=>x.Tag)
                                          .FirstOrDefault(x => x.Id ==  _securityContext.GetCurrentUserId())
                                      ?? throw new UserNotFoundException("User Not Found");
+
+    private bool TechStackIsUpdated(List<TagDto> incomingTags, List<TechStack> userTags)
+    {
+        var incomingTagsIds = incomingTags.Select(x => x.Id).ToList();
+        var userTagsIds = userTags.Select(x => x.Tag.Id).ToList();
+        return !incomingTagsIds.SequenceEqual(userTagsIds);
+    }
 }

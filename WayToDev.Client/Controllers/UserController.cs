@@ -1,6 +1,8 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WayToDev.Client.ViewModels;
+using WayToDev.Core.DTOs;
 using WayToDev.Core.Exceptions;
 using WayToDev.Core.Interfaces.Services;
 
@@ -15,10 +17,12 @@ namespace WayToDev.Client.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
+    private readonly IMapper _mapper;
     
-    public UserController(IUserService userService)
+    public UserController(IUserService userService, IMapper mapper)
     {
         _userService = userService;
+        _mapper = mapper;
     }
 
     /// <summary>
@@ -55,7 +59,8 @@ public class UserController : ControllerBase
                 userInfoView.LastName,
                 userInfoView.Birthday,
                 userInfoView.ImageUrl,
-                userInfoView.Gender
+                userInfoView.Gender,
+                _mapper.Map<List<TagViewModel>, List<TagDto>>(userInfoView.Tags)
             );
             return Ok();
         }
@@ -64,4 +69,6 @@ public class UserController : ControllerBase
             return BadRequest(new ErrorResponseModel(e.Message));
         }
     }
+    
+
 }
