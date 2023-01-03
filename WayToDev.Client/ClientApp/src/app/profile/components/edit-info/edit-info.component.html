@@ -1,10 +1,28 @@
+<div class="d-flex justify-content-between align-items-center">
+  <div class="text">
+    <h2>Personal info</h2>
+    <p class='fw-light'>Update your photo and personal details here.</p>
+  </div>
+  <div class="buttons">
+    <button class="mx-2" mat-button (click)="cancel()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="saveInfo()" >Save</button>
+  </div>
+</div>
+<hr>
 <app-spinner-wrapper [condition] = "user == null">
-  <form [formGroup] = "profileForm" class="edit-profile pb-4" *ngIf = 'user != null'>
+  <form class="edit-profile pb-4"  [formGroup]="profileForm" *ngIf="user != null">
+    <div class="field">
+      <h5>User Name</h5>
+      <div class="controls">
+        <input class="input-style"  placeholder="UserName" formControlName="userName"/>
+      </div>
+    </div>
+    <hr>
     <div class="field">
       <h5>Firstname & Lastname</h5>
       <div class="controls">
-        <app-basic-field  [defaultValue]="user.firstName"></app-basic-field>
-        <app-basic-field [defaultValue]="user.lastName"></app-basic-field>
+        <input class="input-style" style="margin-right: 1em" placeholder="FirstName" formControlName="firstName"/>
+        <input class="input-style"  placeholder="LastName" formControlName="lastName"/>
       </div>
     </div>
     <hr>
@@ -12,13 +30,13 @@
       <div class="text">
         <h5>Email address</h5>
       </div>
-      <app-basic-field placeholder="Email..." [defaultValue]="user.email"></app-basic-field>
+      <input type="text" class="input-style" formControlName="email"/>
     </div>
     <hr>
     <div class="field">
       <h5>Birthday</h5>
       <div>
-        <app-basic-field type = "date" [defaultValue]="user.birthday.substring(0,10)"></app-basic-field>
+        <input type = "date" formControlName="birthday" class="input-style"/>
       </div>
     </div>
     <hr>
@@ -61,8 +79,7 @@
     </div>
     <hr>
     <!-- add company for user$ -->
-    <!-- add role -->
-
+    <!-- add role in company-->
   </form>
 </app-spinner-wrapper>
 

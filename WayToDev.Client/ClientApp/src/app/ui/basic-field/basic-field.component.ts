@@ -10,6 +10,7 @@ export class BasicFieldComponent implements OnInit {
   @Input() type: InputType = 'text';
   @Input() placeholder: string = "";
   @Input() defaultValue: string = "";
+  @Input() formControlName: string = "";
   @Input('class') classes: string;
   constructor() { }
 

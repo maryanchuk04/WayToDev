@@ -7,8 +7,7 @@ import {select, Store} from "@ngrx/store";
 import {AppState} from "../../../Store/AppState";
 import {userSelector} from "../../store/profile.selectors";
 import * as ProfileActions from "../../store/profile.actions";
-import {ProfileInterface} from "../../store/ProfileStore";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-edit-info',
@@ -16,36 +15,36 @@ import {FormBuilder, FormGroup} from "@angular/forms";
   styleUrls: ['./edit-info.component.css']
 })
 export class EditInfoComponent implements OnInit {
-  profileForm: FormGroup;
+  profileForm!: FormGroup;
   user$: Observable<User | null>
   user: User;
   tags: TechItem[];
-  @Output() save: EventEmitter<User> = new EventEmitter<User>();
-  constructor(private techService: TagsService, private store: Store<AppState>, private fromBuilder: FormBuilder) {
+
+  constructor(private techService: TagsService, private store: Store<AppState>, private formBuilder: FormBuilder) {
     this.store.dispatch(ProfileActions.getCurrentUser());
-    this.profileForm = fromBuilder.group(
-      {
-        firstName : [this.user?.firstName],
-        lastName: [this.user?.lastName],
-        email: [this.user?.email],
-        birthday: [this.user?.birthday],
-        imageUrl: [this.user?.imageUrl],
-        bio: [""]
-      }
-    )
-  }
-  ngOnInit(): void {
     this.user$ = this.store.pipe(select(userSelector));
     this.user$.subscribe(_=> {
       if(_ !== null) {
         this.user = _;
+        this.profileForm = this.formBuilder.group(
+          {
+            userName: [this.user.userName],
+            firstName : [this.user.firstName, [Validators.required]],
+            lastName: [this.user.lastName, []],
+            email: [this.user.email,[]],
+            birthday: [this.user.birthday.substring(0,10), ],
+            imageUrl: [this.user.imageUrl],
+            bio: [""]
+          });
       }
     });
+  }
+
+  ngOnInit(): void {
     this.techService.getAll().subscribe(_=>{
       this.tags = _;
     })
   }
-
 
   removeTag(item: TechItem): void{
     const tagArray = this.user?.tags.filter(x=>x.id !== item.id);
@@ -66,8 +65,20 @@ export class EditInfoComponent implements OnInit {
     this.tags = this.tags.filter(_=>_.id !== item.id);
   }
 
-  saveInfo(){
-    console.log(this.profileForm)
-    this.save.emit(this.user)
+  saveInfo(): void{
+    console.log(this.profileForm.value)
+    this.user = {
+      ...this.user,
+      userName : this.profileForm.value.userName,
+      firstName : this.profileForm.value.firstName,
+      lastName : this.profileForm.value.lastName,
+      birthday : this.profileForm.value.birthday,
+      email: this.profileForm.value.email
+    }
+    this.store.dispatch(ProfileActions.updateCurrentUser({ user : this.user }))
+  }
+
+  cancel():void{
+    this.profileForm.reset();
   }
 }

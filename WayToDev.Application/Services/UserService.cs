@@ -17,7 +17,6 @@ public class UserService : Dao<User>, IUserService
         _securityContext = securityContext;
     }
 
-
     public UserDto GetCurrentUserInfo()
     {
         var userId = _securityContext.GetCurrentUserId();
@@ -31,14 +30,14 @@ public class UserService : Dao<User>, IUserService
 
         if (user == null)
             throw new UserNotFoundException("User with this id is not found!");
-        
+
         return Mapper.Map<User, UserDto>(user);
     }
 
     public async Task AddTechnologyTags(List<Guid> tagsIds)
     {
         var user = GetCurrentUser();
-        var tags = 
+        var tags =
             (from tagId in tagsIds
             where Context.Tags.Any(x => x.Id == tagId)
             select Context.Tags.First(x => x.Id == tagId)).ToList();
@@ -57,11 +56,11 @@ public class UserService : Dao<User>, IUserService
     }
 
     public async Task UpdateUserInfo(
-        string userName, 
-        string firstName, 
-        string lastName, 
-        DateTime birthday, 
-        string imageUrl, 
+        string userName,
+        string firstName,
+        string lastName,
+        DateTime birthday,
+        string imageUrl,
         Gender gender,
         List<TagDto>tagDtos
         )
@@ -78,16 +77,17 @@ public class UserService : Dao<User>, IUserService
         }
         else
             user.Image.ImageUrl = imageUrl;
-        
+
         if(TechStackIsUpdated(tagDtos, user.TechStack.ToList()))
             UpdateUserTechnologies(tagDtos.Select(x=>x.Id), user);
-        
+
         Update(user);
         await Context.SaveChangesAsync();
     }
 
     public void UpdateUserTechnologies(IEnumerable<Guid> technologiesIds, User user)
     {
+        Context.TechStacks.RemoveRange(user.TechStack);
         var techList = technologiesIds.Select(id => Context.Tags.First(x => x.Id == id)).ToList();
         foreach (var tag in techList)
         {
