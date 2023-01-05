@@ -1,3 +1,5 @@
-<h3>{{news.title}}</h3>
-<p>{{news.text}}</p>
-<a [routerLink]="['/news', news.id]">Details</a>
+<div class="h-100 d-flex flex-column justify-content-center">
+  <h3>{{news.title}}</h3>
+  <p>{{news.shortDescription}}</p>
+  <a [routerLink]="['/news', news.id]">Details</a>
+</div>

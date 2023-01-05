@@ -1,9 +1,21 @@
 <div class="container">
   <div class="search">
-    <app-search placeholder="Search news ..."></app-search>
+    <input placeholder="Search news ..." #search/>
   </div>
-  <div class="row">
-    <app-news-preview class="col-4 my-md-4" *ngFor="let item of newsList" [news]="item">
-    </app-news-preview>
-  </div>
+  <app-spinner-wrapper   *ngIf="news$ | async as news" [condition] = "news.items == null">
+    <div *ngIf="news.items.length == 0">
+      <h1 class="display-1 text-center m-5">Nothing found</h1>
+    </div>
+    <div *ngIf="news != null">
+      <div class="news-container" >
+        <app-news-preview class="item" *ngFor="let item of news.items | paginate: config" [news]="item">
+        </app-news-preview>
+      </div>
+      <pagination-controls
+        class="text-center p-4"
+        (pageChange)="onPageChange($event)"
+      >
+      </pagination-controls>
+    </div>
+  </app-spinner-wrapper>
 </div>

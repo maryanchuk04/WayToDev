@@ -1,0 +1,19 @@
+.container img{
+  width:100%;
+  object-fit: contain;
+  max-height: 400px;
+}
+:host ::ng-deep .html-container {
+  max-width: 100%;
+  width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+:host ::ng-deep .html-container img {
+  width: 100%;
+}
+
+.container{
+  padding-bottom: 40px;
+}

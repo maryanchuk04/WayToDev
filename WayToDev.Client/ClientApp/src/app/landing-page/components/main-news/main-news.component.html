@@ -1,6 +1,6 @@
-<div class="container">
+<div class="container" *ngIf="news$ | async">
   <h1>News</h1>
-  <div class="news-container row">
-    <app-news-short-info class="col-4" *ngFor="let item of newsList" [news] = "item"></app-news-short-info>
+  <div class="news-container">
+    <app-news-short-info class="item" *ngFor="let item of news$ | async" [news] = "item"></app-news-short-info>
   </div>
 </div>
