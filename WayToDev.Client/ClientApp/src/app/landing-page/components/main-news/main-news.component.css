@@ -2,3 +2,12 @@
     font-weight: 800;
     margin: 10px 0 ;
 }
+.news-container{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px
+}
+.item{
+  flex:1 1 400px;
+}

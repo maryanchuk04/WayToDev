@@ -1,5 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { NewsShortInfo } from 'src/app/models/newsShortInfo';
+import {Component, OnInit} from '@angular/core';
+import {NewsShortInfo} from 'src/app/models/newsShortInfo';
+import {Store} from "@ngrx/store";
+import {AppState} from "../../../store/appState";
+import * as NewsActions from '../../../../app/news/store/news.actions'
+import {Observable} from "rxjs";
+import {News} from "../../../news/models/news";
+import {select} from "@ngrx/store";
+import {newsPreviewSelector, newsSelector} from "../../../news/store/news.selectors";
 
 @Component({
   selector: 'app-main-news',
@@ -7,20 +14,21 @@ import { NewsShortInfo } from 'src/app/models/newsShortInfo';
   styleUrls: ['./main-news.component.css']
 })
 export class MainNewsComponent implements OnInit {
-  newsList: NewsShortInfo[] = [
-    {
-      id : "sdadas",
-      title : "Hello from maks, this is the best title!",
-      text: "Hello from maks, this is the best title! Hello from maks, this is the best title! Hello from maks, this is the best title! Hello from maks, this is the best title!"
-    }
-  ];
-  constructor() {
-    for (let index = 0; index < 5; index++) {
-      this.newsList.push(this.newsList[0]);
-    }
+  news$: Observable<News[]>;
+
+  constructor(private store: Store<AppState>) {
+    this.store.dispatch(NewsActions.getPreviewNews({
+      filter: {
+        page: 1,
+        pageSize: 6,
+        searchWord: "",
+        sortBy: 0
+      }
+    }));
   }
 
   ngOnInit(): void {
+    this.news$ = this.store.pipe(select(newsPreviewSelector))
   }
 
 }

@@ -1,8 +1,8 @@
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using WayToDev.Core.DTOs;
 using WayToDev.Core.Entities;
 using WayToDev.Core.Exceptions;
-using WayToDev.Core.Interfaces.DAOs;
 using WayToDev.Core.Interfaces.Services;
 using WayToDev.Db.EF;
 
@@ -34,7 +34,9 @@ public class NewsService : Dao<News>, INewsService
 
     public NewsDto GetNewsById(Guid id)
     {
-        var news = Context.NewsSet.FirstOrDefault(x => x.Id == id);
+        var news = Context.NewsSet
+            .Include(x=>x.Image)
+            .FirstOrDefault(x => x.Id == id);
         if (news == null)
         {
             throw new NewsNotFoundException("News with this id is not exist");
@@ -50,5 +52,26 @@ public class NewsService : Dao<News>, INewsService
         base.Delete(news);
         
         await Context.SaveChangesAsync();
+    }
+
+    public IEnumerable<NewsDto> GetFilteredNews(NewsFilterViewModel model, out int count)
+    {
+        var news = Context.NewsSet
+            .Include(x => x.Image)
+            .OrderByDescending(x=>x.Date.Date)
+            .ThenByDescending(x=>x.Date.TimeOfDay)
+            .AsNoTracking();
+        
+        news = !string.IsNullOrEmpty(model.SearchWord)
+            ? news.Where(x => x.Title.Contains(model.SearchWord) || x.Text.Contains(model.SearchWord))
+            : news;
+
+        count = news.Count();
+        var newsList = news.Skip((model.Page - 1) * model.PageSize)
+            .Take(model.PageSize)
+            .ToList();
+
+       
+        return Mapper.Map<IEnumerable<NewsDto>>(newsList);
     }
 }

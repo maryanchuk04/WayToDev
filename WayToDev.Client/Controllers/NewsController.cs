@@ -20,11 +20,11 @@ public class NewsController : ControllerBase
         _mapper = mapper;
     }
     
-    [HttpGet]
-    public IActionResult Get()
-    {
-        return Ok(_mapper.Map<List<NewsDto>, List<NewsViewModel>>(_newsService.GetNews()));
-    }
+    //[HttpGet]
+    //public IActionResult Get()
+    //{
+    //    return Ok(_mapper.Map<List<NewsDto>, List<NewsViewModel>>(_newsService.GetNews()));
+    //}
     
     [HttpGet("{id}")]
     public IActionResult Get(Guid id)
@@ -32,6 +32,24 @@ public class NewsController : ControllerBase
         try
         {
             return Ok(_mapper.Map<NewsDto, NewsViewModel>(_newsService.GetNewsById(id)));
+        }
+        catch (NewsNotFoundException e)
+        {
+            return BadRequest(new ErrorResponseModel(e.Message));
+        }
+    }
+
+    [HttpGet]
+    public IActionResult GetFilteredNews([FromQuery] NewsFilterViewModel model)
+    {
+        try
+        {
+            IndexViewModel<NewsDto> newsResult = new()
+            {
+                Items = _newsService.GetFilteredNews(model, out int count),
+                PageViewModel = new PageViewModel(count, model.Page, model.PageSize)
+            };
+            return Ok(newsResult);
         }
         catch (NewsNotFoundException e)
         {
@@ -72,8 +90,9 @@ public class NewsController : ControllerBase
     {
         try
         {
-            updatedNews.Id = id;
-            await _newsService.Update(_mapper.Map<NewsViewModel, NewsDto>(updatedNews));
+            var dto = _mapper.Map<NewsViewModel, NewsDto>(updatedNews);
+            dto.Id = id;
+            await _newsService.Update(dto);
             return Ok();
         }
         catch (NewsNotFoundException e)

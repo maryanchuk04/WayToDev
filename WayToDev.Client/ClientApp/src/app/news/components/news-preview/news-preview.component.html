@@ -1,8 +1,8 @@
-<article class="news-preview">
+<div class="news-preview" >
   <h3>{{news.title}}</h3>
   <div class="picture">
     <img [src]="news.image" [alt]="news.title">
   </div>
-  <p [innerHTML]="news.text"></p>
+  <p [innerHTML]="news.shortDescription"></p>
   <a [routerLink]="['/news', news.id]"><p>Details <i class="fas fa-arrow-right"></i></p></a>
-</article>
+</div>
