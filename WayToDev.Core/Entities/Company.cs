@@ -4,6 +4,7 @@ public class Company : BaseEntity
 {
     public Guid AccountId { get; set; }
     public Account Account { get; set; }
+    
     public string CompanyName { get; set; }
     public Guid ImageId { get; set; }
     public Image? Image { get; set; }
