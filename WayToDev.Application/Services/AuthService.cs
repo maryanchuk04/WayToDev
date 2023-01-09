@@ -1,5 +1,4 @@
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using WayToDev.Application.Exceptions;
 using WayToDev.Core.DTOs;
 using WayToDev.Core.Entities;
@@ -21,8 +20,7 @@ public class AuthService : Dao<Account>, IAuthService
     public async Task<AuthenticateResponseModel> Authenticate(string email, string password)
     {
         var account = Context.Accounts
-            .Include(x=>x.User)
-            .FirstOrDefault(x => x.User.Email == email);
+            .FirstOrDefault(x => x.Email == email);
 
         if (account == null)
         {
@@ -45,22 +43,20 @@ public class AuthService : Dao<Account>, IAuthService
 
     public async Task<AuthenticateResponseModel> Registration(RegistrDto registrationDto)
     {
-        if (Context.Users.Any(x=>x.Email==registrationDto.Email))
+        if (Context.Accounts.Any(x=>x.Email==registrationDto.Email))
         {
             throw new AuthenticateException("Account already exist");
         }
 
-        var newAccount = new Account()
+        var newAccount = registrationDto.Role switch
         {
-            IsBlocked = false,
-            User = new User
-            {
-                Email = registrationDto.Email,
-                FirstName = registrationDto.UserName
-            },
-            RefreshTokens = new List<AccountToken>(),
-            Password = HashPassword(registrationDto.Password)
+            Role.Company => RegistrationCompanyAccount(registrationDto.CompanyName ?? "", registrationDto.Email,
+                registrationDto.Password),
+            Role.User => RegistrationUserAccount(registrationDto.UserName ?? "", registrationDto.Email,
+                registrationDto.Password),
+            _ => throw new AuthenticateException("This role not exist")
         };
+        
         var jwtToken = _tokenService.GenerateAccessToken(newAccount);
         var refreshToken = _tokenService.GenerateRefreshToken();
         newAccount.RefreshTokens.Add(refreshToken);
@@ -73,5 +69,33 @@ public class AuthService : Dao<Account>, IAuthService
 
     private string HashPassword(string password) => BCrypt.Net.BCrypt.HashPassword(password);
 
-    
+    private Account RegistrationUserAccount(string userName, string email, string password)
+    {
+        return new Account
+        {
+            IsBlocked = false,
+            Email = email,
+            User = new User
+            {
+                FirstName = userName
+            },
+            RefreshTokens = new List<AccountToken>(),
+            Password = HashPassword(password)
+        };
+    }
+
+    private Account RegistrationCompanyAccount(string companyName, string email, string password)
+    {
+        return new Account
+        {
+            IsBlocked = false,
+            Email = email,
+            Company = new Company
+            {
+                CompanyName = companyName,
+            },
+            RefreshTokens = new List<AccountToken>(),
+            Password = HashPassword(password)
+        };
+    }
 }

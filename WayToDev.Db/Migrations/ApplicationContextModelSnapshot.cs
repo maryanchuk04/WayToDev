@@ -28,6 +28,10 @@ namespace WayToDev.Db.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsBlocked")
                         .HasColumnType("bit");
 
@@ -122,13 +126,12 @@ namespace WayToDev.Db.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ImageId")
+                    b.Property<Guid?>("ImageId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("TechStackId")
+                    b.Property<Guid?>("TechStackId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -325,10 +328,6 @@ namespace WayToDev.Db.Migrations
                     b.Property<DateTime?>("Birthday")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -413,15 +412,11 @@ namespace WayToDev.Db.Migrations
 
                     b.HasOne("WayToDev.Core.Entities.Image", "Image")
                         .WithMany()
-                        .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ImageId");
 
                     b.HasOne("WayToDev.Core.Entities.TechStack", "TechStack")
                         .WithMany()
-                        .HasForeignKey("TechStackId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TechStackId");
 
                     b.Navigation("Account");
 

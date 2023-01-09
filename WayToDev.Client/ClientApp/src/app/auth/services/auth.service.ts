@@ -25,7 +25,6 @@ export class AuthService {
     private alertService: AlertService) { }
 
   registration(registrationModel: RegistrationModel): Observable<any>{
-
     return this.httpClient.post<any>(this.apiUrl + "/registration", registrationModel, this.httpOptions).pipe(catchError(this.handleError));
   }
 

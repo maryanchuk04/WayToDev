@@ -9,6 +9,8 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
 
 import { UiModule } from '../ui/ui.module';
 import { SignUpFormComponent } from './components/sign-up-form/sign-up-form.component';
+import { SignUpCompanyComponent } from './components/sign-up-company/sign-up-company.component';
+import { SignUpCompanyFormComponent } from './components/sign-up-company-form/sign-up-company-form.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +18,8 @@ import { SignUpFormComponent } from './components/sign-up-form/sign-up-form.comp
     SignInFormComponent,
     SignUpComponent,
     SignUpFormComponent,
+    SignUpCompanyComponent,
+    SignUpCompanyFormComponent,
   ],
   imports: [
     CommonModule,

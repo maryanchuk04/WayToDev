@@ -16,26 +16,12 @@ ul{
   background: #8d99ae;
   box-shadow:  20px 20px 60px #8d99ae,
              -20px -20px 60px #edf2f4;
+  z-index: 1;
 }
 
 .login label{
   font-weight: 700;
 }
 
-.submit{
-  padding: 10px 20px;
-  border-radius: 10px;
-  border: 0;
-  transition: 0.4s ;
-  background: #ffffff;
-  width: 200px;
-  box-shadow:  20px 20px 60px #ffe3e7,
-             -20px -20px 60px #ffe3e7;
-}
 
-.submit:hover{
-  background-color: #2f2f2f;
-  color:white;
-  transform: scale(1.1);
-}
 

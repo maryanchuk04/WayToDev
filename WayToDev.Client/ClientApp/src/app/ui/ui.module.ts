@@ -8,6 +8,7 @@ import { AlertWrapperComponent } from './alert/alert-wrapper/alert-wrapper.compo
 import { MatSnackBarModule } from '@angular/material/snack-bar'
 import { AlertService } from './alert/alert.service';
 import { SearchComponent } from './search/search.component';
+import { SubmitButtonComponent } from './submit-button/submit-button.component';
 
 @NgModule({
   declarations: [
@@ -15,17 +16,19 @@ import { SearchComponent } from './search/search.component';
     SpinnerComponent,
     AlertComponent,
     AlertWrapperComponent,
-    SearchComponent
+    SearchComponent,
+    SubmitButtonComponent
   ],
   imports: [
     CommonModule,
     SpinnerModule,
     MatSnackBarModule
   ],
-  exports :[
-    SpinnerWrapperComponent,
-    SearchComponent
-  ],
+    exports: [
+        SpinnerWrapperComponent,
+        SearchComponent,
+        SubmitButtonComponent
+    ],
   providers : [
     AlertService
   ]

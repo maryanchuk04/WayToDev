@@ -1,0 +1,17 @@
+
+.submit{
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: 0;
+  transition: 0.4s ;
+  background: #ffffff;
+  width: 150px;
+  margin: 5px 0 ;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+}
+
+.submit:hover{
+  background-color: #2f2f2f;
+  color:white;
+  transform: scale(1.1);
+}
