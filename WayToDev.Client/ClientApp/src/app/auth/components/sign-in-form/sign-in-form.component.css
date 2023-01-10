@@ -4,7 +4,7 @@ ul{
 
 
 .login {
-  color : #ffffff !important;
+  color : #000000 !important;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -13,7 +13,7 @@ ul{
   width: 75%;
   border-radius: 40px;
   border: 3px solid #2B2D42 ;
-  background: #8d99ae;
+  background: rgba(141, 153, 174, 0.56);
   box-shadow:  20px 20px 60px #8d99ae,
              -20px -20px 60px #edf2f4;
   z-index: 1;

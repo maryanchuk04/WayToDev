@@ -11,6 +11,7 @@ import { UiModule } from '../ui/ui.module';
 import { SignUpFormComponent } from './components/sign-up-form/sign-up-form.component';
 import { SignUpCompanyComponent } from './components/sign-up-company/sign-up-company.component';
 import { SignUpCompanyFormComponent } from './components/sign-up-company-form/sign-up-company-form.component';
+import { SignUpLayoutComponent } from './components/sign-up-layout/sign-up-layout.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { SignUpCompanyFormComponent } from './components/sign-up-company-form/si
     SignUpFormComponent,
     SignUpCompanyComponent,
     SignUpCompanyFormComponent,
+    SignUpLayoutComponent,
   ],
   imports: [
     CommonModule,

@@ -31,7 +31,7 @@ namespace WayToDev.Db.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
+ 
                     b.Property<bool>("IsBlocked")
                         .HasColumnType("bit");
 
