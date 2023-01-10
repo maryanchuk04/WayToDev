@@ -39,8 +39,8 @@ export class SignUpFormComponent implements OnInit {
       this.authService.registration(this.formValues).subscribe(response =>{
         if(response.status === 200){
           localStorage.setItem("token", JSON.stringify(response.body));
-          localStorage.setItem("role", JSON.stringify(1));
-          this.router.navigate(["/company-profile"]);
+          localStorage.setItem("role", JSON.stringify(0));
+          this.router.navigate(["/profile"]);
         }
       });
     }

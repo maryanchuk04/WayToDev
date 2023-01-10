@@ -36,7 +36,7 @@ public class AuthController : ControllerBase
             HttpContext.Response.Cookies.Delete("refreshToken");
             HttpContext.Response.Cookies.Append("refreshToken", authResponseModel.RefreshToken, cookieOptions);
 
-            return Ok(new { Token = authResponseModel.JwtToken });
+            return Ok(new { Token = authResponseModel.JwtToken, authResponseModel.Role });
         }
         catch (AuthenticateException e)
         {

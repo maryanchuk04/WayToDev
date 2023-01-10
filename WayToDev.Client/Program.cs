@@ -26,6 +26,7 @@ builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<INewsService, NewsService>();
+builder.Services.AddTransient<IPasswordHelper, PasswordHelper>();
 
 builder.Services.AddSwaggerGen(options =>
 {

@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using WayToDev.Application.Exceptions;
 using WayToDev.Core.DTOs;
 using WayToDev.Core.Entities;
@@ -10,16 +11,23 @@ namespace WayToDev.Application.Services;
 public class AuthService : Dao<Account>, IAuthService
 {
     private readonly ITokenService _tokenService;
-
-    public AuthService(ApplicationContext context, ITokenService tokenService, IMapper mapper = null) 
+    private readonly IPasswordHelper _passwordHelper;
+    public AuthService(ApplicationContext context, 
+        ITokenService tokenService, 
+        IPasswordHelper passwordHelper, 
+        IMapper mapper = null) 
         : base(context, mapper)
     {
         _tokenService = tokenService;
+        _passwordHelper = passwordHelper;
     }
     
     public async Task<AuthenticateResponseModel> Authenticate(string email, string password)
     {
         var account = Context.Accounts
+            .Include(x=>x.RefreshTokens)
+            .Include(x=>x.Company)
+            .Include(x=>x.User)
             .FirstOrDefault(x => x.Email == email);
 
         if (account == null)
@@ -27,18 +35,20 @@ public class AuthService : Dao<Account>, IAuthService
             throw new AuthenticateException("Incorrect login or password");
         }
         
-        if (!VerifyPassword(password, account.Password))
+        if (!_passwordHelper.VerifyPassword(password, account.Password))
         {
             throw new AuthenticateException("Incorrect login or password");
         }
 
-        var jwt = _tokenService.GenerateAccessToken(account);
+        var jwtToken = _tokenService.GenerateAccessToken(account);
         var refreshToken = _tokenService.GenerateRefreshToken();
 
         account.RefreshTokens.Add(refreshToken);
         Update(account);
         await Context.SaveChangesAsync();
-        return new AuthenticateResponseModel(jwt, refreshToken.Token);
+        return account.Company == null 
+            ? new AuthenticateResponseModel(jwtToken, refreshToken.Token, Role.User) 
+            : new AuthenticateResponseModel(jwtToken, refreshToken.Token, Role.Company);
     }
 
     public async Task<AuthenticateResponseModel> Registration(RegistrDto registrationDto)
@@ -62,13 +72,11 @@ public class AuthService : Dao<Account>, IAuthService
         newAccount.RefreshTokens.Add(refreshToken);
         Insert(newAccount);
         await Context.SaveChangesAsync();
+
         return new AuthenticateResponseModel(jwtToken, refreshToken.Token);
     }
     
-    private bool VerifyPassword(string passwordFromRequest, string password) => BCrypt.Net.BCrypt.Verify(passwordFromRequest,password);
-
-    private string HashPassword(string password) => BCrypt.Net.BCrypt.HashPassword(password);
-
+    
     private Account RegistrationUserAccount(string userName, string email, string password)
     {
         return new Account
@@ -80,7 +88,7 @@ public class AuthService : Dao<Account>, IAuthService
                 FirstName = userName
             },
             RefreshTokens = new List<AccountToken>(),
-            Password = HashPassword(password)
+            Password = _passwordHelper.HashPassword(password)
         };
     }
 
@@ -95,7 +103,7 @@ public class AuthService : Dao<Account>, IAuthService
                 CompanyName = companyName,
             },
             RefreshTokens = new List<AccountToken>(),
-            Password = HashPassword(password)
+            Password = _passwordHelper.HashPassword(password)
         };
     }
 }
