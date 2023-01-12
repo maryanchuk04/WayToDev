@@ -15,6 +15,7 @@ const BASE_PATH = environment.basePath;
 @Injectable({
   providedIn: 'root',
 })
+
 export class AuthService {
   private authenticated$: BehaviorSubject<boolean> = new BehaviorSubject(!!localStorage.getItem("token"));
   apiUrl: string = `${BASE_PATH}authenticate`;
@@ -75,4 +76,5 @@ export class AuthService {
       () => new Error('Something bad happened; please try again later.')
     );
   }
+
 }

@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using WayToDev.Application.Services;
 using WayToDev.Client.Hubs;
 using WayToDev.Client.Mapping;
+using WayToDev.Core.Interfaces.DAOs;
 using WayToDev.Core.Interfaces.Services;
 using WayToDev.Db.Bridge;
 using WayToDev.Db.EF;
@@ -20,7 +21,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("ConnString"),
         b => b.MigrationsAssembly("WayToDev.Db")));
-builder.Services.AddSingleton<ISecurityContext, SecurityContextService>();
+
 builder.Services.AddAutoMapper(typeof(UserMapperProfile).GetTypeInfo().Assembly);
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -30,6 +31,10 @@ builder.Services.AddScoped<INewsService, NewsService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITagService, TagService>();
 builder.Services.AddSignalR();
+builder.Services.AddTransient<IPasswordHelper, PasswordHelper>();
+
+builder.Services.AddScoped<ICompanyService, CompanyService>();
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -130,5 +135,6 @@ app.MapControllerRoute(
     pattern: "{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html");
+;
 
 app.Run();

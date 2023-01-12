@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { LoginModel } from '../../models/loginModel';
@@ -32,24 +32,23 @@ export class SignInFormComponent implements OnInit {
   }
 
   onLogin() {
+
     this.submitted = true;
     if (this.signInForm.valid) {
       console.log(this.signInForm);
-      this.authService
-        .authenticate(
-          new LoginModel(
-            this.signInForm.value.email,
-            this.signInForm.value.password
-          )
-        )
-        .subscribe((response: HttpResponse<any>) => {
-          console.log(response);
-          if (response.ok) {
-            localStorage.setItem('token', response.body.token);
-            this.authService.setAuthenticated(true)
-            this.router.navigate(['/profile']);
+      this.authService.authenticate(new LoginModel(this.signInForm.value.email, this.signInForm.value.password))
+        .subscribe((response: HttpResponse<any>)=>{
+          console.log(response)
+          if(response.ok){
+            localStorage.setItem("token", (response.body.token));
+            localStorage.setItem("role", (response.body.role));
+            if(response.body.role == 0)
+              this.router.navigate(["/profile"]);
+            else this.router.navigate(["/profile-company"])
           }
         });
+
     }
+
   }
 }
