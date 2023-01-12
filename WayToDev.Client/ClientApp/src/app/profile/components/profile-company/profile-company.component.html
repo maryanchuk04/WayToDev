@@ -1,1 +1,30 @@
-<p>profile-company works!</p>
+<app-spinner-wrapper [condition]="company == null">
+  <div class="container">
+    <div class="d-flex justify-content-between pb-2">
+      <h3>Edit profile your company</h3>
+      <div class="d-flex">
+        <button mat-raised-button color="primary" class="mx-4">Save</button>
+        <button mat-raised-button color="">Cancel</button>
+      </div>
+    </div>
+    <hr>
+    <div class = "edit-info-container">
+      <div class="field">
+        <h4>Company name: </h4>
+        <input class = 'input-style' [defaultValue]="company.companyName"/>
+      </div>
+      <hr>
+      <div class="field">
+        <h4>Company name: </h4>
+        <input class = 'input-style' [defaultValue]="company.companyName"/>
+      </div>
+      <hr>
+      <div class="field">
+        <h4>Company name: </h4>
+        <input class = 'input-style' [defaultValue]="company.companyName"/>
+      </div>
+      <hr>
+    </div>
+  </div>
+
+</app-spinner-wrapper>

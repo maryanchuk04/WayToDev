@@ -1,0 +1,10 @@
+.edit-info-container{
+
+}
+
+.edit-info-container .field{
+  margin: 1.6em 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}

@@ -38,8 +38,8 @@ export class SignInFormComponent implements OnInit {
         .subscribe((response: HttpResponse<any>)=>{
           console.log(response)
           if(response.ok){
-            localStorage.setItem("token", JSON.stringify(response.body.token));
-            localStorage.setItem("role", JSON.stringify(response.body.role));
+            localStorage.setItem("token", (response.body.token));
+            localStorage.setItem("role", (response.body.role));
             if(response.body.role == 0)
               this.router.navigate(["/profile"]);
             else this.router.navigate(["/profile-company"])
