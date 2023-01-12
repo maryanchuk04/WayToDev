@@ -32,7 +32,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITagService, TagService>();
 builder.Services.AddSignalR();
 builder.Services.AddTransient<IPasswordHelper, PasswordHelper>();
-
+builder.Services.AddTransient<ISecurityContext, SecurityContextService>();
 builder.Services.AddScoped<ICompanyService, CompanyService>();
 
 builder.Services.AddSwaggerGen(options =>

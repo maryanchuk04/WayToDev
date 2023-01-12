@@ -7,6 +7,6 @@ export interface Company{
   imageUrl: string;
   description: string;
   email: string;
-  tags: Tag[],
-  feedbacks: Feedback[]
+  tags: Tag[];
+  feedbacks: Feedback[];
 }

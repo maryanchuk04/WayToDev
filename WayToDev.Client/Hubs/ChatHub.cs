@@ -19,7 +19,7 @@ public class ChatHub : Hub
     {
         if (message.Trim() != string.Empty)
         {
-            var currentUserId = _securityContext.GetCurrentUserId();
+            var currentUserId = _securityContext.GetCurrentAccountId();
             var res = await _messageService.Send(chatId, currentUserId, message);
 
             await Clients.Group(chatId.ToString()).SendAsync("SendMessage", res);

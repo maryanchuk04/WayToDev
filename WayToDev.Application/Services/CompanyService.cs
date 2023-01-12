@@ -29,7 +29,7 @@ public class CompanyService : Dao<Company>, ICompanyService
 
         currentCompany.CompanyName = company.CompanyName;
         if (currentCompany.Image == null)
-            currentCompany.Image = new Image { ImageUrl = company.ImageUrl ?? "" };
+            currentCompany.Image = new Image(company.ImageUrl ?? "");
         else
             currentCompany.Image.ImageUrl = company.ImageUrl ?? "";
 

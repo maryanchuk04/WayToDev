@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WayToDev.Db.Migrations
 {
-    public partial class TechStack : Migration
+    public partial class Migration_Update : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -81,9 +81,47 @@ namespace WayToDev.Db.Migrations
                 name: "IX_Tags_TechStackId",
                 table: "Tags");
 
+            migrationBuilder.DropIndex(
+                name: "IX_Companies_AccountId",
+                table: "Companies");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Companies_TechStackId",
+                table: "Companies");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Accounts_UserId",
+                table: "Accounts");
+
             migrationBuilder.DropColumn(
                 name: "TechStackId",
                 table: "Tags");
+
+            migrationBuilder.DropColumn(
+                name: "TechStackId",
+                table: "Companies");
+
+            migrationBuilder.DropColumn(
+                name: "UserId",
+                table: "Accounts");
+
+            migrationBuilder.RenameColumn(
+                name: "Email",
+                table: "Users",
+                newName: "UserName");
+
+            migrationBuilder.AddColumn<Guid>(
+                name: "AccountId",
+                table: "Users",
+                type: "uniqueidentifier",
+                nullable: false,
+                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
+
+            migrationBuilder.AddColumn<Guid>(
+                name: "CompanyId",
+                table: "TechStacks",
+                type: "uniqueidentifier",
+                nullable: true);
 
             migrationBuilder.AddColumn<Guid>(
                 name: "TagId",
@@ -96,8 +134,48 @@ namespace WayToDev.Db.Migrations
                 name: "UserId",
                 table: "TechStacks",
                 type: "uniqueidentifier",
+                nullable: true);
+
+            migrationBuilder.AddColumn<Guid>(
+                name: "ImageId",
+                table: "Tags",
+                type: "uniqueidentifier",
                 nullable: false,
                 defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
+
+            migrationBuilder.AlterColumn<Guid>(
+                name: "ImageId",
+                table: "Companies",
+                type: "uniqueidentifier",
+                nullable: true,
+                oldClrType: typeof(Guid),
+                oldType: "uniqueidentifier");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Description",
+                table: "Companies",
+                type: "nvarchar(max)",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)");
+
+            migrationBuilder.AddColumn<string>(
+                name: "Email",
+                table: "Accounts",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_AccountId",
+                table: "Users",
+                column: "AccountId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TechStacks_CompanyId",
+                table: "TechStacks",
+                column: "CompanyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TechStacks_TagId",
@@ -109,13 +187,16 @@ namespace WayToDev.Db.Migrations
                 table: "TechStacks",
                 column: "UserId");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Accounts_Users_UserId",
-                table: "Accounts",
-                column: "UserId",
-                principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+            migrationBuilder.CreateIndex(
+                name: "IX_Tags_ImageId",
+                table: "Tags",
+                column: "ImageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Companies_AccountId",
+                table: "Companies",
+                column: "AccountId",
+                unique: true);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AccountTokens_Accounts_AccountId",
@@ -154,14 +235,6 @@ namespace WayToDev.Db.Migrations
                 table: "Companies",
                 column: "ImageId",
                 principalTable: "Image",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Companies_TechStacks_TechStackId",
-                table: "Companies",
-                column: "TechStackId",
-                principalTable: "TechStacks",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
@@ -214,6 +287,22 @@ namespace WayToDev.Db.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
+                name: "FK_Tags_Image_ImageId",
+                table: "Tags",
+                column: "ImageId",
+                principalTable: "Image",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_TechStacks_Companies_CompanyId",
+                table: "TechStacks",
+                column: "CompanyId",
+                principalTable: "Companies",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_TechStacks_Tags_TagId",
                 table: "TechStacks",
                 column: "TagId",
@@ -246,6 +335,14 @@ namespace WayToDev.Db.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
+                name: "FK_Users_Accounts_AccountId",
+                table: "Users",
+                column: "AccountId",
+                principalTable: "Accounts",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_Users_Image_ImageId",
                 table: "Users",
                 column: "ImageId",
@@ -256,10 +353,6 @@ namespace WayToDev.Db.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Accounts_Users_UserId",
-                table: "Accounts");
-
             migrationBuilder.DropForeignKey(
                 name: "FK_AccountTokens_Accounts_AccountId",
                 table: "AccountTokens");
@@ -278,10 +371,6 @@ namespace WayToDev.Db.Migrations
 
             migrationBuilder.DropForeignKey(
                 name: "FK_Companies_Image_ImageId",
-                table: "Companies");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Companies_TechStacks_TechStackId",
                 table: "Companies");
 
             migrationBuilder.DropForeignKey(
@@ -309,6 +398,14 @@ namespace WayToDev.Db.Migrations
                 table: "Rooms");
 
             migrationBuilder.DropForeignKey(
+                name: "FK_Tags_Image_ImageId",
+                table: "Tags");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_TechStacks_Companies_CompanyId",
+                table: "TechStacks");
+
+            migrationBuilder.DropForeignKey(
                 name: "FK_TechStacks_Tags_TagId",
                 table: "TechStacks");
 
@@ -325,8 +422,20 @@ namespace WayToDev.Db.Migrations
                 table: "UserRooms");
 
             migrationBuilder.DropForeignKey(
+                name: "FK_Users_Accounts_AccountId",
+                table: "Users");
+
+            migrationBuilder.DropForeignKey(
                 name: "FK_Users_Image_ImageId",
                 table: "Users");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Users_AccountId",
+                table: "Users");
+
+            migrationBuilder.DropIndex(
+                name: "IX_TechStacks_CompanyId",
+                table: "TechStacks");
 
             migrationBuilder.DropIndex(
                 name: "IX_TechStacks_TagId",
@@ -334,6 +443,22 @@ namespace WayToDev.Db.Migrations
 
             migrationBuilder.DropIndex(
                 name: "IX_TechStacks_UserId",
+                table: "TechStacks");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Tags_ImageId",
+                table: "Tags");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Companies_AccountId",
+                table: "Companies");
+
+            migrationBuilder.DropColumn(
+                name: "AccountId",
+                table: "Users");
+
+            migrationBuilder.DropColumn(
+                name: "CompanyId",
                 table: "TechStacks");
 
             migrationBuilder.DropColumn(
@@ -344,16 +469,79 @@ namespace WayToDev.Db.Migrations
                 name: "UserId",
                 table: "TechStacks");
 
+            migrationBuilder.DropColumn(
+                name: "ImageId",
+                table: "Tags");
+
+            migrationBuilder.DropColumn(
+                name: "Email",
+                table: "Accounts");
+
+            migrationBuilder.RenameColumn(
+                name: "UserName",
+                table: "Users",
+                newName: "Email");
+
             migrationBuilder.AddColumn<Guid>(
                 name: "TechStackId",
                 table: "Tags",
                 type: "uniqueidentifier",
                 nullable: true);
 
+            migrationBuilder.AlterColumn<Guid>(
+                name: "ImageId",
+                table: "Companies",
+                type: "uniqueidentifier",
+                nullable: false,
+                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"),
+                oldClrType: typeof(Guid),
+                oldType: "uniqueidentifier",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Description",
+                table: "Companies",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "",
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)",
+                oldNullable: true);
+
+            migrationBuilder.AddColumn<Guid>(
+                name: "TechStackId",
+                table: "Companies",
+                type: "uniqueidentifier",
+                nullable: false,
+                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
+
+            migrationBuilder.AddColumn<Guid>(
+                name: "UserId",
+                table: "Accounts",
+                type: "uniqueidentifier",
+                nullable: false,
+                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
+
             migrationBuilder.CreateIndex(
                 name: "IX_Tags_TechStackId",
                 table: "Tags",
                 column: "TechStackId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Companies_AccountId",
+                table: "Companies",
+                column: "AccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Companies_TechStackId",
+                table: "Companies",
+                column: "TechStackId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Accounts_UserId",
+                table: "Accounts",
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Accounts_Users_UserId",

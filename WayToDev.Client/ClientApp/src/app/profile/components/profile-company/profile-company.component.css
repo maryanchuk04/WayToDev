@@ -8,3 +8,37 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
+
+.edit-info-container .photo-field{
+  margin: 1.6em 0;
+  display: grid;
+  grid-template-columns: 1fr 45%;
+}
+
+.photo-field .controls{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.photo-field .controls{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.photo-field .controls .avatar{
+  height: 100px;
+  width: 100px;
+
+}
+
+.avatar img{
+  height: inherit;
+  width: inherit;
+  border-radius: 50%;
+  object-fit: cover;
+}
+

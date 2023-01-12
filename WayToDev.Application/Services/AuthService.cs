@@ -85,7 +85,8 @@ public class AuthService : Dao<Account>, IAuthService
             Email = email,
             User = new User
             {
-                FirstName = userName
+                FirstName = userName,
+                TechStack = new List<TechStack>()
             },
             RefreshTokens = new List<AccountToken>(),
             Password = _passwordHelper.HashPassword(password)
@@ -101,6 +102,7 @@ public class AuthService : Dao<Account>, IAuthService
             Company = new Company
             {
                 CompanyName = companyName,
+                TechStack = new List<TechStack>()
             },
             RefreshTokens = new List<AccountToken>(),
             Password = _passwordHelper.HashPassword(password)

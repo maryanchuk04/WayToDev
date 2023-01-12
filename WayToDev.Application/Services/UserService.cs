@@ -19,7 +19,7 @@ public class UserService : Dao<User>, IUserService
 
     public UserDto GetCurrentUserInfo()
     {
-        var userId = _securityContext.GetCurrentUserId();
+        var userId = _securityContext.GetCurrentAccountId();
         var user = Context.Users
             .Include(x => x.Account)
             .Include(x => x.Image)
@@ -103,7 +103,7 @@ public class UserService : Dao<User>, IUserService
                                          .Include(x=>x.Image)
                                          .Include(x=>x.TechStack)
                                             .ThenInclude(x=>x.Tag)
-                                         .FirstOrDefault(x => x.Id ==  _securityContext.GetCurrentUserId())
+                                         .FirstOrDefault(x => x.Id ==  _securityContext.GetCurrentAccountId())
                                      ?? throw new UserNotFoundException("User Not Found");
 
     private bool TechStackIsUpdated(List<TagDto> incomingTags, List<TechStack> userTags)

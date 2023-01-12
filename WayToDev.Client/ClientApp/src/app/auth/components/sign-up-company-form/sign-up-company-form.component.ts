@@ -35,7 +35,7 @@ export class SignUpCompanyFormComponent implements OnInit {
         role: 1
       }).subscribe(_=>{
         if(_.status == 200){
-          localStorage.setItem("token", JSON.stringify(_.body));
+          localStorage.setItem("token", (_.body.token));
           localStorage.setItem("role", JSON.stringify(1));
           this.router.navigate(["/profile-company"])
         }

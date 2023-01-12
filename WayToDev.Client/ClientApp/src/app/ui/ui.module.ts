@@ -14,6 +14,8 @@ import { DynamicWavesComponent } from './dynamic-waves/dynamic-waves.component';
 import {MatChipsModule} from "@angular/material/chips";
 import {MatIconModule} from "@angular/material/icon";
 import {TechstackFieldComponent} from "./techstack-field/techstack-field.component";
+import {UploadImageComponent} from "./upload-image/upload-image.component";
+import {TechItemComponent} from "./tech-item/tech-item.component";
 
 
 @NgModule({
@@ -25,7 +27,11 @@ import {TechstackFieldComponent} from "./techstack-field/techstack-field.compone
     SearchComponent,
     SubmitButtonComponent,
     SvgIconComponent,
-    DynamicWavesComponent
+    DynamicWavesComponent,
+    TechstackFieldComponent,
+    UploadImageComponent,
+    TechItemComponent,
+
   ],
   imports: [
     CommonModule,
@@ -35,13 +41,15 @@ import {TechstackFieldComponent} from "./techstack-field/techstack-field.compone
     MatIconModule,
 
   ],
-    exports: [
-        SpinnerWrapperComponent,
-        SearchComponent,
-        SubmitButtonComponent,
-        SvgIconComponent,
-        DynamicWavesComponent
-    ],
+  exports: [
+    SpinnerWrapperComponent,
+    SearchComponent,
+    SubmitButtonComponent,
+    SvgIconComponent,
+    DynamicWavesComponent,
+    TechstackFieldComponent,
+    UploadImageComponent
+  ],
   providers : [
     AlertService
   ]

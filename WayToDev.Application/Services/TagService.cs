@@ -10,8 +10,6 @@ namespace WayToDev.Application.Services;
 
 public class TagService : Dao<Tag>, ITagService
 {
-    private ITagService _tagServiceImplementation;
-
     public TagService(ApplicationContext context, IMapper mapper = null) : base(context, mapper)
     {
     }

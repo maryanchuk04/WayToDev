@@ -12,8 +12,8 @@ using WayToDev.Db.EF;
 namespace WayToDev.Db.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20230105163618_CompanySetting")]
-    partial class CompanySetting
+    [Migration("20230112133310_Migration_Update")]
+    partial class Migration_Update
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -133,17 +133,12 @@ namespace WayToDev.Db.Migrations
                     b.Property<Guid?>("ImageId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("TechStackId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId")
                         .IsUnique();
 
                     b.HasIndex("ImageId");
-
-                    b.HasIndex("TechStackId");
 
                     b.ToTable("Companies");
                 });
@@ -293,16 +288,16 @@ namespace WayToDev.Db.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("ImageId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("TagName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("TechStackId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("TechStackId");
+                    b.HasIndex("ImageId");
 
                     b.ToTable("Tags");
                 });
@@ -313,7 +308,22 @@ namespace WayToDev.Db.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("CompanyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TagId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("TagId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("TechStacks");
                 });
@@ -341,6 +351,10 @@ namespace WayToDev.Db.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -379,7 +393,7 @@ namespace WayToDev.Db.Migrations
                     b.HasOne("WayToDev.Core.Entities.Account", "Account")
                         .WithMany("RefreshTokens")
                         .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Account");
@@ -390,13 +404,13 @@ namespace WayToDev.Db.Migrations
                     b.HasOne("WayToDev.Core.Entities.Image", "Image")
                         .WithMany()
                         .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WayToDev.Core.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Image");
@@ -409,22 +423,17 @@ namespace WayToDev.Db.Migrations
                     b.HasOne("WayToDev.Core.Entities.Account", "Account")
                         .WithOne("Company")
                         .HasForeignKey("WayToDev.Core.Entities.Company", "AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WayToDev.Core.Entities.Image", "Image")
                         .WithMany()
-                        .HasForeignKey("ImageId");
-
-                    b.HasOne("WayToDev.Core.Entities.TechStack", "TechStack")
-                        .WithMany()
-                        .HasForeignKey("TechStackId");
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Account");
 
                     b.Navigation("Image");
-
-                    b.Navigation("TechStack");
                 });
 
             modelBuilder.Entity("WayToDev.Core.Entities.CompanyFeedback", b =>
@@ -432,13 +441,13 @@ namespace WayToDev.Db.Migrations
                     b.HasOne("WayToDev.Core.Entities.Company", "Company")
                         .WithMany("Feedbacks")
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WayToDev.Core.Entities.Feedback", "Feedback")
                         .WithMany()
                         .HasForeignKey("FeedbackId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Company");
@@ -451,13 +460,13 @@ namespace WayToDev.Db.Migrations
                     b.HasOne("WayToDev.Core.Entities.Room", "Room")
                         .WithMany("Messages")
                         .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WayToDev.Core.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Room");
@@ -470,7 +479,7 @@ namespace WayToDev.Db.Migrations
                     b.HasOne("WayToDev.Core.Entities.Image", "Image")
                         .WithMany()
                         .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Image");
@@ -481,7 +490,7 @@ namespace WayToDev.Db.Migrations
                     b.HasOne("WayToDev.Core.Entities.Image", "Image")
                         .WithMany()
                         .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Image");
@@ -489,9 +498,38 @@ namespace WayToDev.Db.Migrations
 
             modelBuilder.Entity("WayToDev.Core.Entities.Tag", b =>
                 {
-                    b.HasOne("WayToDev.Core.Entities.TechStack", null)
-                        .WithMany("TechTags")
-                        .HasForeignKey("TechStackId");
+                    b.HasOne("WayToDev.Core.Entities.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Image");
+                });
+
+            modelBuilder.Entity("WayToDev.Core.Entities.TechStack", b =>
+                {
+                    b.HasOne("WayToDev.Core.Entities.Company", "Company")
+                        .WithMany("TechStack")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("WayToDev.Core.Entities.Tag", "Tag")
+                        .WithMany()
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WayToDev.Core.Entities.User", "User")
+                        .WithMany("TechStack")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Company");
+
+                    b.Navigation("Tag");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("WayToDev.Core.Entities.User", b =>
@@ -499,12 +537,13 @@ namespace WayToDev.Db.Migrations
                     b.HasOne("WayToDev.Core.Entities.Account", "Account")
                         .WithOne("User")
                         .HasForeignKey("WayToDev.Core.Entities.User", "AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WayToDev.Core.Entities.Image", "Image")
                         .WithMany()
-                        .HasForeignKey("ImageId");
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Account");
 
@@ -516,13 +555,13 @@ namespace WayToDev.Db.Migrations
                     b.HasOne("WayToDev.Core.Entities.Room", "Room")
                         .WithMany("UserRooms")
                         .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WayToDev.Core.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Room");
@@ -532,18 +571,18 @@ namespace WayToDev.Db.Migrations
 
             modelBuilder.Entity("WayToDev.Core.Entities.Account", b =>
                 {
-                    b.Navigation("Company")
-                        .IsRequired();
+                    b.Navigation("Company");
 
                     b.Navigation("RefreshTokens");
 
-                    b.Navigation("User")
-                        .IsRequired();
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("WayToDev.Core.Entities.Company", b =>
                 {
                     b.Navigation("Feedbacks");
+
+                    b.Navigation("TechStack");
                 });
 
             modelBuilder.Entity("WayToDev.Core.Entities.Room", b =>
@@ -553,9 +592,9 @@ namespace WayToDev.Db.Migrations
                     b.Navigation("UserRooms");
                 });
 
-            modelBuilder.Entity("WayToDev.Core.Entities.TechStack", b =>
+            modelBuilder.Entity("WayToDev.Core.Entities.User", b =>
                 {
-                    b.Navigation("TechTags");
+                    b.Navigation("TechStack");
                 });
 #pragma warning restore 612, 618
         }

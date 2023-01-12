@@ -4,10 +4,10 @@ import {TechItem} from "../../../models/techItem";
 import {TagsService} from "../../services/tags.service";
 import {Observable} from "rxjs";
 import {select, Store} from "@ngrx/store";
-import {AppState} from "../../../Store/AppState";
 import {userSelector} from "../../store/profile.selectors";
 import * as ProfileActions from "../../store/profile.actions";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AppState} from "../../../store/app-state";
 
 @Component({
   selector: 'app-edit-info',

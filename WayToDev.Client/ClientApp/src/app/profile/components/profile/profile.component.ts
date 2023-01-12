@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {User} from "../../models/user";
 import {select, Store} from "@ngrx/store";
-import {AppState} from "../../../Store/AppState";
+
 import * as ProfileActions from '../../store/profile.actions'
 @Component({
   selector: 'app-profile',
