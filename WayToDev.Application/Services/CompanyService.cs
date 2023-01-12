@@ -23,9 +23,20 @@ public class CompanyService : Dao<Company>, ICompanyService
         throw new NotImplementedException();
     }
 
-    public Task<CompanyDto> UpdateCompany(CompanyDto company)
+    public async Task UpdateCompany(CompanyDto company)
     {
-        throw new NotImplementedException();
+        var currentCompany = CurrentCompany();
+
+        currentCompany.CompanyName = company.CompanyName;
+        if (currentCompany.Image == null)
+            currentCompany.Image = new Image { ImageUrl = company.ImageUrl ?? "" };
+        else
+            currentCompany.Image.ImageUrl = company.ImageUrl ?? "";
+
+        currentCompany.Description = company.Description;
+        
+        Update(currentCompany);
+        await Context.SaveChangesAsync();
     }
 
     public CompanyDto GetCurrentCompany()
@@ -45,6 +56,8 @@ public class CompanyService : Dao<Company>, ICompanyService
         return companyQueryable
             .Include(x => x.Account)
             .Include(x => x.Image)
+            .Include(x=>x.Feedbacks)
+            .Include(x=>x.TechStack)
             .First();
     }
 }

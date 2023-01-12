@@ -6,9 +6,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using WayToDev.Application.Services;
 using WayToDev.Client.Mapping;
-using WayToDev.Core.Interfaces.DAOs;
 using WayToDev.Core.Interfaces.Services;
-
+using WayToDev.Db.Bridge;
 using WayToDev.Db.EF;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,13 +19,15 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("ConnString"),
         b => b.MigrationsAssembly("WayToDev.Db")));
-
+builder.Services.AddSingleton<ISecurityContext, SecurityContextService>();
 builder.Services.AddAutoMapper(typeof(UserMapperProfile).GetTypeInfo().Assembly);
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<INewsService, NewsService>();
 builder.Services.AddTransient<IPasswordHelper, PasswordHelper>();
+
+builder.Services.AddScoped<ICompanyService, CompanyService>();
 
 builder.Services.AddSwaggerGen(options =>
 {
@@ -102,6 +103,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseCookiePolicy();
 app.UseRouting();
 app.UseSwagger();
 app.UseCors(x =>
@@ -111,12 +113,17 @@ app.UseCors(x =>
         .SetIsOriginAllowed(origin => true) // allow any origin
         .AllowCredentials();
 });
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute("default", "{controller}/{action=Index}/{id?}");
+});
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html");
-;
 
 app.Run();

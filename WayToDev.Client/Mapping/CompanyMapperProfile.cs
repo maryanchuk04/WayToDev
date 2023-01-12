@@ -1,4 +1,5 @@
 using AutoMapper;
+using WayToDev.Client.ViewModels;
 using WayToDev.Core.DTOs;
 using WayToDev.Core.Entities;
 
@@ -10,6 +11,6 @@ public class CompanyMapperProfile : Profile
     {
         CreateMap<Company, CompanyDto>()
             .ForMember(dest=>dest.ImageUrl, opts => opts.MapFrom(src => src.Image!.ImageUrl));
-        
+        CreateMap<CompanyViewModel, CompanyDto>();
     }
 }

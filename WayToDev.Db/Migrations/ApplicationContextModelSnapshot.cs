@@ -31,7 +31,7 @@ namespace WayToDev.Db.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
- 
+
                     b.Property<bool>("IsBlocked")
                         .HasColumnType("bit");
 
@@ -140,8 +140,6 @@ namespace WayToDev.Db.Migrations
                         .IsUnique();
 
                     b.HasIndex("ImageId");
-
-                    b.HasIndex("TechStackId");
 
                     b.ToTable("Companies");
                 });
@@ -295,12 +293,7 @@ namespace WayToDev.Db.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("TechStackId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("TechStackId");
 
                     b.ToTable("Tags");
                 });
@@ -311,7 +304,22 @@ namespace WayToDev.Db.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("CompanyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TagId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("TagId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("TechStacks");
                 });
@@ -414,15 +422,9 @@ namespace WayToDev.Db.Migrations
                         .WithMany()
                         .HasForeignKey("ImageId");
 
-                    b.HasOne("WayToDev.Core.Entities.TechStack", "TechStack")
-                        .WithMany()
-                        .HasForeignKey("TechStackId");
-
                     b.Navigation("Account");
 
                     b.Navigation("Image");
-
-                    b.Navigation("TechStack");
                 });
 
             modelBuilder.Entity("WayToDev.Core.Entities.CompanyFeedback", b =>
@@ -485,11 +487,27 @@ namespace WayToDev.Db.Migrations
                     b.Navigation("Image");
                 });
 
-            modelBuilder.Entity("WayToDev.Core.Entities.Tag", b =>
+            modelBuilder.Entity("WayToDev.Core.Entities.TechStack", b =>
                 {
-                    b.HasOne("WayToDev.Core.Entities.TechStack", null)
-                        .WithMany("TechTags")
-                        .HasForeignKey("TechStackId");
+                    b.HasOne("WayToDev.Core.Entities.Company", "Company")
+                        .WithMany("TechStack")
+                        .HasForeignKey("CompanyId");
+
+                    b.HasOne("WayToDev.Core.Entities.Tag", "Tag")
+                        .WithMany()
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WayToDev.Core.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Company");
+
+                    b.Navigation("Tag");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("WayToDev.Core.Entities.User", b =>
@@ -530,18 +548,18 @@ namespace WayToDev.Db.Migrations
 
             modelBuilder.Entity("WayToDev.Core.Entities.Account", b =>
                 {
-                    b.Navigation("Company")
-                        .IsRequired();
+                    b.Navigation("Company");
 
                     b.Navigation("RefreshTokens");
 
-                    b.Navigation("User")
-                        .IsRequired();
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("WayToDev.Core.Entities.Company", b =>
                 {
                     b.Navigation("Feedbacks");
+
+                    b.Navigation("TechStack");
                 });
 
             modelBuilder.Entity("WayToDev.Core.Entities.Room", b =>
@@ -549,11 +567,6 @@ namespace WayToDev.Db.Migrations
                     b.Navigation("Messages");
 
                     b.Navigation("UserRooms");
-                });
-
-            modelBuilder.Entity("WayToDev.Core.Entities.TechStack", b =>
-                {
-                    b.Navigation("TechTags");
                 });
 #pragma warning restore 612, 618
         }
