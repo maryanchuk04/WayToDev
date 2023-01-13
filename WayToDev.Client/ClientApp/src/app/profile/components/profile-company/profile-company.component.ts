@@ -10,6 +10,7 @@ import {TagsService} from "../../services/tags.service";
 import {Tag} from "../../../models/tag";
 import {TechItem} from "../../../models/techItem";
 import * as ProfileActions from "../../store/profile.actions";
+import {FormBuilder, FormGroup} from "@angular/forms";
 const variantsOfCount = [
   "<100","100-200", "200-500", "500-1000", "1000-3000",">3000"
 ]
@@ -23,13 +24,26 @@ export class ProfileCompanyComponent implements OnInit {
   company: Company;
   tags: Tag[];
   variants: string[] = variantsOfCount;
-  constructor(private store: Store<AppState>, private techService: TagsService) {
+  companyForm: FormGroup;
+
+  constructor(private store: Store<AppState>, private techService: TagsService, private fb: FormBuilder) {
     this.store.dispatch(getCurrentCompany());
     this.company$ = this.store.pipe(select(companySelector));
     this.company$.subscribe(_=>{
-      if(_ != null)
+      if(_ != null){
         this.company = _;
+        this.companyForm = fb.group({
+          companyName: this.company.companyName,
+          imgUrl: this.company.imageUrl,
+          description: this.company.description,
+          email: this.company.email,
+          countOfPerson: this.company.countOfPerson
+        });
+      }
+
     })
+
+
   }
 
   ngOnInit(): void {
@@ -57,4 +71,13 @@ export class ProfileCompanyComponent implements OnInit {
     this.tags = this.tags.filter(_=>_.id !== item.id);
   }
 
+  save(){
+    if(this.companyForm.valid){
+      this.company = {
+        ...this.company,
+        ...this.companyForm.value
+      }
+      this.store.dispatch(ProfileActions.updateCurrentCompany({company : this.company}))
+    }
+  }
 }

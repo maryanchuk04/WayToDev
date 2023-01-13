@@ -21,6 +21,10 @@ export const updateCurrentUser = createAction(
   props<{ user: User }>()
 )
 
+export const updateCurrentCompany = createAction(
+  '[Profile] Update current company',
+  props<{ company: Company}>()
+)
 
 export const updateTagsForUser = createAction(
   '[Profile] Update user tags',

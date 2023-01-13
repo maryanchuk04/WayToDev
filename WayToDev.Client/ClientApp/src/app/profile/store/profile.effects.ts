@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {UserService} from "../services/user.service";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import * as ProfileActions from './profile.actions'
-import {catchError, EMPTY, exhaustAll, exhaustMap, map, mergeMap, of} from "rxjs";
+import {catchError, exhaustMap, map, mergeMap, of} from "rxjs";
 import {CompanyService} from "../services/company.service";
 
 @Injectable()
@@ -33,6 +33,7 @@ export class ProfileEffects{
       ))
     )
   ));
+
   getCurrentCompany$ = createEffect(()=>
     this.actions$.pipe(
       ofType(ProfileActions.getCurrentCompany),
@@ -42,7 +43,17 @@ export class ProfileEffects{
         )
       })
     )
-  )
+  );
+
+  updateCurrentCompany$ = createEffect(()=>
+    this.actions$.pipe(
+      ofType(ProfileActions.updateCurrentCompany),
+      map(action => action.company),
+      exhaustMap((company)=> this.companyService.updateCurrentCompany(company).pipe(
+        map(()=>ProfileActions.getCurrentCompanySuccess({company}))
+      ))
+    )
+  );
 
   constructor(private actions$: Actions,
               private userService: UserService,

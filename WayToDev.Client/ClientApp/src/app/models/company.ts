@@ -9,4 +9,5 @@ export interface Company{
   email: string;
   tags: Tag[];
   feedbacks: Feedback[];
+  countOfPerson: string;
 }

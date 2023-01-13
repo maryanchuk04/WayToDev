@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import {Observable} from "rxjs";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParamsOptions} from "@angular/common/http";
 import {Company} from "../../models/company";
 const BASE_PATH = environment.basePath;
 @Injectable({
@@ -10,17 +10,18 @@ const BASE_PATH = environment.basePath;
 
 export class CompanyService {
   apiUrl: string = `${BASE_PATH}company`;
-
+  private headers: HttpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem("token")}`
+  });
   constructor(private http: HttpClient) {
-    http.options(this.apiUrl);
   }
 
   getCurrentCompany(): Observable<Company> {
-    return this.http.get<Company>(this.apiUrl, {
-      headers : {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem("token")}`
-      }
-    });
+    return this.http.get<Company>(this.apiUrl, { headers: this.headers});
+  }
+
+  updateCurrentCompany(company: Company): Observable<any>{
+    return this.http.post<any>(this.apiUrl, company, { headers: this.headers})
   }
 }
