@@ -8,6 +8,5 @@ public class TechStackConfiguration : IEntityTypeConfiguration<TechStack>
 {
     public void Configure(EntityTypeBuilder<TechStack> builder)
     {
-           
     }
 }
