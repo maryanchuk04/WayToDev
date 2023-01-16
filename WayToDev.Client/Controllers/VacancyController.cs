@@ -45,4 +45,17 @@ public class VacancyController : ControllerBase
             return BadRequest(new ErrorResponseModel(e.Message));
         }
     }
+
+    [HttpGet("{id}")]
+    public IActionResult GetById(Guid id)
+    {
+        try
+        {
+            return Ok(_vacancyService.GetById(id));
+        }
+        catch (VacancyException e)
+        {
+            return BadRequest(new ErrorResponseModel(e.Message));
+        }
+    }
 }
