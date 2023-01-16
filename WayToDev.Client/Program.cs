@@ -26,6 +26,8 @@ builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<INewsService, NewsService>();
+builder.Services.AddScoped<IVacancyService, VacancyService>();
+
 
 builder.Services.AddSwaggerGen(options =>
 {
@@ -86,7 +88,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 builder.Services.AddAuthorization();
-
 #endregion
 
 
