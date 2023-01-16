@@ -8,7 +8,9 @@ import { ChatListItemComponent } from './components/chat-list-item/chat-list-ite
 import { ChatContainerComponent } from './components/chat-container/chat-container.component';
 import { MessageComponent } from './components/message/message.component'
 import { MatButtonModule } from '@angular/material/button';
-import { ReactiveFormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {PickerModule} from "@ctrl/ngx-emoji-mart";
+import {AutosizeModule} from "ngx-autosize";
 
 @NgModule({
   declarations: [
@@ -23,7 +25,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     UiModule,
     MatSidenavModule,
     MatButtonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PickerModule,
+    FormsModule,
+    AutosizeModule
   ]
 })
 export class ChatModule { }

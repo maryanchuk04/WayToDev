@@ -1,12 +1,12 @@
 <div class="h-100">
   <mat-drawer-container class="chats-container" autosize>
-    <mat-drawer #drawer class="chats-sidenav" mode="side">
-      <h2 class="text-center">Chats</h2>
+    <mat-drawer #drawer class="chats-sidenav" mode="side" style="overflow: inherit">
+      <h2 class="text-center mt-3">Chats</h2>
       <ul class = 'chats-list'>
         <app-chat-list-item *ngFor="let item of chatsList" [chatItem] = "item" (click) = "chooseChat(item)"></app-chat-list-item>
       </ul>
     </mat-drawer>
-    <div style ="height: 86vh;">
+    <div class = "chat-zone container">
       <button type="button" class = 'burger' (click)="drawer.toggle()">
         <i *ngIf="drawer.opened" class = "fas fa-arrow-left-long"></i>
         <i *ngIf="!drawer.opened" class = "fas fa-comment-dots"></i>

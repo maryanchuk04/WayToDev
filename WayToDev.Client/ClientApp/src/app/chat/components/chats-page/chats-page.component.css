@@ -5,8 +5,11 @@
 
 .chats-sidenav{
   width: 20%;
-  padding-top: 20px;
   background-color: #edf2f4;
+}
+
+.chat-zone{
+  height: calc(100% - 8vh);
 }
 
 .burger{
@@ -19,7 +22,18 @@
 }
 
 .chats-list{
-  padding: 10px 0;
+  padding: 10px 5px;
   margin: 0;
   height: inherit;
+}
+
+.chats-sidenav::-webkit-scrollbar{
+  display: none;
+}
+chats-sidenav::-webkit-scrollbar {
+  display: none;
+}
+
+.chats-sidenav:hover::-webkit-scrollbar{
+  display: block;
 }

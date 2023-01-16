@@ -1,15 +1,17 @@
 .chat-preview-item{
   background-color: #edf2f4;
-  padding: 10px 20px;
+  padding: 10px;
   cursor: pointer;
-  border-top: 1px solid #ffffff;
+
   transition: 0.1s;
   display: flex;
   flex-direction: column;
+
 }
 
 .chat-preview-item:hover{
   background-color: #d6aaae;
+  border-radius: 10px;
 }
 
 .chat-preview-item h5{
@@ -29,5 +31,8 @@
 
 .chat-preview-item .last-message{
   font-weight: 400;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 

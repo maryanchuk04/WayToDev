@@ -15,7 +15,10 @@ export class ChatContainerComponent implements OnInit, AfterViewInit, OnDestroy 
   messageForm: FormGroup;
   messages: Message[];
   subscription: Subscription;
-
+  public isEmojiPickerVisible: boolean;
+  public addEmoji(event: any) {
+    this.messageForm.controls["message"].setValue(`${this.messageForm.controls["message"].value}${event.emoji.native}`);
+  }
   constructor(private formBuilder: FormBuilder) {
     this.messageForm = this.formBuilder.group({
       message: ["", Validators.required]
@@ -23,7 +26,6 @@ export class ChatContainerComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   ngAfterViewInit() {
-    console.log(this.scroll);
     this.scrollDown();
   }
 
@@ -35,7 +37,7 @@ export class ChatContainerComponent implements OnInit, AfterViewInit, OnDestroy 
 
   sendMessage() {
     this.messages.push({
-      text: this.messageForm.controls["message"].value,
+      text: this.messageForm.value.message,
       when: new Date().toLocaleString(),
       from: { id: "me" }
     });

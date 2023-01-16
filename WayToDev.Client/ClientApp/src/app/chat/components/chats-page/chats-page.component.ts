@@ -16,7 +16,7 @@ export class ChatsPageComponent implements OnInit {
       id: "chatId",
       title: "Elon Mask",
       lastMessage: {
-        text: "Hello Maks, how are you?",
+        text: "Hello Maks, how are you? Hello Maks, how are you?Hello Maks, how are you?",
         when: "12/22/2022 10:16",
         from: {
           fullName : "Elon Mask",

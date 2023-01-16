@@ -1,13 +1,14 @@
 .chat-zone{
   height: 100%;
+  width: 90%;
   display: grid;
   padding-bottom: 20px;
-  grid-template-rows: 100px 80% 60px;
+  grid-template-rows:  3ch auto minmax(10px, 60px);
 }
 
 .chat-zone .chat-header{
   height: 100%;
-  padding: 10px ;
+  padding: 0 10px ;
   display: grid;
   background-color: #8d99ae;
   align-items: center;
@@ -18,10 +19,13 @@
 
 .chat-zone .messages-zone{
   height: 100%;
-  overflow-y: auto;
+  overflow-y: scroll;
   width: 100%;
   margin: auto;
   padding: 20px;
+  display: flex;
+
+  flex-direction: column;
 }
 
 .messages-zone::-webkit-scrollbar {
@@ -32,47 +36,135 @@
 
 .messages-zone .left{
   margin-top: 10px;
-  display: flex;
-  justify-content: flex-start;
 }
 
 .messages-zone .right{
   margin-top: 10px;
-  display: flex;
-  justify-content: flex-end;
+  flex-direction: row-reverse;
   text-align: right;
 }
 
 
 .chat-zone .sender{
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  background-color: #9899a2;
-  border-radius: 20px;
+  height: 60px;
+  max-height: 100%;
+  display: grid;
+  grid-template-columns: 80% 1fr;
+  grid-gap: 5%;
 }
 
-
-
 .chat-header img{
-  height: 80px;
-  width: 80px;
+  height: 50px;
+  width: 50px;
+  margin: auto;
   border-radius: 50%;
   object-fit: cover;
 }
 
+/*#send*/
 
-.sender #messageInput{
-  width: 85%;
-  border-radius: 10px;
+.sender #send {
+  font-family: inherit;
+  font-size: 20px;
+  background: royalblue;
+  color: white;
+  padding: 0.7em 1em;
+  padding-left: 0.9em;
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 15px;
+  overflow: hidden;
+  transition: all 0.2s;
+  justify-content: center;
+  height: fit-content;
+}
+
+#send span {
+  display: block;
+  margin-left: 0.3em;
+  transition: all 0.3s ease-in-out;
+}
+
+#send svg {
+  display: block;
+  transform-origin: center center;
+  transition: transform 0.3s ease-in-out;
+}
+
+#send:hover .svg-wrapper {
+  animation: fly-1 0.6s ease-in-out infinite alternate;
+}
+
+#send:hover svg {
+  transform: translateX(1.2em) rotate(45deg) scale(1.1);
+}
+
+#send:hover span {
+  transform: translateX(8em);
+}
+
+#send:active {
+  transform: scale(0.95);
+}
+
+@keyframes fly-1 {
+  from {
+    transform: translateY(0.1em);
+  }
+
+  to {
+    transform: translateY(-0.1em);
+  }
+}
+
+.sender .send-box #messageInput {
+  font-weight: 400;
+  font-size: 16px;
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
+  display: inline-block;
+  box-shadow: 0 0 .4vw rgba(0,0,0,0.5), 0 0 0 .15vw transparent;
+  border-radius: 15px;
+  border: none;
+  outline: none;
+  padding: 0.4vw 20px;
+  width: 100%;
+  transition: .4s;
+  height: inherit;
+  resize: none;
+  padding-right: 50px;
+  max-height: fit-content;
+  overflow: unset;
+}
+
+#messageInput:hover {
+  box-shadow: 0 0 0 .15vw rgba(135, 207, 235, 0.186);
+}
+
+#messageInput:focus {
+  box-shadow: 0 0 0 .15vw skyblue;
+}
+
+
+.sender .send-box{
+  position: relative;
+  width:100%;
+  height: 100%;
+}
+
+.send-box button{
+  position: absolute;
+  transition: 0.3s;
+  right: 5px;
+  z-index: 1;
+  background: transparent;
   border: 0;
-  font-size: 18px;
-  padding: 5px 10px;
+  cursor: pointer;
+  top: 50%;
+  transform: translate(-50%,-50%);
 }
 
-
-#messageInput:focus-visible{
-  outline: 0;
+.send-box button:hover{
+  font-size: 20px
 }
-
