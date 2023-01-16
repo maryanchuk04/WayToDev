@@ -48,7 +48,7 @@ export class ChatContainerComponent implements OnInit, AfterViewInit, OnDestroy 
 
   private scrollDown() {
     setTimeout(() => {
-      this.scroll.nativeElement.scrollTo(0, this.scroll.nativeElement.scrollHeight);
+      this.scroll.nativeElement.scrollTo(0, this.scroll.nativeElement.scrollHeight+100);
     }, 0);
   }
 
