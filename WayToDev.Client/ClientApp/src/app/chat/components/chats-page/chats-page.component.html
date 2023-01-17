@@ -3,7 +3,7 @@
     <mat-drawer #drawer class="chats-sidenav" mode="side" style="overflow: inherit">
       <h2 class="text-center mt-3">Chats</h2>
       <ul class = 'chats-list'>
-        <app-chat-list-item *ngFor="let item of chatsList" [chatItem] = "item" (click) = "chooseChat(item)"></app-chat-list-item>
+        <app-chat-list-item routerLinkActive="active-chat" class="chat-preview-item" *ngFor="let item of chatsList" [chatItem] = "item" [routerLink]="item.id"></app-chat-list-item>
       </ul>
     </mat-drawer>
     <div class = "chat-zone container">
@@ -11,18 +11,7 @@
         <i *ngIf="drawer.opened" class = "fas fa-arrow-left-long"></i>
         <i *ngIf="!drawer.opened" class = "fas fa-comment-dots"></i>
       </button>
-
-        <ng-container *ngIf="choosenChat$ == null; else elseTemplate">
-          <div class = 'd-flex justify-content-center w-100 align-items-center text-center h-100 m-auto flex-column'>
-            <h1>Let`s start messaging</h1>
-            <h2>Choose the chat</h2>
-          </div>
-        </ng-container>
-        <ng-template class="h-100" #elseTemplate >
-          <app-spinner-wrapper  [condition]="loading">
-            <app-chat-container [chat$] = "choosenChat$" ></app-chat-container>
-          </app-spinner-wrapper>
-        </ng-template>
+      <router-outlet></router-outlet>
     </div>
 </mat-drawer-container>
 </div>

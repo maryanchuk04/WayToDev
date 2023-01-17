@@ -128,12 +128,12 @@
   border-radius: 15px;
   border: none;
   outline: none;
-  padding: 0.4vw 20px;
+  padding: 0.7vw 20px 0;
   width: 100%;
   transition: .4s;
   resize: none;
   padding-right: 50px;
-  max-height: fit-content;
+  overflow: hidden;
 }
 
 #messageInput:hover {

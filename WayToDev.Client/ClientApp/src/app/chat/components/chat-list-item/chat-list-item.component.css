@@ -1,35 +1,20 @@
-.chat-preview-item{
-  background-color: #edf2f4;
-  padding: 10px;
-  cursor: pointer;
 
-  transition: 0.1s;
-  display: flex;
-  flex-direction: column;
-
-}
-
-.chat-preview-item:hover{
-  background-color: #d6aaae;
-  border-radius: 10px;
-}
-
-.chat-preview-item h5{
+.item h5{
   margin: 0;
   font-weight: 700;
 }
 
-.chat-preview-item p{
+.item p{
   margin-bottom:2px ;
 }
 
-.chat-preview-item .date{
+.item .date{
   color: #000000;
   text-align: right;
   font-size: 12px;
 }
 
-.chat-preview-item .last-message{
+.item .last-message{
   font-weight: 400;
   text-overflow: ellipsis;
   white-space: nowrap;

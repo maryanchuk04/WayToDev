@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { throws } from 'assert';
-import { Observable, tap, zip } from 'rxjs'
+import { map, Observable, tap } from 'rxjs'
 import { Chat } from '../models/chat'
 
 @Injectable({
@@ -11,6 +10,10 @@ export class ChatService {
   constructor(private httpClient: HttpClient) { }
 
   getChatById(id: string): Observable<Chat>{
-    return this.httpClient.get<Chat>("/assets/tempObj.json").pipe(tap(x=>console.log(x)));
+    return this.httpClient.get<Chat[]>("/assets/tempObj.json").pipe(map(x=>x.find(x=>x.id == id) || x[0]));
+  }
+
+  getChats(): Observable<Chat[]>{
+    return this.httpClient.get<Chat[]>("/assets/tempObj.json").pipe(tap(x=>console.log(x)));
   }
 }
