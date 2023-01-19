@@ -1,0 +1,19 @@
+<div class="container company" *ngIf="company$ | async as company">
+  <app-spinner-wrapper [condition] = 'company == null'>
+    <div class="banner">
+      <img [src] = 'company.bannerImage' [alt]="company.companyName + '-banner'">
+    </div>
+    <div class="preview-info">
+      <div class="avatar">
+        <img [src]="company.imageUrl" [alt]="company.companyName+'avatar'">
+      </div>
+      <div class="d-flex justify-content-between" style="width: 100%">
+        <h2>{{company.companyName}}</h2>
+        <a [href]="'mailto:'+company.email" mat-icon-button>
+          <i class="fa-solid fa-envelope"></i>
+        </a>
+      </div>
+
+    </div>
+  </app-spinner-wrapper>
+</div>

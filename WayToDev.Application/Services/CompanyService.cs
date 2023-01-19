@@ -18,10 +18,21 @@ public class CompanyService : Dao<Company>, ICompanyService
         _securityContext = securityContext;
     }
 
-    public CompanyDto GetCompany(Guid id)
+    public async Task<CompanyDto> GetCompanyAsync(Guid id)
     {
-        throw new NotImplementedException();
-    }
+        var company = await Context.Companies
+            .Include(x => x.Account)
+            .Include(x=>x.BannerImage)
+            .Include(x=>x.Image)
+            .Include(x => x.Feedbacks)
+            .Include(x => x.TechStack)
+            .ThenInclude(x => x.Tag)
+            .FirstOrDefaultAsync(x => x.Id == id);
+        if (company == null)
+            throw new UserNotFoundException("User not found");
+
+        return Mapper.Map<Company, CompanyDto>(company);
+    } 
 
     public async Task UpdateCompany(CompanyDto company)
     {
@@ -32,8 +43,15 @@ public class CompanyService : Dao<Company>, ICompanyService
             currentCompany.Image = new Image(company.ImageUrl ?? "");
         else
             currentCompany.Image.ImageUrl = company.ImageUrl ?? "";
+        
+        if (currentCompany.BannerImage == null)
+            currentCompany.BannerImage = new Image(company.BannerImage ?? "");
+        else
+            currentCompany.BannerImage.ImageUrl = company.BannerImage ?? "";
 
         currentCompany.Description = company.Description;
+        currentCompany.WebsiteLink = company.WebsiteLink;
+        currentCompany.CountOfWorkers = company.CountOfWorkers;
         
         Update(currentCompany);
         await Context.SaveChangesAsync();
@@ -56,6 +74,7 @@ public class CompanyService : Dao<Company>, ICompanyService
         return companyQueryable
             .Include(x => x.Account)
             .Include(x => x.Image)
+            .Include(x=>x.BannerImage)
             .Include(x=>x.Feedbacks)
             .Include(x=>x.TechStack)
                 .ThenInclude(x=>x.Tag)

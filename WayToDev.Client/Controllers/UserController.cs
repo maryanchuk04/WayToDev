@@ -75,6 +75,7 @@ public class UserController : ControllerBase
     /// </summary>
     /// <param name="id">id of user</param>
     /// <returns>user</returns>
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public IActionResult GetUser(Guid id)
     {

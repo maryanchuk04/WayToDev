@@ -10,4 +10,6 @@ export interface Company{
   tags: Tag[];
   feedbacks: Feedback[];
   countOfPerson: string;
+  bannerImage: string;
+  websiteLink: string;
 }

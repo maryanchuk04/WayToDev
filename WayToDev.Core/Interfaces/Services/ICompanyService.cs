@@ -4,7 +4,7 @@ namespace WayToDev.Core.Interfaces.Services;
 
 public interface ICompanyService
 {
-    CompanyDto GetCompany(Guid id);
+    Task<CompanyDto> GetCompanyAsync(Guid id);
     Task UpdateCompany(CompanyDto company);
     CompanyDto GetCurrentCompany();
 }

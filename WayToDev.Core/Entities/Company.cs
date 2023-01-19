@@ -9,4 +9,7 @@ public class Company : BaseEntity
     public string? Description { get; set; }
     public ICollection<CompanyFeedback>? Feedbacks { get; set; }
     public ICollection<TechStack> TechStack { get; set; }
+    public Image? BannerImage { get; set; }
+    public string WebsiteLink { get; set; }
+    public int CountOfWorkers { get; set; }
 }

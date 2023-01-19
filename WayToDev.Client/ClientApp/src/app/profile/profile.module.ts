@@ -12,7 +12,7 @@ import {ProfileRoutingModule} from "./profile.routing.module";
 import {MatButtonModule} from "@angular/material/button";
 import {StoreModule} from "@ngrx/store";
 import {UiModule} from "../ui/ui.module";
-import {ProfileUserViewComponent} from "./components/profile-user-view/profile-user-view.component";
+import {ProfileCompanyViewComponent} from "./components/profile-company-view/profile-company-view.component";
 
 @NgModule({
     declarations: [
@@ -20,7 +20,7 @@ import {ProfileUserViewComponent} from "./components/profile-user-view/profile-u
         EditInfoComponent,
         ProfileComponent,
         ProfileCompanyComponent,
-
+        ProfileCompanyViewComponent
     ],
     imports: [
         CommonModule,

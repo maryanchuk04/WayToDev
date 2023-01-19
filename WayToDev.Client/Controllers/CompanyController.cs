@@ -61,4 +61,23 @@ public class CompanyController : ControllerBase
             return BadRequest(new ErrorResponseModel(e.Message));
         }
     }
+
+    /// <summary>
+    /// Get company by id
+    /// </summary>
+    /// <param name="id">Id of company</param>
+    /// <returns>Company model with data</returns>
+    [AllowAnonymous]
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetCompanyAsync(Guid id)
+    {
+        try
+        {
+            return Ok(await _companyService.GetCompanyAsync(id));
+        }
+        catch (UserNotFoundException e)
+        {
+            return BadRequest(new ErrorResponseModel(e.Message));
+        }
+    }
 }

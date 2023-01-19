@@ -12,7 +12,8 @@ public class CompanyMapperProfile : Profile
         CreateMap<Company, CompanyDto>()
             .ForMember(dest=>dest.Email, opts=>opts.MapFrom(x=>x.Account.Email))
             .ForMember(dest=> dest.Tags, opts => opts.MapFrom(src => MapTechnologies(src.TechStack.ToList())))
-            .ForMember(dest=>dest.ImageUrl, opts => opts.MapFrom(src => src.Image!.ImageUrl));
+            .ForMember(dest=>dest.ImageUrl, opts => opts.MapFrom(src => src.Image!.ImageUrl))
+            .ForMember(dest=>dest.BannerImage, opts => opts.MapFrom(src => src.BannerImage!.ImageUrl)); ;
         CreateMap<CompanyViewModel, CompanyDto>();
     }
     

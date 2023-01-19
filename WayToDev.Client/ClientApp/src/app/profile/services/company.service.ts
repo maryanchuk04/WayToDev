@@ -24,4 +24,9 @@ export class CompanyService {
   updateCurrentCompany(company: Company): Observable<any>{
     return this.http.put<any>(this.apiUrl, company, { headers: this.headers})
   }
+
+  getCompanyById(id: string): Observable<Company>{
+    return this.http.get<Company>(`${this.apiUrl}/${id}`);
+  }
+
 }
