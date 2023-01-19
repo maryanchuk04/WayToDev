@@ -48,8 +48,8 @@ public class UserController : ControllerBase
     /// <param name="userInfoView">Model contain all information about user</param>
     /// <response code = "200">Success</response>
     /// <response code = "400">Something happened</response>
-    [HttpPost]
-    public async Task<IActionResult> ChangeUserInformation([FromBody] UserInfoViewModel userInfoView)
+    [HttpPut]
+    public async Task<IActionResult> UpdateUserInformation([FromBody] UserInfoViewModel userInfoView)
     {
         try
         {
@@ -58,7 +58,7 @@ public class UserController : ControllerBase
                 userInfoView.FirstName,
                 userInfoView.LastName,
                 userInfoView.Birthday,
-                userInfoView.ImageUrl,
+                userInfoView.ImageUrl ?? "",
                 userInfoView.Gender,
                 _mapper.Map<List<TagViewModel>, List<TagDto>>(userInfoView.Tags)
             );
@@ -69,6 +69,23 @@ public class UserController : ControllerBase
             return BadRequest(new ErrorResponseModel(e.Message));
         }
     }
-    
+
+    /// <summary>
+    /// Get user by id
+    /// </summary>
+    /// <param name="id">id of user</param>
+    /// <returns>user</returns>
+    [HttpGet("{id}")]
+    public IActionResult GetUser(Guid id)
+    {
+        try
+        {
+            return Ok(_userService.GetUserById(id));
+        }
+        catch (UserNotFoundException e)
+        {
+            return BadRequest(new ErrorResponseModel(e.Message));
+        }
+    }
 
 }

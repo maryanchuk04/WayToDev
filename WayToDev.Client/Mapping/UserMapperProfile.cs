@@ -10,6 +10,7 @@ public class UserMapperProfile : Profile
     {
         CreateMap<UserDto, User>();
         CreateMap<User, UserDto>()
+            .ForMember(dest=>dest.Email, opts=>opts.MapFrom(src=>src.Account.Email ?? ""))
             .ForMember(dest => dest.ImageUrl, opts => opts.MapFrom(x => x.Image!.ImageUrl))
             .ForMember(dest=> dest.Tags, opts => opts.MapFrom(src => MapTechnologies(src.TechStack.ToList())));
     }

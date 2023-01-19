@@ -1,0 +1,40 @@
+<div class="h-100" *ngIf="user$ | async as user">
+  <app-spinner-wrapper [condition] = 'user == null'>
+    <div class = 'w-100 h-100 profile-view'>
+      <div class = 'main'>
+        <div class="avatar">
+          <img [src]="user.imageUrl" [alt]="user.userName + 'avatar'">
+        </div>
+        <div class="text mt-2">
+          <h5 class ="fw-bolder">{{user.firstName + " " + user.lastName}}</h5>
+          <p class = 'text-secondary'><span class="fw-bold"><i class="fa-solid fa-envelope"></i>Email: </span> {{user.email}}</p>
+          <p class = 'text-secondary'><span class="fw-bold"><i class="fa-duotone fa-balloons"></i>Birthday: </span> {{user.birthday | date: "MMM d, y"}}</p>
+          <p class="text-secondary"><span class="fw-bold"><i class="fa-sharp fa-solid fa-phone"></i>Phone: </span>+380665671003</p>
+          <div class="d-flex justify-content-between">
+            <button mat-raised-button color="primary">Send Message</button>
+            <a [href]="'mailto:'+user.email">
+              <button mat-raised-button color="secondary">Send Email</button>
+            </a>
+          </div>
+        </div>
+
+      </div>
+      <div class = 'sub-info'>
+        <div class="head">
+          <h2 class = 'fw-bolder my-2'>{{user.userName}}</h2>
+          <p class="fw-bold text-secondary">{{user.gender == 0 ? "Male" : "Female"}}</p>
+        </div>
+        <hr>
+        <div>
+          <h4>Bio</h4>
+          <p>Jerry Smith is a race car driver at Hendrick Motorsports with five years’ experience making speedy turns for several hours, helping his thousands of fans to fulfill their entertainment needs. Specializing in left turns and safely overtaking his opponents in the pursuit of a checkered flag, Jerry uses that expertise to never come in last.
+            By focusing on making sure Hendrick Motorsports ends up in the winner’s circle at every race, Jerry has been able to put the racing certifications he earned at driver’s school to good use. Over the years, his strengths at Hendrick Motorsports have garnered some recognition for winning several races each year. Jerry may spend his days at the racetrack, but it’s the thrill of the race and the glory of coming in first that gets him up in the morning.</p>
+        </div>
+        <div class="w-100">
+          <h4>Skills</h4>
+          <app-techstack-field [showDelete] = "false" [techStack]="user.tags"></app-techstack-field>
+        </div>
+      </div>
+    </div>
+  </app-spinner-wrapper>
+</div>

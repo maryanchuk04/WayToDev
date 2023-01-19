@@ -8,6 +8,8 @@ public interface IUserService
 {
     UserDto GetCurrentUserInfo();
     Task AddTechnologyTags(List<Guid> tagsIds);
-    Task UpdateUserInfo(string userName, string firstName, string lastName, DateTime birthday, string imageUrl, Gender gender, List<TagDto>tagDtos);
+    Task UpdateUserInfo(string userName, string firstName, string lastName, DateTime birthday, string imageUrl,
+        Gender? gender, List<TagDto> tagDtos);
     void UpdateUserTechnologies(IEnumerable<Guid> technologiesIds, User user);
+    UserDto GetUserById(Guid id);
 }

@@ -7,6 +7,7 @@ import {TechItem} from "../../models/techItem";
   styleUrls: ['./tech-item.component.css']
 })
 export class TechItemComponent implements OnInit {
+  @Input() showDelete: boolean = false;
   @Input() item: TechItem;
   @Input() close: (item: TechItem) => any;
   constructor() { }

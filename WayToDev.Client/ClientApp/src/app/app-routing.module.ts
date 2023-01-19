@@ -9,7 +9,7 @@ const routes: Routes = [
   { path: '', component: MainPageComponent },
   { path: '', loadChildren: ()=> NewsModule},
   { path: '', loadChildren: () => AuthModule },
-  { path: '', loadChildren: () => ProfileModule, canActivate : [ AuthGuardService]},
+  { path: '', loadChildren: () => ProfileModule, canActivate : [AuthGuardService]},
   { path: '**', component: MainPageComponent}
 ];
 

@@ -9,10 +9,10 @@ export class RoleProfileGuardService implements CanActivate{
   constructor(private router: Router) { }
 
   canActivate(): boolean {
-    if( !!localStorage.getItem("role") == false){
+    if(Number(localStorage.getItem("role"))==0){
       return true;
     }
-    this.router.navigate(["/sign-in"])
+    this.router.navigate(["/sign-up"])
     return false;
   }
 }

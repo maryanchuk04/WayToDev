@@ -58,6 +58,7 @@ public class CompanyService : Dao<Company>, ICompanyService
             .Include(x => x.Image)
             .Include(x=>x.Feedbacks)
             .Include(x=>x.TechStack)
+                .ThenInclude(x=>x.Tag)
             .First();
     }
 }

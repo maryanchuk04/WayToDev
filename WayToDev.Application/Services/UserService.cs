@@ -26,7 +26,7 @@ public class UserService : Dao<User>, IUserService
             .Include(x=>x.TechStack)
                 .ThenInclude(x=>x.Tag)
                     .ThenInclude(x=>x.Image)
-            .FirstOrDefault(x=>x.Id == userId);
+            .FirstOrDefault(x=>x.AccountId == userId);
 
         if (user == null)
             throw new UserNotFoundException("User with this id is not found!");
@@ -55,22 +55,20 @@ public class UserService : Dao<User>, IUserService
         await Context.SaveChangesAsync();
     }
 
-    public async Task UpdateUserInfo(
-        string userName,
+    public async Task UpdateUserInfo(string userName,
         string firstName,
         string lastName,
         DateTime birthday,
         string imageUrl,
-        Gender gender,
-        List<TagDto>tagDtos
-        )
+        Gender? gender,
+        List<TagDto> tagDtos)
     {
         var user = GetCurrentUser();
         user.UserName = userName;
         user.FirstName = firstName;
         user.LastName = lastName;
         user.Birthday = birthday;
-        user.Gender = gender;
+        user.Gender = gender ?? user.Gender;
         if (user.Image == null)
         {
             user.Image = new Image(imageUrl);
@@ -99,11 +97,27 @@ public class UserService : Dao<User>, IUserService
         }
     }
 
+    public UserDto GetUserById(Guid id)
+    {
+        var user = Context.Users
+            .Include(x=>x.TechStack)
+                .ThenInclude(x=>x.Tag)
+                    .ThenInclude(x=>x.Image)
+            .Include(x=>x.Image)
+            .Include(x=>x.Account)
+            .FirstOrDefault(x=>x.Id == id);
+
+        if (user == null)
+            throw new UserNotFoundException("User not found");
+
+        return Mapper.Map<User, UserDto>(user);
+    }
+
     private User GetCurrentUser() => Context.Users
                                          .Include(x=>x.Image)
                                          .Include(x=>x.TechStack)
-                                            .ThenInclude(x=>x.Tag)
-                                         .FirstOrDefault(x => x.Id ==  _securityContext.GetCurrentAccountId())
+                                         .ThenInclude(x=>x.Tag)
+                                         .FirstOrDefault(x => x.AccountId ==  _securityContext.GetCurrentAccountId())
                                      ?? throw new UserNotFoundException("User Not Found");
 
     private bool TechStackIsUpdated(List<TagDto> incomingTags, List<TechStack> userTags)

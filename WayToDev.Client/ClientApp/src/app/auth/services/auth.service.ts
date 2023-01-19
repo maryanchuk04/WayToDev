@@ -77,4 +77,10 @@ export class AuthService {
     );
   }
 
+  unAuthorize(): void{
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    this.httpClient.get('this.apiUrl/unauthorize');
+  }
+
 }

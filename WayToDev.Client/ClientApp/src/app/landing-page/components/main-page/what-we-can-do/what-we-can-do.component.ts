@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {Store} from "@ngrx/store";
+import {AppState} from "../../../../store/app-state";
+import {handleChangePopup} from "../../../../ui/sidebar-popup/store/popup.actions";
 
 @Component({
   selector: 'app-what-we-can-do',
@@ -7,9 +10,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WhatWeCanDoComponent implements OnInit {
 
-  constructor() { }
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
   }
-
 }

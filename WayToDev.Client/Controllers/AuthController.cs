@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using WayToDev.Application.Exceptions;
 using WayToDev.Client.ViewModels;
@@ -88,6 +89,24 @@ public class AuthController : ControllerBase
             {
                 error = e.Message
             });
+        }
+    }
+    
+    /// <summary>
+    /// UnAuthorize user
+    /// </summary>
+    /// <returns></returns>
+    [HttpPut]
+    public IActionResult UnAuthorize()
+    {
+        try
+        {
+            HttpContext.Response.Cookies.Delete("refreshToken");
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(new ErrorResponseModel(e.Message));
         }
     }
 }

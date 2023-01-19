@@ -5,6 +5,7 @@ import {ProfileCompanyComponent} from "./components/profile-company/profile-comp
 import {RoleProfileGuardService} from "../auth/services/role-profile-guard.service";
 import {RoleCompanyGuardService} from "../auth/services/role-company-guard.service";
 
+
 const profileRoutes: Routes = [
   { path: "profile", component: ProfileComponent, canActivate: [RoleProfileGuardService] },
   { path : "profile-company", component: ProfileCompanyComponent, canActivate : [RoleCompanyGuardService]}
