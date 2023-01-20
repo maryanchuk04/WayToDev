@@ -1,0 +1,7 @@
+<mat-chip>
+  <img matChipAvatar [src]="item.imageUrl" [alt]="item.tagName+'-tag-image' "/>
+  {{item.tagName}}
+  <button *ngIf="showDelete" matChipRemove [attr.aria-label]="'remove ' +item.tagName" (click)="delete()">
+    <mat-icon>cancel</mat-icon>
+  </button>
+</mat-chip>

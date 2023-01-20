@@ -1,11 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
-import { Router } from "@angular/router"
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-sign-up-form',
   templateUrl: './sign-up-form.component.html',
-  styleUrls: ['./sign-up-form.component.css']
+  styleUrls: ['./sign-up-form.component.css'],
 })
 export class SignUpFormComponent implements OnInit {
   public signUpForm!: FormGroup;
@@ -38,7 +43,9 @@ export class SignUpFormComponent implements OnInit {
     if(this.signUpForm.valid){
       this.authService.registration(this.formValues).subscribe(response =>{
         if(response.status === 200){
-          this.router.navigate(["/"])
+          localStorage.setItem("token", response.body.token);
+          localStorage.setItem("role", JSON.stringify(0));
+          this.router.navigate(["/profile"]);
         }
       });
     }
@@ -52,12 +59,14 @@ export class SignUpFormComponent implements OnInit {
     return this.signUpForm.value;
   }
 
-  createCompareValidator(controlOne: AbstractControl, controlTwo: AbstractControl) {
+  createCompareValidator(
+    controlOne: AbstractControl,
+    controlTwo: AbstractControl
+  ) {
     return () => {
-    if (controlOne.value !== controlTwo.value)
-      return { match_error: 'Value does not match' };
-    return null;
-  };
-
-}
+      if (controlOne.value !== controlTwo.value)
+        return { match_error: 'Value does not match' };
+      return null;
+    };
+  }
 }

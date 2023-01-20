@@ -1,7 +1,7 @@
 .sing-up-form{
   display: flex;
   flex-direction: column;
-  background-color: #8d99ae;
+  background-color: rgba(141, 153, 174, 0.53);
   border-radius: 40px;
   display: grid;
   grid-template-columns: 45% 55%;
@@ -9,13 +9,14 @@
   border: 3px solid #2B2D42 ;
   box-shadow:  10px 10px 60px #8d99ae,
              -10px -10px 60px #8d99ae;
+  position: relative;
+  z-index: 1;
 }
 
 .preview-form{
-
-  width: inherit;
-  height: inherit;
-  overflow: hidden;
+  display:flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .preview-form svg{

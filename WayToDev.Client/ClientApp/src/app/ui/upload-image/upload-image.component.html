@@ -1,0 +1,5 @@
+<div class = "upload-image" (click)="fileInput.click()">
+  <input type="file" hidden (change)="onFileSelected($event)"  #fileInput>
+  <i class="fa-duotone fa-cloud-arrow-up"></i>
+  <p>Click to upload!</p>
+</div>

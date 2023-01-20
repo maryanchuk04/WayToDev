@@ -1,0 +1,32 @@
+.sidebar-component{
+  position: fixed;
+  top: 50%;
+  right: 0;
+  width: 60%;
+  height: 90vh;
+  transform: translate(0, -50%);
+  border-radius: 20px 0 0 20px;
+  z-index: 3;
+  background: white;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.5);
+}
+
+button{
+  border: 0;
+  background: transparent;
+  font-size: 20px;
+  position: absolute;
+  right: 5px;
+}
+
+@media screen and (max-width: 600px) {
+  .sidebar-component{
+    width: 80%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .sidebar-component{
+    width: 90%;
+  }
+}

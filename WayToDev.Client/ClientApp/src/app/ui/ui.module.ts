@@ -8,6 +8,19 @@ import { AlertWrapperComponent } from './alert/alert-wrapper/alert-wrapper.compo
 import { MatSnackBarModule } from '@angular/material/snack-bar'
 import { AlertService } from './alert/alert.service';
 import { SearchComponent } from './search/search.component';
+import { SubmitButtonComponent } from './submit-button/submit-button.component';
+import { SvgIconComponent } from './svg-icon/svg-icon.component';
+import { DynamicWavesComponent } from './dynamic-waves/dynamic-waves.component';
+import {MatChipsModule} from "@angular/material/chips";
+import {MatIconModule} from "@angular/material/icon";
+import {TechstackFieldComponent} from "./techstack-field/techstack-field.component";
+import {UploadImageComponent} from "./upload-image/upload-image.component";
+import {TechItemComponent} from "./tech-item/tech-item.component";
+import { SidebarComponentComponent } from './sidebar-popup/sidebar-component/sidebar-component.component';
+
+import {ProfileUserViewComponent} from "../profile/components/profile-user-view/profile-user-view.component";
+import {MatButtonModule} from "@angular/material/button";
+
 
 @NgModule({
   declarations: [
@@ -15,17 +28,34 @@ import { SearchComponent } from './search/search.component';
     SpinnerComponent,
     AlertComponent,
     AlertWrapperComponent,
-    SearchComponent
+    SearchComponent,
+    SubmitButtonComponent,
+    SvgIconComponent,
+    DynamicWavesComponent,
+    TechstackFieldComponent,
+    UploadImageComponent,
+    TechItemComponent,
+    SidebarComponentComponent,
+    ProfileUserViewComponent
   ],
   imports: [
     CommonModule,
     SpinnerModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatChipsModule,
+    MatIconModule,
+    MatButtonModule,
   ],
-  exports :[
-    SpinnerWrapperComponent,
-    SearchComponent
-  ],
+    exports: [
+        SpinnerWrapperComponent,
+        SearchComponent,
+        SubmitButtonComponent,
+        SvgIconComponent,
+        DynamicWavesComponent,
+        TechstackFieldComponent,
+        UploadImageComponent,
+        SidebarComponentComponent
+    ],
   providers : [
     AlertService
   ]

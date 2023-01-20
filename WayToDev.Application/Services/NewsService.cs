@@ -2,7 +2,6 @@ using AutoMapper;
 using WayToDev.Core.DTOs;
 using WayToDev.Core.Entities;
 using WayToDev.Core.Exceptions;
-using WayToDev.Core.Interfaces.DAOs;
 using WayToDev.Core.Interfaces.Services;
 using WayToDev.Db.EF;
 
