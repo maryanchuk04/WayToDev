@@ -11,10 +11,11 @@ import {CompanyService} from "../../services/company.service";
 })
 export class ProfileCompanyViewComponent implements OnInit {
   company$: Observable<Company>;
-
+  vacancies$: Observable<any>;
   constructor(private route: ActivatedRoute, private companyService: CompanyService) {
     this.route.params.subscribe(_=>{
       this.company$ = this.companyService.getCompanyById(_.id);
+      //add request for get company vacancies
     })
   }
 

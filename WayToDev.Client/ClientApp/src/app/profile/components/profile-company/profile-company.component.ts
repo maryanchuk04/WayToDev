@@ -37,7 +37,7 @@ export class ProfileCompanyComponent implements OnInit {
           imgUrl: this.company.imageUrl,
           description: this.company.description,
           email: this.company.email,
-          countOfPerson: this.company.countOfPerson
+          countOfWorkers: this.company.countOfWorkers
         });
       }
 

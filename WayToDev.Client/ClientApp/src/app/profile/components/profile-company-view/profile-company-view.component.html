@@ -13,7 +13,20 @@
           <i class="fa-solid fa-envelope"></i>
         </a>
       </div>
+    </div>
+    <div class="information">
+      <h4 class ='mb-4'>About company:</h4>
+      <p class="description">{{company.description}}</p>
+      <h4 class="mt-4">Website: <a [href]="company.websiteLink" target="_blank">{{company.companyName}}</a></h4>
+      <h4 class="mt-4">Count of workers: {{company.countOfWorkers}}</h4>
+      <ng-container *ngIf="company.tags.length > 0">
+        <h4 class="mt-4">Technologies:</h4>
+        <app-techstack-field [techStack]="company.tags" [showDelete] = 'false'>
+        </app-techstack-field>
+      </ng-container>
+      <ng-container>
 
+      </ng-container>
     </div>
   </app-spinner-wrapper>
 </div>

@@ -26,7 +26,7 @@ public class CompanyService : Dao<Company>, ICompanyService
             .Include(x=>x.Image)
             .Include(x => x.Feedbacks)
             .Include(x => x.TechStack)
-            .ThenInclude(x => x.Tag)
+                .ThenInclude(x => x.Tag)
             .FirstOrDefaultAsync(x => x.Id == id);
         if (company == null)
             throw new UserNotFoundException("User not found");
@@ -61,8 +61,7 @@ public class CompanyService : Dao<Company>, ICompanyService
     {
         return Mapper.Map<Company, CompanyDto>(CurrentCompany());
     }
-
-
+    
     private Company CurrentCompany()
     {
         var companyQueryable = Context.Companies
