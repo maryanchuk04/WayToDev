@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using WayToDev.Application.Exceptions;
 using WayToDev.Core.DTOs;
 using WayToDev.Core.Entities;
+using WayToDev.Core.Enums;
 using WayToDev.Core.Exceptions;
 using WayToDev.Core.Interfaces.Services;
 using WayToDev.Db.EF;
@@ -116,5 +117,21 @@ public class TokenService :  Dao<AccountToken>, ITokenService
         
         _httpContextAccessor.HttpContext?.Response.Cookies.Delete("refreshToken");
         return true;
+    }
+
+    public async Task GenerateEmailConfirmationToken(string token, Guid accountId)
+    {
+        var emailToken = new AccountToken()
+        {
+            Type = TokenType.EmailConfirmationType,
+            Token = token,
+            Expires = DateTime.Now.AddDays(7),
+            Created = DateTime.Now,
+            AccountId = accountId,
+        };
+
+        Context.AccountTokens.Add(emailToken);
+
+        await Context.SaveChangesAsync();
     }
 }

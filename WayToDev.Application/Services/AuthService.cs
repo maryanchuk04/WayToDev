@@ -52,7 +52,7 @@ public class AuthService : Dao<Account>, IAuthService
 
         var newAccount = new Account()
         {
-            IsBlocked = false,
+            IsBlocked = true,
             User = new User
             {
                 Email = registrationDto.Email,
@@ -68,7 +68,22 @@ public class AuthService : Dao<Account>, IAuthService
         await Context.SaveChangesAsync();
         return new AuthenticateResponseModel(jwtToken, refreshToken.Token);
     }
-    
+
+    public async Task<AuthenticateResponseModel> EmailConfirmAndAuthenticate(Guid id, string token)
+    {
+        var userTokens = Context.AccountTokens
+            .Include(x=>x.Account)
+            .FirstOrDefault(x => x.Token == token);
+
+        if (userTokens == null)
+            throw new AuthenticateException("Error in confirmation");
+
+        var account = userTokens.Account;
+        var jwtToken = _tokenService.GenerateAccessToken(account);
+        var refreshToken = _tokenService.GenerateRefreshToken();
+        return new AuthenticateResponseModel(jwtToken, refreshToken.Token);
+    }
+
     private bool VerifyPassword(string passwordFromRequest, string password) => BCrypt.Net.BCrypt.Verify(passwordFromRequest,password);
 
     private string HashPassword(string password) => BCrypt.Net.BCrypt.HashPassword(password);

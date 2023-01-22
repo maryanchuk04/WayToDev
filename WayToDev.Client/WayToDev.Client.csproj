@@ -36,6 +36,7 @@
     <ItemGroup>
       <ProjectReference Include="..\WayToDev.Application\WayToDev.Application.csproj" />
       <ProjectReference Include="..\WayToDev.Db\WayToDev.Db.csproj" />
+      <ProjectReference Include="..\WayToDev.Infrastructure\WayToDev.Infrastructure.csproj" />
     </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

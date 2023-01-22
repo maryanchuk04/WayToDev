@@ -1,3 +1,5 @@
+using WayToDev.Core.Enums;
+
 namespace WayToDev.Core.Entities;
 
 public class AccountToken : BaseEntity
@@ -9,5 +11,6 @@ public class AccountToken : BaseEntity
     public DateTime Created { get; set; }
     public DateTime? Revoked { get; set; }
     public string? ReplacedByToken { get; set; }
+    public TokenType Type { get; set; } = TokenType.RefreshToken;
 
 }
