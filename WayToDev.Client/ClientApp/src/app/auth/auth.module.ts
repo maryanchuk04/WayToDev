@@ -9,6 +9,7 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
 
 import { UiModule } from '../ui/ui.module';
 import { SignUpFormComponent } from './components/sign-up-form/sign-up-form.component';
+import { EmailConfirmPageComponent } from './components/email-confirm-page/email-confirm-page.component';
 
 @NgModule({
   declarations: [
@@ -16,13 +17,14 @@ import { SignUpFormComponent } from './components/sign-up-form/sign-up-form.comp
     SignInFormComponent,
     SignUpComponent,
     SignUpFormComponent,
+    EmailConfirmPageComponent,
   ],
   imports: [
     CommonModule,
     AuthRoutingModule,
     ReactiveFormsModule,
     UiModule,
-    HttpClientModule,
+    HttpClientModule
   ]
 })
 export class AuthModule { }

@@ -23,15 +23,15 @@ public class TokenService :  Dao<AccountToken>, ITokenService
     private readonly IHttpContextAccessor _httpContextAccessor;
 
     public TokenService(ApplicationContext context,
-        IConfiguration configuration, 
-        IHttpContextAccessor httpContextAccessor, 
-        IMapper mapper = null) 
+        IConfiguration configuration,
+        IHttpContextAccessor httpContextAccessor,
+        IMapper mapper = null)
         : base(context, mapper)
     {
         _configuration = configuration;
         _httpContextAccessor = httpContextAccessor;
     }
-    
+
     public string GenerateAccessToken(Account account)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -71,14 +71,14 @@ public class TokenService :  Dao<AccountToken>, ITokenService
         var account = Context.Accounts
             .Include(a => a.RefreshTokens)
             .SingleOrDefault(a => a.RefreshTokens.Any(t => t.Token.Equals(token)));
-        
+
         if (account == null)
         {
             throw new AccountNotFoundException("Account with this token, not found");
         }
 
         var refreshToken = account.RefreshTokens.Single(x => x.Token == token);
-        
+
         if (refreshToken.Expires < DateTime.Now && refreshToken.Revoked == null)
         {
             return null;
@@ -92,7 +92,7 @@ public class TokenService :  Dao<AccountToken>, ITokenService
         Context.Update(account);
         Update(refreshToken);
         await Context.SaveChangesAsync();
-        
+
         // generate new jwt
         var jwtToken = GenerateAccessToken(account);
         return new AuthenticateResponseModel(jwtToken, newRefreshToken.Token);
@@ -105,7 +105,7 @@ public class TokenService :  Dao<AccountToken>, ITokenService
         {
             throw new TokenException("Refresh token is not exist");
         }
-        
+
         if (refreshToken.Revoked == null && DateTime.UtcNow >= refreshToken.Expires)
         {
             return false;
@@ -114,16 +114,15 @@ public class TokenService :  Dao<AccountToken>, ITokenService
         refreshToken.Revoked = DateTime.Now;
         Update(refreshToken);
         await Context.SaveChangesAsync();
-        
+
         _httpContextAccessor.HttpContext?.Response.Cookies.Delete("refreshToken");
         return true;
     }
 
-    public async Task GenerateEmailConfirmationToken(string token, Guid accountId)
+    public async Task<AccountToken> GenerateEmailConfirmationToken(string token, Guid accountId)
     {
         var emailToken = new AccountToken()
         {
-            Type = TokenType.EmailConfirmationType,
             Token = token,
             Expires = DateTime.Now.AddDays(7),
             Created = DateTime.Now,
@@ -133,5 +132,7 @@ public class TokenService :  Dao<AccountToken>, ITokenService
         Context.AccountTokens.Add(emailToken);
 
         await Context.SaveChangesAsync();
+
+        return emailToken;
     }
 }

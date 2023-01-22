@@ -12,13 +12,13 @@ public class AuthService : Dao<Account>, IAuthService
 {
     private readonly ITokenService _tokenService;
 
-    public AuthService(ApplicationContext context, ITokenService tokenService, IMapper mapper = null) 
+    public AuthService(ApplicationContext context, ITokenService tokenService, IMapper mapper = null)
         : base(context, mapper)
     {
         _tokenService = tokenService;
     }
-    
-    public async Task<AuthenticateResponseModel> Authenticate(string email, string password)
+
+    public async Task<AuthenticateResponseModel> AuthenticateAsync(string email, string password)
     {
         var account = Context.Accounts
             .Include(x=>x.User)
@@ -28,7 +28,7 @@ public class AuthService : Dao<Account>, IAuthService
         {
             throw new AuthenticateException("Incorrect login or password");
         }
-        
+
         if (!VerifyPassword(password, account.Password))
         {
             throw new AuthenticateException("Incorrect login or password");
@@ -43,7 +43,7 @@ public class AuthService : Dao<Account>, IAuthService
         return new AuthenticateResponseModel(jwt, refreshToken.Token);
     }
 
-    public async Task<AuthenticateResponseModel> Registration(RegistrDto registrationDto)
+    public async Task<string> RegistrationAsync(RegistrDto registrationDto)
     {
         if (Context.Users.Any(x=>x.Email==registrationDto.Email))
         {
@@ -61,26 +61,32 @@ public class AuthService : Dao<Account>, IAuthService
             RefreshTokens = new List<AccountToken>(),
             Password = HashPassword(registrationDto.Password)
         };
-        var jwtToken = _tokenService.GenerateAccessToken(newAccount);
-        var refreshToken = _tokenService.GenerateRefreshToken();
-        newAccount.RefreshTokens.Add(refreshToken);
-        Insert(newAccount);
+        //var jwtToken = _tokenService.GenerateAccessToken(newAccount);
+        //var refreshToken = _tokenService.GenerateRefreshToken();
+
+        var acc = Insert(newAccount);
+
+        var res = await _tokenService.GenerateEmailConfirmationToken(Guid.NewGuid().ToString(), acc.Id);
         await Context.SaveChangesAsync();
-        return new AuthenticateResponseModel(jwtToken, refreshToken.Token);
+
+        return res.Token;
     }
 
-    public async Task<AuthenticateResponseModel> EmailConfirmAndAuthenticate(Guid id, string token)
+    public async Task<AuthenticateResponseModel> EmailConfirmAndAuthenticateAsync(string token)
     {
-        var userTokens = Context.AccountTokens
+        var userTokens = await Context.AccountTokens
             .Include(x=>x.Account)
-            .FirstOrDefault(x => x.Token == token);
+            .FirstOrDefaultAsync(x => x.Token == token);
 
         if (userTokens == null)
             throw new AuthenticateException("Error in confirmation");
 
         var account = userTokens.Account;
+        account.IsBlocked = false;
         var jwtToken = _tokenService.GenerateAccessToken(account);
         var refreshToken = _tokenService.GenerateRefreshToken();
+        await Context.SaveChangesAsync();
+
         return new AuthenticateResponseModel(jwtToken, refreshToken.Token);
     }
 
@@ -88,5 +94,5 @@ public class AuthService : Dao<Account>, IAuthService
 
     private string HashPassword(string password) => BCrypt.Net.BCrypt.HashPassword(password);
 
-    
+
 }

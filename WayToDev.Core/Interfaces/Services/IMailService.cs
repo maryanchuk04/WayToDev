@@ -2,5 +2,5 @@ namespace WayToDev.Core.Interfaces.Services;
 
 public interface IMailService
 {
-    Task SendRegistrationMessageAsync(string email, string? url);
+    Task SendRegistrationMessageAsync(string email, string token);
 }

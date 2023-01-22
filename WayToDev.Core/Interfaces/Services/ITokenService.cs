@@ -9,5 +9,5 @@ public interface ITokenService
     AccountToken GenerateRefreshToken();
     Task<AuthenticateResponseModel> RefreshToken(string token);
     Task<bool> RevokeToken(string token);
-    Task GenerateEmailConfirmationToken(string token, Guid accountId);
+    Task<AccountToken> GenerateEmailConfirmationToken(string token, Guid accountId);
 }

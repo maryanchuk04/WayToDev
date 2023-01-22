@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using WayToDev.Application.Services;
 using WayToDev.Client.Mapping;
+using WayToDev.Core.Configuration;
 using WayToDev.Core.Interfaces.DAOs;
 using WayToDev.Core.Interfaces.Infrastructure;
 using WayToDev.Core.Interfaces.Services;
@@ -21,8 +22,11 @@ var builder = WebApplication.CreateBuilder(args);
 var mailConfig = new MailSenderConfiguration();
 builder.Configuration.GetSection("MailClient").Bind(mailConfig);
 builder.Services.AddSingleton(mailConfig);
+//configuration urls
+var appUrlsConfig = new ApplicationUrlsConfiguration();
+builder.Configuration.GetSection("BaseUrls").Bind(appUrlsConfig);
+builder.Services.AddSingleton(appUrlsConfig);
 builder.Services.AddControllersWithViews();
-
 builder.Services.AddDbContext<ApplicationContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("ConnString"),
         b => b.MigrationsAssembly("WayToDev.Db")));

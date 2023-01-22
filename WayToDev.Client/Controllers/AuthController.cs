@@ -28,8 +28,7 @@ public class AuthController : ControllerBase
     {
         try
         {
-            var authResponseModel = await _authService.Authenticate(authenticateViewModel.Email, authenticateViewModel.Password);
-            
+            var authResponseModel = await _authService.AuthenticateAsync(authenticateViewModel.Email, authenticateViewModel.Password);
 
             return Ok(new { Token = authResponseModel.JwtToken });
         }
@@ -40,18 +39,16 @@ public class AuthController : ControllerBase
                 error = e.Message
             });
         }
-        
     }
-    
+
     [HttpPost("registration")]
     public async Task<IActionResult> Registration(RegistrViewModel registerViewModel)
     {
         try
         {
-            var result = await _authService.Registration(_mapper.Map<RegistrViewModel, RegistrDto>(registerViewModel));
-            RefreshCookie(result);
-            await _mailService.SendRegistrationMessageAsync(registerViewModel.Email, Url.Action("EmailConfirm", "Auth", result.JwtToken));
-            return Ok(new { Token = result.JwtToken });
+            var result = await _authService.RegistrationAsync(_mapper.Map<RegistrViewModel, RegistrDto>(registerViewModel));
+            await _mailService.SendRegistrationMessageAsync(registerViewModel.Email, result);
+            return Ok();
         }
         catch (AuthenticateException e)
         {
@@ -61,20 +58,14 @@ public class AuthController : ControllerBase
             });
         }
     }
-    
+
     [AllowAnonymous]
-    [HttpPost("verify/{accountId}/{token}")]
-    public async Task<IActionResult> EmailConfirm(string accountId, string token)
+    [HttpGet("verify/{token}")]
+    public async Task<IActionResult> EmailConfirm(string token)
     {
-        if (!Guid.TryParse(accountId, out Guid id))
-        {
-            throw new AuthenticateException("User not found");
-        }
-
-        var authResponseModel = await _authService.EmailConfirmAndAuthenticate(id, token);
-
+        var authResponseModel = await _authService.EmailConfirmAndAuthenticateAsync(token);
         RefreshCookie(authResponseModel);
-        return Ok(new { Token = authResponseModel.JwtToken });
+        return Ok(authResponseModel);
     }
 
     private void RefreshCookie(AuthenticateResponseModel authResponseModel)

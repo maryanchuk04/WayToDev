@@ -4,7 +4,7 @@ namespace WayToDev.Core.Interfaces.Services;
 
 public interface IAuthService
 {
-    Task<AuthenticateResponseModel> Authenticate(string email, string password);
-    Task<AuthenticateResponseModel> Registration(RegistrDto registrationDto);
-    Task<AuthenticateResponseModel> EmailConfirmAndAuthenticate(Guid id, string token);
+    Task<AuthenticateResponseModel> AuthenticateAsync(string email, string password);
+    Task<string> RegistrationAsync(RegistrDto registrationDto);
+    Task<AuthenticateResponseModel> EmailConfirmAndAuthenticateAsync(string token);
 }
