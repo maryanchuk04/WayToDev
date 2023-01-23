@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WayToDev.Application.Exceptions;
+using WayToDev.Client.ExtensionMethods;
 using WayToDev.Client.ViewModels;
 using WayToDev.Core.DTOs;
 using WayToDev.Core.Interfaces.Services;
@@ -29,7 +30,7 @@ public class AuthController : ControllerBase
         try
         {
             var authResponseModel = await _authService.AuthenticateAsync(authenticateViewModel.Email, authenticateViewModel.Password);
-
+            HttpContext.SetTokenCookie(authResponseModel);        
             return Ok(new { Token = authResponseModel.JwtToken });
         }
         catch (AuthenticateException e)
@@ -64,20 +65,7 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> EmailConfirm(string token)
     {
         var authResponseModel = await _authService.EmailConfirmAndAuthenticateAsync(token);
-        RefreshCookie(authResponseModel);
+        HttpContext.SetTokenCookie(authResponseModel);
         return Ok(authResponseModel);
-    }
-
-    private void RefreshCookie(AuthenticateResponseModel authResponseModel)
-    {
-        var cookieOptions = new CookieOptions
-        {
-            HttpOnly = true,
-            Expires = DateTime.Now.AddDays(7),
-            Secure = true,
-        };
-
-        HttpContext.Response.Cookies.Delete("refreshToken");
-        HttpContext.Response.Cookies.Append("refreshToken", authResponseModel.RefreshToken, cookieOptions);
     }
 }
