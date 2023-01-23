@@ -6,22 +6,28 @@ namespace WayToDev.Application.Services;
 
 public class MailService : IMailService
 {
-    private const string DefaultEmail = "waytodev@gmail.com";
-    private const string DefaultName = "WayToDevAcc";
-    private readonly ApplicationUrlsConfiguration _configuration;
+    private const string FromEmail = "waytodev@gmail.com";
+    private const string FromName = "WayToDevAcc";
     private readonly IMailClient _mailClient;
+    private readonly EmailTemplatePathModel _model;
 
-    public MailService(IMailClient mailClient, ApplicationUrlsConfiguration configuration)
+    public MailService(IMailClient mailClient, EmailTemplatePathModel model, IPinGenerator generator)
     {
         _mailClient = mailClient;
-        _configuration = configuration;
+        _model = model;
     }
 
     public async Task SendRegistrationMessageAsync(string email, string token)
     {
         const string subject = "Welcome to WayToDev";
-        var htmlContentWelcomeContent = $"<h1>Welcome to WayToDev!!!</h1><br/><br/>Confirm your mail <a href='{_configuration.EmailConfirmationUrl}/{token}'>this is link!</a>";
-        await _mailClient.SendHtmlMessageAsync(subject, htmlContentWelcomeContent, DefaultEmail, email, DefaultName);
+        using var streamReader = File.OpenText($"{_model.RootPath}/welcome-template.html");
+        var pin = token.Select(x=>x.ToString()).ToArray();
+        var htmlContent = string.Format(await streamReader.ReadToEndAsync(), pin[0], pin[1], pin[2], pin[3]);
+        await _mailClient.SendHtmlMessageAsync(
+            subject, 
+            htmlContent, 
+            FromEmail, 
+            email, 
+            FromName);
     }
-
 }

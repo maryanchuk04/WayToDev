@@ -16,12 +16,11 @@ public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
     private readonly IMapper _mapper;
-    private readonly IMailService _mailService;
-    public AuthController(IAuthService authService, IMapper mapper, IMailService mailService)
+
+    public AuthController(IAuthService authService, IMapper mapper)
     {
         _authService = authService;
         _mapper = mapper;
-        _mailService = mailService;
     }
 
     [HttpPost]
@@ -48,8 +47,7 @@ public class AuthController : ControllerBase
         try
         {
             var result = await _authService.RegistrationAsync(_mapper.Map<RegistrViewModel, RegistrDto>(registerViewModel));
-            await _mailService.SendRegistrationMessageAsync(registerViewModel.Email, result);
-            return Ok();
+            return Ok(new { accountId = result});
         }
         catch (AuthenticateException e)
         {
@@ -61,11 +59,12 @@ public class AuthController : ControllerBase
     }
 
     [AllowAnonymous]
-    [HttpGet("verify/{token}")]
-    public async Task<IActionResult> EmailConfirm(string token)
+    [HttpGet("verify/{accountId}/{token}")]
+    public async Task<IActionResult> EmailConfirm(Guid accountId, string token)
     {
-        var authResponseModel = await _authService.EmailConfirmAndAuthenticateAsync(token);
+        var authResponseModel = await _authService.EmailConfirmAndAuthenticateAsync(token, accountId);
         HttpContext.SetTokenCookie(authResponseModel);
-        return Ok(authResponseModel);
+        
+        return Ok(new { Token = authResponseModel.JwtToken });
     }
 }

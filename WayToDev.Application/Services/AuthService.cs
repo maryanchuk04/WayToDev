@@ -11,11 +11,12 @@ namespace WayToDev.Application.Services;
 public class AuthService : Dao<Account>, IAuthService
 {
     private readonly ITokenService _tokenService;
-
-    public AuthService(ApplicationContext context, ITokenService tokenService, IMapper mapper = null)
+    private readonly IMailService _mailService;
+    public AuthService(ApplicationContext context, ITokenService tokenService, IMailService mailService, IMapper mapper = null)
         : base(context, mapper)
     {
         _tokenService = tokenService;
+        _mailService = mailService;
     }
 
     public async Task<AuthenticateResponseModel> AuthenticateAsync(string email, string password)
@@ -66,21 +67,21 @@ public class AuthService : Dao<Account>, IAuthService
 
         var acc = Insert(newAccount);
 
-        var res = await _tokenService.GenerateEmailConfirmationToken(Guid.NewGuid().ToString(), acc.Id);
+        var res = await _tokenService.GenerateEmailConfirmationToken(acc.Id);
         await Context.SaveChangesAsync();
-
-        return res.Token;
+        await _mailService.SendRegistrationMessageAsync(registrationDto.Email, res.Token);
+        return res.AccountId.ToString();
     }
 
-    public async Task<AuthenticateResponseModel> EmailConfirmAndAuthenticateAsync(string token)
+    public async Task<AuthenticateResponseModel> EmailConfirmAndAuthenticateAsync(string token, Guid accountId)
     {
         var userTokens = await Context.AccountTokens
             .Include(x=>x.Account)
-            .FirstOrDefaultAsync(x => x.Token == token);
-
+            .FirstOrDefaultAsync(x => x.Token == token && x.AccountId == accountId);
+        
         if (userTokens == null)
             throw new AuthenticateException("Error in confirmation");
-
+            
         var account = userTokens.Account;
         account.IsBlocked = false;
         var jwtToken = _tokenService.GenerateAccessToken(account);

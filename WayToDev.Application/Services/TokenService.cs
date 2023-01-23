@@ -21,15 +21,16 @@ public class TokenService :  Dao<AccountToken>, ITokenService
 {
     private readonly IConfiguration _configuration;
     private readonly IHttpContextAccessor _httpContextAccessor;
-
+    private readonly IPinGenerator _pinGenerator;
+    
     public TokenService(ApplicationContext context,
         IConfiguration configuration,
-        IHttpContextAccessor httpContextAccessor,
-        IMapper mapper = null)
+        IHttpContextAccessor httpContextAccessor, IPinGenerator pinGenerator, IMapper mapper = null)
         : base(context, mapper)
     {
         _configuration = configuration;
         _httpContextAccessor = httpContextAccessor;
+        _pinGenerator = pinGenerator;
     }
 
     public string GenerateAccessToken(Account account)
@@ -53,7 +54,6 @@ public class TokenService :  Dao<AccountToken>, ITokenService
 
     public AccountToken GenerateRefreshToken()
     {
-
         var randomNumber = new byte[32];
         using var rng = RandomNumberGenerator.Create();
         rng.GetBytes(randomNumber);
@@ -119,14 +119,15 @@ public class TokenService :  Dao<AccountToken>, ITokenService
         return true;
     }
 
-    public async Task<AccountToken> GenerateEmailConfirmationToken(string token, Guid accountId)
+    public async Task<AccountToken> GenerateEmailConfirmationToken(Guid accountId)
     {
         var emailToken = new AccountToken()
         {
-            Token = token,
+            Token = _pinGenerator.Generate().ToString(),
             Expires = DateTime.Now.AddDays(7),
             Created = DateTime.Now,
             AccountId = accountId,
+            Type = TokenType.EmailConfirmationType
         };
 
         Context.AccountTokens.Add(emailToken);

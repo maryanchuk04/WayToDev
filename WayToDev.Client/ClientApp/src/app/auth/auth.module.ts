@@ -10,6 +10,7 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { UiModule } from '../ui/ui.module';
 import { SignUpFormComponent } from './components/sign-up-form/sign-up-form.component';
 import { EmailConfirmPageComponent } from './components/email-confirm-page/email-confirm-page.component';
+import { RegistrationSuccessComponent } from './components/registration-success/registration-success.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { EmailConfirmPageComponent } from './components/email-confirm-page/email
     SignUpComponent,
     SignUpFormComponent,
     EmailConfirmPageComponent,
+    RegistrationSuccessComponent,
   ],
   imports: [
     CommonModule,

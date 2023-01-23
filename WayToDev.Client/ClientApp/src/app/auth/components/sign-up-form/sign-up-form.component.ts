@@ -38,7 +38,7 @@ export class SignUpFormComponent implements OnInit {
     if(this.signUpForm.valid){
       this.authService.registration(this.formValues).subscribe(response =>{
         if(response.status === 200){
-          this.router.navigate(["/"])
+          this.router.navigate(["/registration-success", response.body.id])
         }
       });
     }

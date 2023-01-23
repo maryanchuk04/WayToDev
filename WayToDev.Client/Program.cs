@@ -7,10 +7,8 @@ using Microsoft.OpenApi.Models;
 using WayToDev.Application.Services;
 using WayToDev.Client.Mapping;
 using WayToDev.Core.Configuration;
-using WayToDev.Core.Interfaces.DAOs;
 using WayToDev.Core.Interfaces.Infrastructure;
 using WayToDev.Core.Interfaces.Services;
-
 using WayToDev.Db.EF;
 using WayToDev.Infrastructure.Configurations;
 using WayToDev.Infrastructure.MailSender;
@@ -23,6 +21,7 @@ var mailConfig = new MailSenderConfiguration();
 builder.Configuration.GetSection("MailClient").Bind(mailConfig);
 builder.Services.AddSingleton(mailConfig);
 //configuration urls
+builder.Services.AddSingleton(new EmailTemplatePathModel { RootPath = builder.Environment.WebRootPath });
 var appUrlsConfig = new ApplicationUrlsConfiguration();
 builder.Configuration.GetSection("BaseUrls").Bind(appUrlsConfig);
 builder.Services.AddSingleton(appUrlsConfig);
@@ -38,6 +37,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<INewsService, NewsService>();
 builder.Services.AddScoped<IMailClient, MailClient>();
 builder.Services.AddScoped<IMailService, MailService>();
+builder.Services.AddSingleton<IPinGenerator, PinGenerator>();
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme

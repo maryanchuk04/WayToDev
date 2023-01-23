@@ -36,7 +36,7 @@ public class TokenController : ControllerBase
     }
     
     
-    [HttpPost("revoke-token")]
+    [HttpPut]
     public async Task<IActionResult> Revoke()
     {
         var token = Request.Cookies["refreshToken"];

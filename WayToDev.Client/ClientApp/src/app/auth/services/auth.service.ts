@@ -44,6 +44,6 @@ export class AuthService {
   }
 
   confirmEmail(token: string): Observable<any>{
-    return this.httpClient.get<any>(`${this.apiUrl}/verify/${token}`);
+    return this.httpClient.get<any>(`${this.apiUrl}/verify/${token}`, this.httpOptions);
   }
 }
