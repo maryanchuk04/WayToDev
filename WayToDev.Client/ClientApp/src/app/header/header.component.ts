@@ -1,6 +1,7 @@
-import { Component, OnInit, SimpleChanges } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import {AuthService} from "../auth/services/auth.service";
+import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import {Header} from "./models/header";
+import {companyHeader, defaultHeader, userHeader} from "./header-variants";
 
 @Component({
   selector: 'app-header',
@@ -10,47 +11,54 @@ import {AuthService} from "../auth/services/auth.service";
 
 
 export class HeaderComponent implements OnInit {
-  //if this is main page headerStyle equals false!
   headerStyle: boolean = false;
-  headerLinks: HeaderLink[];
-
-  constructor(private router: Router, private authService: AuthService) {
-    this.authService.isAuthenticatedObs().subscribe((isAuthenticated: boolean) => {
-      console.log(isAuthenticated);
-    });
-    this.headerLinks = [
-      { route: "/", name: "Home" },
-      { route: "news", name: "News" },
-      { route: "sign-in", name: "SignIn" },
-      { route: "sign-up", name: "SignUp" },
-    ];
+  header: Header;
+  constructor(private router: Router) {
+    this.roleHandler();
     this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.headerStyle = event.url !== '/';
-        console.log(this.headerStyle)
-        if(!this.headerStyle){
-          var scrollTrigger = 60;
-          window.onscroll = function () {
-            if (window.scrollY >= scrollTrigger || window.pageYOffset >= scrollTrigger) {
-              document.getElementsByTagName("header")[0].classList.add('beauty');
-            } else {
-              document.getElementsByTagName("header")[0].classList.remove('beauty');
-            }
-
-          };
-        }
-        else window.onscroll = null;
-      }
+      this.headerStyleHandler(event);
     })
   }
 
   ngOnInit(): void {
-
   }
 
+  headerStyleHandler(event: any){
+    //if this is main page headerStyle equals false!
+    if (event instanceof NavigationEnd) {
+      this.headerStyle = event.url !== '/';
+      if(!this.headerStyle){
+        const scrollTrigger = 60;
+        window.onscroll = function () {
+          if (window.scrollY >= scrollTrigger || window.pageYOffset >= scrollTrigger) {
+            document.getElementsByTagName("header")[0].classList.add('beauty');
+          } else {
+            document.getElementsByTagName("header")[0].classList.remove('beauty');
+          }
+
+        };
+      }
+      else window.onscroll = null;
+    }
+  }
+
+  roleHandler(){
+    let role = Number(localStorage.getItem("role"));
+    switch (role) {
+      case 0: {
+        this.header = userHeader;
+        return;
+      }
+      case 1:{
+        this.header = companyHeader;
+        return;
+      }
+      default:
+        this.header = defaultHeader;
+    }
+  }
 }
 
-interface HeaderLink {
-  route: string
-  name: string
-}
+
+
+
