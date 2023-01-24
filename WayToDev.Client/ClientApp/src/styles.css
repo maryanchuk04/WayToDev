@@ -73,3 +73,7 @@ svg{
 .input-style:focus-visible{
   outline: none;
 }
+
+.cont{
+  padding-top: 3vh;
+}

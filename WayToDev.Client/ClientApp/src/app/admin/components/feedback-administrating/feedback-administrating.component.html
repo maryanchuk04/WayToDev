@@ -1,0 +1,10 @@
+<div class="container">
+    <div class = 'head'>
+        <h2>Feedbacks about companies.</h2>
+        <app-search></app-search>
+    </div>
+    <hr>
+    <div class="content">
+        <app-feedback-request *ngFor="let item of feedbacks" [feedback]="item"></app-feedback-request>
+    </div>
+</div>

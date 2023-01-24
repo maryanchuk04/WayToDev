@@ -1,0 +1,19 @@
+<div class="h-100">
+    <mat-drawer-container class="admin-container" autosize>
+        <mat-drawer #drawer class="admin-sidenav" mode="side">
+          <h2 class="text-center">Admin menu</h2>
+          <ul class = 'admin-menu'>
+            <hr>
+            <li *ngFor="let item of menuList" (click)="changeMenu(item)">{{item.name}}</li>
+          </ul>
+        </mat-drawer>
+        <div class="admin-sidenav-content">
+          <button type="button" class = 'burger' (click)="drawer.toggle()">
+            <i class = "fas fa-bars"></i>
+          </button>
+          <ng-container *ngComponentOutlet="currentComponent">
+            <!-- rendering components -->
+          </ng-container>
+        </div>
+    </mat-drawer-container>
+</div>

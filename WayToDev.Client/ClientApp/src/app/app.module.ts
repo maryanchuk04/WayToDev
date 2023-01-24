@@ -17,6 +17,7 @@ import { AuthModule } from './auth/auth.module';
 import { MainNewsComponent } from './landing-page/components/main-news/main-news.component';
 import { NewsShortInfoComponent } from './landing-page/components/main-news/components/news-short-info/news-short-info.component';
 import { IconModule } from '@coreui/icons-angular';
+import { AdminModule } from './admin/admin.module';
 import { JwtModule } from '@auth0/angular-jwt';
 import { ChatModule } from './chat/chat.module';
 export function tokenGetter() {
@@ -47,6 +48,8 @@ export function tokenGetter() {
     NewsModule,
     AuthModule,
     IconModule,
+    AdminModule,
+    IconModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
@@ -57,6 +60,6 @@ export function tokenGetter() {
     ChatModule
   ],
   providers: [],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
