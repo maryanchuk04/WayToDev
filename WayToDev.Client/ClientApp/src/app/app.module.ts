@@ -18,7 +18,7 @@ import { MainNewsComponent } from './landing-page/components/main-news/main-news
 import { NewsShortInfoComponent } from './landing-page/components/main-news/components/news-short-info/news-short-info.component';
 import { IconModule } from '@coreui/icons-angular';
 import { JwtModule } from '@auth0/angular-jwt';
-
+import { ChatModule } from './chat/chat.module';
 export function tokenGetter() {
   return localStorage.getItem('token');
 }
@@ -53,6 +53,8 @@ export function tokenGetter() {
         allowedDomains: ['localhost:44443', 'localhost:7218'],
       },
     }),
+    IconModule,
+    ChatModule
   ],
   providers: [],
   bootstrap: [AppComponent],

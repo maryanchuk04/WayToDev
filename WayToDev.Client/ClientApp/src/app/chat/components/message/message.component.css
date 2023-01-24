@@ -1,0 +1,22 @@
+.message{
+  background-color: #d5d5d5;
+  width: fit-content;
+  max-width: 80%;
+  padding:  10px 15px;
+  height: fit-content;
+  display: inline-block;
+  align-items: center;
+  justify-content: inherit;
+  border-radius: 20px;
+}
+
+.message .date{
+  margin-left: 10px;
+  font-size: 14px;
+  color : rgb(88, 88, 88);
+  text-align: end;
+}
+.message .text{
+  word-break: break-word;
+  white-space: pre-line
+}
