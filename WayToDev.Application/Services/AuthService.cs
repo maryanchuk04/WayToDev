@@ -11,18 +11,23 @@ namespace WayToDev.Application.Services;
 public class AuthService : Dao<Account>, IAuthService
 {
     private readonly ITokenService _tokenService;
+    private readonly IMailService _mailService;
     private readonly IPasswordHelper _passwordHelper;
-    public AuthService(ApplicationContext context, 
-        ITokenService tokenService, 
-        IPasswordHelper passwordHelper, 
-        IMapper mapper = null) 
-        : base(context, mapper)
+    
+    public AuthService(
+        ApplicationContext context,
+        ITokenService tokenService,
+        IPasswordHelper passwordHelper,
+        IMailService mailService,
+        IMapper mapper
+        ) : base(context, mapper)
     {
         _tokenService = tokenService;
         _passwordHelper = passwordHelper;
+        _mailService = mailService;
     }
     
-    public async Task<AuthenticateResponseModel> Authenticate(string email, string password)
+    public async Task<AuthenticateResponseModel> AuthenticateAsync(string email, string password)
     {
         var account = Context.Accounts
             .Include(x=>x.RefreshTokens)
@@ -51,7 +56,7 @@ public class AuthService : Dao<Account>, IAuthService
             : new AuthenticateResponseModel(jwtToken, refreshToken.Token, Role.Company);
     }
 
-    public async Task<AuthenticateResponseModel> Registration(RegistrDto registrationDto)
+    public async Task<string> RegistrationAsync(RegistrDto registrationDto)
     {
         if (Context.Accounts.Any(x=>x.Email == registrationDto.Email))
         {
@@ -68,14 +73,28 @@ public class AuthService : Dao<Account>, IAuthService
         };
         
         var jwtToken = _tokenService.GenerateAccessToken(newAccount);
+        //var jwtToken = _tokenService.GenerateAccessToken(newAccount);
+        //var refreshToken = _tokenService.GenerateRefreshToken();
+
+        var acc = Insert(newAccount);
+
+        var res = await _tokenService.GenerateEmailConfirmationToken(acc.Id);
+        await Context.SaveChangesAsync();
+        await _mailService.SendRegistrationMessageAsync(registrationDto.Email, res.Token);
+        return res.AccountId.ToString();
+    }
+
+    public async Task<AuthenticateResponseModel> EmailConfirmAndAuthenticateAsync(string token, Guid accountId)
+    {
+        var account = await _tokenService.VerifyEmailConfirmationTokenAsync(accountId, token);
+        account.IsBlocked = false;
+        var jwtToken = _tokenService.GenerateAccessToken(account);
         var refreshToken = _tokenService.GenerateRefreshToken();
-        newAccount.RefreshTokens.Add(refreshToken);
-        Insert(newAccount);
         await Context.SaveChangesAsync();
 
         return new AuthenticateResponseModel(jwtToken, refreshToken.Token);
     }
-
+    
     private Account RegistrationUserAccount(string userName, string email, string password)
     {
         return new Account

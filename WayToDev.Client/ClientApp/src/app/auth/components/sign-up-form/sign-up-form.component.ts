@@ -46,6 +46,7 @@ export class SignUpFormComponent implements OnInit {
           localStorage.setItem("token", response.body.token);
           localStorage.setItem("role", JSON.stringify(0));
           this.router.navigate(["/profile"]);
+          this.router.navigate(["/registration-success", response.body.accountId])
         }
       });
     }
