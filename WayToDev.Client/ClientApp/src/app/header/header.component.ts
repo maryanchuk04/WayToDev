@@ -1,5 +1,6 @@
 import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import {AuthService} from "../auth/services/auth.service";
 
 @Component({
   selector: 'app-header',
@@ -12,7 +13,11 @@ export class HeaderComponent implements OnInit {
   //if this is main page headerStyle equals false!
   headerStyle: boolean = false;
   headerLinks: HeaderLink[];
-  constructor(private router: Router) {
+
+  constructor(private router: Router, private authService: AuthService) {
+    this.authService.isAuthenticatedObs().subscribe((isAuthenticated: boolean) => {
+      console.log(isAuthenticated);
+    });
     this.headerLinks = [
       { route: "/", name: "Home" },
       { route: "news", name: "News" },
@@ -40,6 +45,7 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
   }
 
 }

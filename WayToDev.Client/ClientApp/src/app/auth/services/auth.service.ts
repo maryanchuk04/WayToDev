@@ -1,36 +1,66 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, throwError } from 'rxjs';
+import {BehaviorSubject, catchError, Observable, throwError} from 'rxjs';
 import { LoginModel } from '../models/loginModel';
 import { RegistrationModel } from '../models/registrationModel';
 import { AlertService } from 'src/app/ui/alert/alert.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { environment } from 'src/environments/environment';
 
-
+const BASE_PATH = environment.basePath;
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root',
 })
 
 export class AuthService {
-  apiUrl: string = "https://localhost:7218/api/authenticate";
-  httpOptions : Object = {
+  private authenticated$: BehaviorSubject<boolean> = new BehaviorSubject(!!localStorage.getItem("token"));
+  apiUrl: string = `${BASE_PATH}authenticate`;
+  httpOptions: Object = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     }),
     responseType: 'json',
-    observe : "response"
+    observe: 'response',
   };
 
   constructor(
     private httpClient: HttpClient,
-    private alertService: AlertService) { }
+    private alertService: AlertService,
+    public jwtHelper: JwtHelperService
+  ) {}
 
-  registration(registrationModel: RegistrationModel): Observable<any>{
-
-    return this.httpClient.post<any>(this.apiUrl + "/registration", registrationModel, this.httpOptions).pipe(catchError(this.handleError));
+  registration(registrationModel: RegistrationModel): Observable<any> {
+    return this.httpClient
+      .post<any>(
+        this.apiUrl + '/registration',
+        registrationModel,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
   }
 
-  authenticate(loginModel: LoginModel){
-    return this.httpClient.post<any>(this.apiUrl , loginModel, this.httpOptions).pipe(catchError(this.handleError))
+  authenticate(loginModel: LoginModel) {
+    return this.httpClient
+      .post<any>(this.apiUrl, loginModel, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  public isAuthenticated(): boolean {
+    const token = localStorage.getItem('token');
+    return !this.jwtHelper.isTokenExpired(token);
+  }
+
+
+  public isAuthenticatedObs(): Observable<boolean> {
+    return this.authenticated$.asObservable();
+  }
+
+  setAuthenticated(authenticated: boolean) {
+    this.authenticated$.next(authenticated);
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -38,9 +68,13 @@ export class AuthService {
       console.error('An error occurred:', error.error);
     } else {
       console.log(
-        `Backend returned code ${error.status}, body was: `, error.error);
+        `Backend returned code ${error.status}, body was: `,
+        error.error
+      );
     }
-    return throwError(() => new Error('Something bad happened; please try again later.'));
+    return throwError(
+      () => new Error('Something bad happened; please try again later.')
+    );
   }
 
 }

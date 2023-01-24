@@ -12,7 +12,7 @@ public class NewsMapperProfile : Profile
         CreateMap<News, NewsDto>()
             .ForMember(x=>x.Image, opts=>opts.MapFrom(src=>src.Image!.ImageUrl));
         CreateMap<NewsDto, News>()
-            .ForMember(dest=>dest.Image, opts => opts.MapFrom(src=>new Image(){ ImageUrl = src.Image}));
+            .ForMember(dest=>dest.Image, opts => opts.MapFrom(src=>new Image(src.Image)));
         CreateMap<NewsViewModel, NewsDto>();
         CreateMap<NewsDto, NewsViewModel>();
     }

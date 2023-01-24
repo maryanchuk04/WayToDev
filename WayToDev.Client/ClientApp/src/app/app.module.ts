@@ -17,7 +17,11 @@ import { AuthModule } from './auth/auth.module';
 import { MainNewsComponent } from './landing-page/components/main-news/main-news.component';
 import { NewsShortInfoComponent } from './landing-page/components/main-news/components/news-short-info/news-short-info.component';
 import { IconModule } from '@coreui/icons-angular';
+import { JwtModule } from '@auth0/angular-jwt';
 
+export function tokenGetter() {
+  return localStorage.getItem('token');
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +31,7 @@ import { IconModule } from '@coreui/icons-angular';
     WhatWeCanDoComponent,
     MainButtonComponent,
     MainNewsComponent,
-    NewsShortInfoComponent
+    NewsShortInfoComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,9 +46,15 @@ import { IconModule } from '@coreui/icons-angular';
     }),
     NewsModule,
     AuthModule,
-    IconModule
+    IconModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ['localhost:44443', 'localhost:7218'],
+      },
+    }),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
