@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WayToDev.Db.EF;
 
@@ -11,9 +12,10 @@ using WayToDev.Db.EF;
 namespace WayToDev.Db.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20230119153208_AddNewInfoForCompany")]
+    partial class AddNewInfoForCompany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -150,8 +152,6 @@ namespace WayToDev.Db.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.HasIndex("TechStackId");
-
                     b.ToTable("Companies");
                 });
 
@@ -248,9 +248,6 @@ namespace WayToDev.Db.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("ImageId")
                         .HasColumnType("uniqueidentifier");
@@ -401,73 +398,6 @@ namespace WayToDev.Db.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserRooms");
-                });
-
-            modelBuilder.Entity("WayToDev.Core.Entities.Vacancy", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CompanyId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActual")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Vacancies");
-                });
-
-            modelBuilder.Entity("WayToDev.Core.Entities.VacancyStack", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TagId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("VacancyId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TagId");
-
-                    b.HasIndex("VacancyId");
-
-                    b.ToTable("VacancyStacks");
-                });
-
-            modelBuilder.Entity("WayToDev.Core.Entities.Account", b =>
-                {
-                    b.HasOne("WayToDev.Core.Entities.User", "User")
-                        .WithOne("Account")
-                        .HasForeignKey("WayToDev.Core.Entities.Account", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("WayToDev.Core.Entities.AccountToken", b =>
@@ -631,7 +561,10 @@ namespace WayToDev.Db.Migrations
 
                     b.HasOne("WayToDev.Core.Entities.Image", "Image")
                         .WithMany()
-                        .HasForeignKey("ImageId");
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Account");
 
                     b.Navigation("Image");
                 });
@@ -641,56 +574,18 @@ namespace WayToDev.Db.Migrations
                     b.HasOne("WayToDev.Core.Entities.Room", "Room")
                         .WithMany("UserRooms")
                         .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WayToDev.Core.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Room");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("WayToDev.Core.Entities.Vacancy", b =>
-                {
-                    b.HasOne("WayToDev.Core.Entities.Company", "Company")
-                        .WithMany()
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WayToDev.Core.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Company");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("WayToDev.Core.Entities.VacancyStack", b =>
-                {
-                    b.HasOne("WayToDev.Core.Entities.Tag", "Tag")
-                        .WithMany()
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WayToDev.Core.Entities.Vacancy", "Vacancy")
-                        .WithMany("VacancyStack")
-                        .HasForeignKey("VacancyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Tag");
-
-                    b.Navigation("Vacancy");
                 });
 
             modelBuilder.Entity("WayToDev.Core.Entities.Account", b =>
@@ -719,11 +614,6 @@ namespace WayToDev.Db.Migrations
             modelBuilder.Entity("WayToDev.Core.Entities.User", b =>
                 {
                     b.Navigation("TechStack");
-                });
-
-            modelBuilder.Entity("WayToDev.Core.Entities.Vacancy", b =>
-                {
-                    b.Navigation("VacancyStack");
                 });
 #pragma warning restore 612, 618
         }

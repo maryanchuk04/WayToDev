@@ -8,6 +8,9 @@ using WayToDev.Core.Interfaces.Services;
 
 namespace WayToDev.Client.Controllers;
 
+/// <summary>
+/// API controller for company
+/// </summary>
 [Authorize]
 [ApiController]
 [Route("api/company")]
@@ -21,7 +24,11 @@ public class CompanyController : ControllerBase
         _companyService = companyService;
         _mapper = mapper;
     }
-
+    
+    /// <summary>
+    /// Get Current company by token
+    /// </summary>
+    /// <returns>Company information</returns>
     [HttpGet]
     public IActionResult GetCurrentCompany()
     {
@@ -35,7 +42,13 @@ public class CompanyController : ControllerBase
         }
     }
 
-    [HttpPost]
+    
+    /// <summary>
+    /// Update all information about company
+    /// </summary>
+    /// <param name="companyViewModel">Company model which contain all info</param>
+    /// <response code = '200'></response>
+    [HttpPut]
     public async Task<IActionResult> UpdateCurrentCompany([FromBody] CompanyViewModel companyViewModel)
     {
         try
@@ -44,6 +57,25 @@ public class CompanyController : ControllerBase
             return Ok();
         }
         catch (CompanyExceptions e)
+        {
+            return BadRequest(new ErrorResponseModel(e.Message));
+        }
+    }
+
+    /// <summary>
+    /// Get company by id
+    /// </summary>
+    /// <param name="id">Id of company</param>
+    /// <returns>Company model with data</returns>
+    [AllowAnonymous]
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetCompanyAsync(Guid id)
+    {
+        try
+        {
+            return Ok(await _companyService.GetCompanyAsync(id));
+        }
+        catch (UserNotFoundException e)
         {
             return BadRequest(new ErrorResponseModel(e.Message));
         }

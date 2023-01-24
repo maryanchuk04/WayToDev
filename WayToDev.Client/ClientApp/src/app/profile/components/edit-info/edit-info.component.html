@@ -34,6 +34,16 @@
     </div>
     <hr>
     <div class="field">
+      <div class="text">
+        <h5>Gender</h5>
+      </div>
+      <select class="input-style" formControlName = "gender">
+        <option [value]="0">Male</option>
+        <option [value]="1">Female</option>
+      </select>
+    </div>
+    <hr>
+    <div class="field">
       <h5>Birthday</h5>
       <div>
         <input type = "date" formControlName="birthday" class="input-style"/>

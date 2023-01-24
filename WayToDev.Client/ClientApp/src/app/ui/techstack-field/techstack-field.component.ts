@@ -10,6 +10,7 @@ import * as ProfileActions from "../../profile/store/profile.actions";
 })
 export class TechstackFieldComponent implements OnInit {
   @Input() techStack: TechItem[];
+  @Input() showDelete:boolean = true;
   @Output() deleteEmitter: EventEmitter<TechItem> = new EventEmitter<TechItem>();
   constructor() {
   }

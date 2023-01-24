@@ -12,25 +12,27 @@ import {ProfileRoutingModule} from "./profile.routing.module";
 import {MatButtonModule} from "@angular/material/button";
 import {StoreModule} from "@ngrx/store";
 import {UiModule} from "../ui/ui.module";
+import {ProfileCompanyViewComponent} from "./components/profile-company-view/profile-company-view.component";
 
 @NgModule({
-  declarations: [
-    ProfileComponent,
-    EditInfoComponent,
-    ProfileComponent,
-    ProfileCompanyComponent
-  ],
-  imports: [
-    CommonModule,
-    ProfileRoutingModule,
-    UiModule,
-    MatButtonModule,
-    MatSelectModule,
-    StoreModule.forFeature('profile', profileReducers),
-    EffectsModule.forFeature([ProfileEffects]),
-    ReactiveFormsModule,
-    CommonModule,
-    MatButtonModule
-  ]
+    declarations: [
+        ProfileComponent,
+        EditInfoComponent,
+        ProfileComponent,
+        ProfileCompanyComponent,
+        ProfileCompanyViewComponent
+    ],
+    imports: [
+        CommonModule,
+        ProfileRoutingModule,
+        UiModule,
+        MatButtonModule,
+        MatSelectModule,
+        StoreModule.forFeature('profile', profileReducers),
+        EffectsModule.forFeature([ProfileEffects]),
+        ReactiveFormsModule,
+        CommonModule,
+        MatButtonModule
+    ]
 })
 export class ProfileModule { }

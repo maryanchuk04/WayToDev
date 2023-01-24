@@ -32,7 +32,6 @@ export class SignInFormComponent implements OnInit {
   }
 
   onLogin() {
-
     this.submitted = true;
     if (this.signInForm.valid) {
       console.log(this.signInForm);
@@ -42,13 +41,15 @@ export class SignInFormComponent implements OnInit {
           if(response.ok){
             localStorage.setItem("token", (response.body.token));
             localStorage.setItem("role", (response.body.role));
-            if(response.body.role == 0)
+            if(response.body.role == 0){
               this.router.navigate(["/profile"]);
-            else this.router.navigate(["/profile-company"])
+              console.log(response.body)
+            }
+
+            if(response.body.role == 1)
+              this.router.navigate(["/profile-company"])
           }
         });
-
     }
-
   }
 }

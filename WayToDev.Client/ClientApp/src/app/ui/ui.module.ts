@@ -16,6 +16,10 @@ import {MatIconModule} from "@angular/material/icon";
 import {TechstackFieldComponent} from "./techstack-field/techstack-field.component";
 import {UploadImageComponent} from "./upload-image/upload-image.component";
 import {TechItemComponent} from "./tech-item/tech-item.component";
+import { SidebarComponentComponent } from './sidebar-popup/sidebar-component/sidebar-component.component';
+
+import {ProfileUserViewComponent} from "../profile/components/profile-user-view/profile-user-view.component";
+import {MatButtonModule} from "@angular/material/button";
 
 
 @NgModule({
@@ -31,7 +35,8 @@ import {TechItemComponent} from "./tech-item/tech-item.component";
     TechstackFieldComponent,
     UploadImageComponent,
     TechItemComponent,
-
+    SidebarComponentComponent,
+    ProfileUserViewComponent
   ],
   imports: [
     CommonModule,
@@ -39,17 +44,18 @@ import {TechItemComponent} from "./tech-item/tech-item.component";
     MatSnackBarModule,
     MatChipsModule,
     MatIconModule,
-
+    MatButtonModule,
   ],
-  exports: [
-    SpinnerWrapperComponent,
-    SearchComponent,
-    SubmitButtonComponent,
-    SvgIconComponent,
-    DynamicWavesComponent,
-    TechstackFieldComponent,
-    UploadImageComponent
-  ],
+    exports: [
+        SpinnerWrapperComponent,
+        SearchComponent,
+        SubmitButtonComponent,
+        SvgIconComponent,
+        DynamicWavesComponent,
+        TechstackFieldComponent,
+        UploadImageComponent,
+        SidebarComponentComponent
+    ],
   providers : [
     AlertService
   ]

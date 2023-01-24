@@ -1,0 +1,4 @@
+<div *ngIf="open" class="sidebar-component" @fadeOut @fadeIn>
+  <button mat-icon-button color="primary" (click)="handleClose()"><i class="fa-solid fa-xmark"></i></button>
+  <app-profile-user-view></app-profile-user-view>
+</div>

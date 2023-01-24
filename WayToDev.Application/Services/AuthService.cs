@@ -53,7 +53,7 @@ public class AuthService : Dao<Account>, IAuthService
 
     public async Task<AuthenticateResponseModel> Registration(RegistrDto registrationDto)
     {
-        if (Context.Accounts.Any(x=>x.Email==registrationDto.Email))
+        if (Context.Accounts.Any(x=>x.Email == registrationDto.Email))
         {
             throw new AuthenticateException("Account already exist");
         }
@@ -75,8 +75,7 @@ public class AuthService : Dao<Account>, IAuthService
 
         return new AuthenticateResponseModel(jwtToken, refreshToken.Token);
     }
-    
-    
+
     private Account RegistrationUserAccount(string userName, string email, string password)
     {
         return new Account
@@ -85,6 +84,7 @@ public class AuthService : Dao<Account>, IAuthService
             Email = email,
             User = new User
             {
+                UserName = userName,
                 FirstName = userName,
                 TechStack = new List<TechStack>()
             },

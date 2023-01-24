@@ -9,4 +9,7 @@ public class CompanyDto
     public string? Email { get; set; }
     public List<TagDto>? Tags { get; set; }
     public List<FeedbackDto>? Feedbacks { get; set; }
+    public string? BannerImage { get; set; }
+    public string WebsiteLink { get; set; }
+    public int CountOfWorkers { get; set; }
 }

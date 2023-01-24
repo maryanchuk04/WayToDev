@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {User} from "../../models/user";
 import {TechItem} from "../../../models/techItem";
 import {TagsService} from "../../services/tags.service";
@@ -8,6 +8,7 @@ import {userSelector} from "../../store/profile.selectors";
 import * as ProfileActions from "../../store/profile.actions";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AppState} from "../../../store/app-state";
+import {Gender} from "../../models/gender";
 
 @Component({
   selector: 'app-edit-info',
@@ -34,6 +35,7 @@ export class EditInfoComponent implements OnInit {
             email: [this.user.email,[]],
             birthday: [this.user.birthday.substring(0,10), ],
             imageUrl: [this.user.imageUrl],
+            gender: [this.user.gender ?? Gender.Male],
             bio: [""]
           });
       }
@@ -73,7 +75,8 @@ export class EditInfoComponent implements OnInit {
       firstName : this.profileForm.value.firstName,
       lastName : this.profileForm.value.lastName,
       birthday : this.profileForm.value.birthday,
-      email: this.profileForm.value.email
+      email: this.profileForm.value.email,
+      gender: Number(this.profileForm.value.gender)
     }
     this.store.dispatch(ProfileActions.updateCurrentUser({ user : this.user }))
   }
