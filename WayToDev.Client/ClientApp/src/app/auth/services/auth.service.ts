@@ -43,4 +43,7 @@ export class AuthService {
     return throwError(() => new Error('Something bad happened; please try again later.'));
   }
 
+  confirmEmail(accountId: string, token: string): Observable<any>{
+    return this.httpClient.get<any>(`${this.apiUrl}/verify/${accountId}/${token}`, this.httpOptions);
+  }
 }

@@ -6,17 +6,26 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using WayToDev.Application.Services;
 using WayToDev.Client.Mapping;
-using WayToDev.Core.Interfaces.DAOs;
+using WayToDev.Core.Configuration;
+using WayToDev.Core.Interfaces.Infrastructure;
 using WayToDev.Core.Interfaces.Services;
-
 using WayToDev.Db.EF;
+using WayToDev.Infrastructure.Configurations;
+using WayToDev.Infrastructure.MailSender;
 
 var builder = WebApplication.CreateBuilder(args);
 
 #region ConfigureServices
-
+//binding configuration mail client
+var mailConfig = new MailSenderConfiguration();
+builder.Configuration.GetSection("MailClient").Bind(mailConfig);
+builder.Services.AddSingleton(mailConfig);
+//configuration urls
+builder.Services.AddSingleton(new EmailTemplatePathModel { RootPath = builder.Environment.WebRootPath });
+var appUrlsConfig = new ApplicationUrlsConfiguration();
+builder.Configuration.GetSection("BaseUrls").Bind(appUrlsConfig);
+builder.Services.AddSingleton(appUrlsConfig);
 builder.Services.AddControllersWithViews();
-
 builder.Services.AddDbContext<ApplicationContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("ConnString"),
         b => b.MigrationsAssembly("WayToDev.Db")));
@@ -26,7 +35,9 @@ builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<INewsService, NewsService>();
-
+builder.Services.AddScoped<IMailClient, MailClient>();
+builder.Services.AddScoped<IMailService, MailService>();
+builder.Services.AddSingleton<IPinGenerator, PinGenerator>();
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -92,10 +103,9 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 app.UseSwaggerUI();
-// Configure the HTTP request pipeline.
+
 if (!app.Environment.IsDevelopment())
 {
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -107,7 +117,7 @@ app.UseCors(x =>
 {
     x.AllowAnyMethod()
         .AllowAnyHeader()
-        .SetIsOriginAllowed(origin => true) // allow any origin
+        .SetIsOriginAllowed(origin => true)
         .AllowCredentials();
 });
 
