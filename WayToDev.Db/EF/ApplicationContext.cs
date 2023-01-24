@@ -32,4 +32,6 @@ public class ApplicationContext : DbContext
     public DbSet<Tag> Tags { get; set; }
     public DbSet<TechStack> TechStacks { get; set; }
     public DbSet<Message> Messages { get; set; }
+    public DbSet<Vacancy> Vacancies { get; set; }
+    public DbSet<VacancyStack> VacancyStacks { get; set; }
 }

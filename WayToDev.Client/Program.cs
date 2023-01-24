@@ -34,6 +34,8 @@ builder.Services.AddSignalR();
 builder.Services.AddTransient<IPasswordHelper, PasswordHelper>();
 builder.Services.AddTransient<ISecurityContext, SecurityContextService>();
 builder.Services.AddScoped<ICompanyService, CompanyService>();
+builder.Services.AddScoped<IVacancyService, VacancyService>();
+
 
 builder.Services.AddSwaggerGen(options =>
 {
@@ -97,7 +99,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 builder.Services.AddAuthorization();
-
 #endregion
 
 
