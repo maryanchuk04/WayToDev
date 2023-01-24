@@ -75,14 +75,7 @@ public class AuthService : Dao<Account>, IAuthService
 
     public async Task<AuthenticateResponseModel> EmailConfirmAndAuthenticateAsync(string token, Guid accountId)
     {
-        var userTokens = await Context.AccountTokens
-            .Include(x=>x.Account)
-            .FirstOrDefaultAsync(x => x.Token == token && x.AccountId == accountId);
-        
-        if (userTokens == null)
-            throw new AuthenticateException("Error in confirmation");
-            
-        var account = userTokens.Account;
+        var account = await _tokenService.VerifyEmailConfirmationTokenAsync(accountId, token);
         account.IsBlocked = false;
         var jwtToken = _tokenService.GenerateAccessToken(account);
         var refreshToken = _tokenService.GenerateRefreshToken();

@@ -130,10 +130,24 @@ public class TokenService :  Dao<AccountToken>, ITokenService
             Type = TokenType.EmailConfirmationType
         };
 
-        Context.AccountTokens.Add(emailToken);
-
+        Insert(emailToken);
         await Context.SaveChangesAsync();
 
         return emailToken;
+    }
+
+    public async Task<Account> VerifyEmailConfirmationTokenAsync(Guid accountId, string token)
+    {
+        var userTokens = await Context.AccountTokens
+            .Include(x=>x.Account)
+            .FirstOrDefaultAsync(x => x.Token == token && x.AccountId == accountId);
+        
+        if (userTokens == null)
+            throw new TokenException("Error in confirmation token");
+
+        if (DateTime.UtcNow >= userTokens.Expires)
+            throw new TokenException("Confirmation token time is over");
+        
+        return userTokens.Account;
     }
 }

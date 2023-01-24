@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-registration-success',
@@ -9,7 +10,15 @@ import {AuthService} from "../../services/auth.service";
 })
 export class RegistrationSuccessComponent implements OnInit {
   accountId: string;
-  constructor(private actRoute: ActivatedRoute, private authService: AuthService) { }
+  verifyForm: FormGroup;
+  constructor(private actRoute: ActivatedRoute, private authService: AuthService, private formBuilder: FormBuilder, private route: Router) {
+    this.verifyForm = this.formBuilder.group({
+      inp1 : ["", Validators.required],
+      inp2 : ["", Validators.required],
+      inp3 : ["", Validators.required],
+      inp4 : ["", Validators.required]
+    })
+  }
 
   ngOnInit(): void {
     this.actRoute.params.subscribe(params => {
@@ -17,6 +26,18 @@ export class RegistrationSuccessComponent implements OnInit {
     })
   }
 
+  submit(){
+    let verifyCode = (Object.values(this.verifyForm.value).join(""));
+    this.authService.confirmEmail(this.accountId, verifyCode).subscribe(_=>{
+      if(_.ok){
+        this.route.navigate(["/profile"]);
+      }
+      else{
+        this.verifyForm.reset();
+        alert("Please input code again");
+      }
+    });
+  }
 
 
 }
