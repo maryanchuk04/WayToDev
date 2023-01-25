@@ -64,6 +64,10 @@ public class AuthController : ControllerBase
     {
         try
         {
+            if (await _authService.CanRegisterAsync(registerViewModel.Email))
+            {
+                throw new AuthenticateException("Account already exist");
+            }
             var result = await _authService.RegistrationAsync(_mapper.Map<RegistrViewModel, RegistrDto>(registerViewModel));
             return Ok(new { accountId = result});
         }

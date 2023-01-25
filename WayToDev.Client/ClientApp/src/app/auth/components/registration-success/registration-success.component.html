@@ -1,20 +1,21 @@
 <div class="container h-100 d-flex justify-content-center align-items-center">
   <div class = 'confirmation-container'>
-    <div class="conf-form">
+    <form class="conf-form" [formGroup]="verifyForm" (ngSubmit)="submit()">
         <h1 class="my-2">Email verification</h1>
         <h4 class="fw-light my-2">We have sent a confirmation code to your mail,<br> check it and confirm the registration</h4>
-        <form class="inputs my-4" [formGroup]="verifyForm" (ngSubmit)="submit()">
+        <div class="inputs my-4 text-center" >
           <input class = 'form-control' digitOnly maxlength="1" formControlName = 'inp1'/>
           <input class = 'form-control' digitOnly maxlength="1" formControlName = 'inp2'/>
           <input class = 'form-control' digitOnly maxlength="1" formControlName = 'inp3'/>
           <input class = 'form-control' digitOnly maxlength="1" formControlName = 'inp4'/>
           <!-- Add styles for button -->
-          <button [disabled]="!verifyForm.valid">Verify</button>
-        </form>
-    </div>
+
+        </div>
+      <app-submit-button [disabled]="!verifyForm.valid">Verify</app-submit-button>
+    </form>
     <div class = 'image'>
       <img src="https://i.ibb.co/djfd56f/person-managing-it-settings.png" alt="">
     </div>
   </div>
-  <!--add dynamic waves in the bottom after merge-->
+  <app-dynamic-waves></app-dynamic-waves>
 </div>

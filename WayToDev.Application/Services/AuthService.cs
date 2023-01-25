@@ -62,11 +62,6 @@ public class AuthService : Dao<Account>, IAuthService
 
     public async Task<string> RegistrationAsync(RegistrDto registrationDto)
     {
-        if (Context.Accounts.Any(x=>x.Email == registrationDto.Email))
-        {
-            throw new AuthenticateException("Account already exist");
-        }
-
         var newAccount = registrationDto.Role switch
         {
             Role.Company => _accountManager.CreateCompanyAccount(registrationDto.CompanyName ?? "", registrationDto.Email,
