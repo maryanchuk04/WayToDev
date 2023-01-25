@@ -95,7 +95,7 @@ public class AuthController : ControllerBase
     {
         try
         {
-            HttpContext.Response.Cookies.Delete("refreshToken");
+            HttpContext.DeleteRefreshToken();
             return Ok();
         }
         catch (Exception e)

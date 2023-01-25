@@ -16,4 +16,9 @@ public static class CookieExtension
         context.Response.Cookies.Delete("refreshToken");
         context.Response.Cookies.Append("refreshToken", model.RefreshToken, cookieOptions);
     }
+
+    public static void DeleteRefreshToken(this HttpContext context)
+    {
+        context.Response.Cookies.Delete("refreshToken");
+    }
 }
