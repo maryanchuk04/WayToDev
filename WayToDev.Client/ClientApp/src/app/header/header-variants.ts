@@ -8,8 +8,6 @@ const defaultLinks: HeaderLink[] =  [
   { route: "sign-up", name: "SignUp" },
 ];
 
-
-
 export const  defaultHeader: Header = {
   headerLinks: defaultLinks
 }

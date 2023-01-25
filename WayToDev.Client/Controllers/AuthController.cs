@@ -40,7 +40,7 @@ public class AuthController : ControllerBase
         {
             var authResponseModel = await _authService.AuthenticateAsync(authenticateViewModel.Email, authenticateViewModel.Password);
             HttpContext.SetTokenCookie(authResponseModel);        
-            return Ok(new { Token = authResponseModel.JwtToken });
+            return Ok(new { Token = authResponseModel.JwtToken, authResponseModel.Role });
         }
         catch (AuthenticateException e)
         {
@@ -83,7 +83,7 @@ public class AuthController : ControllerBase
         var authResponseModel = await _authService.EmailConfirmAndAuthenticateAsync(token, accountId);
         HttpContext.SetTokenCookie(authResponseModel);
         
-        return Ok(new { Token = authResponseModel.JwtToken });
+        return Ok(new { Token = authResponseModel.JwtToken, authResponseModel.Role });
     }
     
     /// <summary>

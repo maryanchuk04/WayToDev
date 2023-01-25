@@ -17,6 +17,7 @@ export class HeaderComponent implements OnInit {
     this.roleHandler();
     this.router.events.subscribe((event) => {
       this.headerStyleHandler(event);
+      this.roleHandler()
     })
   }
 
@@ -43,18 +44,21 @@ export class HeaderComponent implements OnInit {
   }
 
   roleHandler(){
-    let role = Number(localStorage.getItem("role"));
-    switch (role) {
+    let role = localStorage.getItem("role");
+    if(role == null){
+      this.header = defaultHeader;
+      return;
+    }
+
+    switch (Number(role)) {
       case 0: {
         this.header = userHeader;
         return;
       }
-      case 1:{
+      case 1: {
         this.header = companyHeader;
         return;
       }
-      default:
-        this.header = defaultHeader;
     }
   }
 }

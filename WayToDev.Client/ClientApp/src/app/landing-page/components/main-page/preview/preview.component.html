@@ -1,4 +1,10 @@
-<div id="particles-js" class="particles-container">
+<div class="particles-container">
+  <ng-particles
+    [id]="id"
+    [options] = 'particlesOptions'
+    [particlesInit]="particlesInit"
+    (particlesLoaded)="particlesLoaded($event)"
+  ></ng-particles>
   <div class="preview-information">
     <div class="container">
       <h1>WayToDev</h1>

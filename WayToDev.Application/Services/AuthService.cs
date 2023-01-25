@@ -72,15 +72,13 @@ public class AuthService : Dao<Account>, IAuthService
             _ => throw new AuthenticateException("This role not exist")
         };
         
-        var jwtToken = _tokenService.GenerateAccessToken(newAccount);
-        //var jwtToken = _tokenService.GenerateAccessToken(newAccount);
-        //var refreshToken = _tokenService.GenerateRefreshToken();
-
         var acc = Insert(newAccount);
-
         var res = await _tokenService.GenerateEmailConfirmationToken(acc.Id);
-        await Context.SaveChangesAsync();
         await _mailService.SendRegistrationMessageAsync(registrationDto.Email, res.Token);
+        
+        await Context.SaveChangesAsync();
+        
+        
         return res.AccountId.ToString();
     }
 
@@ -92,7 +90,9 @@ public class AuthService : Dao<Account>, IAuthService
         var refreshToken = _tokenService.GenerateRefreshToken();
         await Context.SaveChangesAsync();
 
-        return new AuthenticateResponseModel(jwtToken, refreshToken.Token);
+        return account.Company == null 
+            ? new AuthenticateResponseModel(jwtToken, refreshToken.Token, Role.User) 
+            : new AuthenticateResponseModel(jwtToken, refreshToken.Token, Role.Company);
     }
     
     private Account RegistrationUserAccount(string userName, string email, string password)

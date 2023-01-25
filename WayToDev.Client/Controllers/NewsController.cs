@@ -1,7 +1,5 @@
 using AutoMapper;
 using Microsoft.AspNet.SignalR;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WayToDev.Client.ViewModels;
 using WayToDev.Core.DTOs;
@@ -26,16 +24,7 @@ public class NewsController : ControllerBase
         _mapper = mapper;
     }
     
-    /// <summary>
-    /// Get method for get all data about news
-    /// </summary>
-    /// <returns>200 - with List of News</returns>
-    [Authorize]
-    [HttpGet]
-    public IActionResult Get()
-    {
-        return Ok(_mapper.Map<List<NewsDto>, List<NewsViewModel>>(_newsService.GetNews()));
-    }
+    
     //[HttpGet]
     //public IActionResult Get()
     //{
@@ -60,6 +49,11 @@ public class NewsController : ControllerBase
         }
     }
 
+    
+    /// <summary>
+    /// Get method for get all data about news
+    /// </summary>
+    /// <returns>200 - with List of News</returns>
     [HttpGet]
     public IActionResult GetFilteredNews([FromQuery] NewsFilterViewModel model)
     {

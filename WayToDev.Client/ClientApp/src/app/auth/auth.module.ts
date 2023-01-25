@@ -13,7 +13,8 @@ import { SignUpCompanyComponent } from './components/sign-up-company/sign-up-com
 import { SignUpCompanyFormComponent } from './components/sign-up-company-form/sign-up-company-form.component';
 import { SignUpLayoutComponent } from './components/sign-up-layout/sign-up-layout.component';
 import { EmailConfirmPageComponent } from './components/email-confirm-page/email-confirm-page.component';
-import { RegistrationSuccessComponent } from './components/registration-success/registration-success.component';
+import {RegistrationSuccessComponent} from "./components/registration-success/registration-success.component";
+
 
 @NgModule({
   declarations: [

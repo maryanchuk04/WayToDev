@@ -23,6 +23,7 @@ import {profileReducers} from "./profile/store/profile.reducers";
 import {popupReducers} from "./ui/sidebar-popup/store/popup.reducers";
 import {UiModule} from "./ui/ui.module";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgParticlesModule } from "ng-particles";
 
 
 export function tokenGetter() {
@@ -61,6 +62,7 @@ export function tokenGetter() {
     IconModule,
     UiModule,
     ChatModule,
+    NgParticlesModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
