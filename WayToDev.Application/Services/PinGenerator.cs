@@ -6,7 +6,7 @@ public class PinGenerator : IPinGenerator
 { 
     int IPinGenerator.Min { get; set; } = 0;
     int IPinGenerator.Max { get; set; } = 9999;
-    private readonly Random _random = new Random();
+    private readonly Random _random = new();
     
     public int Generate()
     {

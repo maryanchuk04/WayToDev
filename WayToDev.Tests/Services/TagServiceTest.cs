@@ -1,5 +1,3 @@
-using Moq;
-using NUnit.Framework;
 using WayToDev.Application.Services;
 using WayToDev.Core.DTOs;
 using WayToDev.Core.Entities;
