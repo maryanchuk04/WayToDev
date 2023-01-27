@@ -24,6 +24,7 @@ import {popupReducers} from "./ui/sidebar-popup/store/popup.reducers";
 import {UiModule} from "./ui/ui.module";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgParticlesModule } from "ng-particles";
+import { HttpClientModule } from '@angular/common/http';
 
 
 export function tokenGetter() {
@@ -68,7 +69,8 @@ export function tokenGetter() {
         tokenGetter: tokenGetter,
         allowedDomains: ['localhost:44443', 'localhost:7218'],
       },
-    })
+    }),
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent],

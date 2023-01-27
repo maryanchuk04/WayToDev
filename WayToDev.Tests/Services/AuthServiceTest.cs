@@ -33,7 +33,7 @@ public class AuthServiceTest : TestInitializer
         accountManagerMock = new Mock<IAccountManager>();
         mailSenderMock = new Mock<IMailService>();
         
-        userAccount = new Account()
+        userAccount = new Account
         {
             Id = accId,
             Email = "user@gmail.com",
@@ -48,7 +48,7 @@ public class AuthServiceTest : TestInitializer
             }
         };
         
-        companyAccount = new Account()
+        companyAccount = new Account
         {
             Id = accId,
             Email = "user@gmail.com",
@@ -70,7 +70,7 @@ public class AuthServiceTest : TestInitializer
             Role = Role.User
         };
         
-        emailToken = new AccountToken()
+        emailToken = new AccountToken
         {
             Account = userAccount,
             AccountId = accId,
@@ -80,7 +80,7 @@ public class AuthServiceTest : TestInitializer
             Type = TokenType.EmailConfirmationType
         };
         
-        refreshToken = new AccountToken()
+        refreshToken = new AccountToken
         {
             Account = userAccount,
             AccountId = accId,
@@ -135,5 +135,16 @@ public class AuthServiceTest : TestInitializer
             registrDto.Role = (Role)3;
             await service.RegistrationAsync(registrDto);
         });
+    }
+
+    [Test]
+    [TestCase("maks@gmail.com", true)]
+    [TestCase("user@gmail.com", false)]
+    [TestCase("comp@gmail.com", true)]
+    public async Task Should_ReturnTrue_CanRegister(string email, bool expectedValue) 
+    {
+        var res = !await service.CanRegisterAsync(email);
+        
+        Assert.That(res, Is.EqualTo(expectedValue));
     }
 }
