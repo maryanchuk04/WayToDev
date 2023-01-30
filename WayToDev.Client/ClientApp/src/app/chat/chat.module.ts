@@ -11,13 +11,15 @@ import { MatButtonModule } from '@angular/material/button';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {PickerModule} from "@ctrl/ngx-emoji-mart";
 import {AutosizeModule} from "ngx-autosize";
+import { UserChatsComponent } from './components/user-chats/user-chats.component';
 
 @NgModule({
   declarations: [
     ChatsPageComponent,
     ChatListItemComponent,
     ChatContainerComponent,
-    MessageComponent
+    MessageComponent,
+    UserChatsComponent
   ],
   imports: [
     CommonModule,

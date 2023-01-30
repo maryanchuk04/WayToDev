@@ -77,3 +77,7 @@ svg{
 .cont{
   padding-top: 3vh;
 }
+
+.mat-drawer-inner-container{
+  overflow: unset !important;
+}

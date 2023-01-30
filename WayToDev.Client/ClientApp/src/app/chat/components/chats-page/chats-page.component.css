@@ -4,8 +4,12 @@
 }
 
 .chats-sidenav{
-  width: 20%;
   background-color: #edf2f4;
+  overflow: unset !important;
+  display: grid;
+  height: inherit;
+  overflow: unset;
+  grid-template-rows: auto 1fr;
 }
 
 .chat-zone{
@@ -21,16 +25,10 @@
   height: 5vh;
 }
 
-.chats-list{
-  padding: 10px 5px;
-  margin: 0;
-  height: auto;
-}
-
 .chats-sidenav::-webkit-scrollbar{
   display: none;
 }
-chats-sidenav::-webkit-scrollbar {
+.chats-sidenav::-webkit-scrollbar {
   display: none;
 }
 
@@ -38,22 +36,14 @@ chats-sidenav::-webkit-scrollbar {
   display: block;
 }
 
-
-.chats-list .chat-preview-item{
-  background-color: #edf2f4;
-  padding: 10px;
-  cursor: pointer;
-  border-radius: 10px;
-  transition: 0.3s;
+.chats-sidenav .head{
+  max-height: fit-content;
   display: flex;
   flex-direction: column;
-
-}
-.chat-preview-item:hover{
-  background-color: #b5acad;
-  border-radius: 10px;
+  text-align: center;
 }
 
-.chat-preview-item.active-chat{
-  background: #9cb8f0 !important;
+
+.head .help-bar{
+
 }

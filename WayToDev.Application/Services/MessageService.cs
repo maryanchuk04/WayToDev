@@ -10,8 +10,10 @@ namespace WayToDev.Application.Services;
 
 public class MessageService : Dao<Message>, IMessageService
 {
-    public MessageService(ApplicationContext context, IMapper mapper = null) : base(context, mapper)
+    private readonly ISecurityContext _securityContext;
+    public MessageService(ApplicationContext context, ISecurityContext securityContext, IMapper mapper = null) : base(context, mapper)
     {
+        _securityContext = securityContext;
     }
 
     public async Task<MessageDto> Send(Guid chatId, Guid senderId, string message)
@@ -28,43 +30,5 @@ public class MessageService : Dao<Message>, IMessageService
         
         var res = Context.Messages.Include(x=>x.User).First(x => x.Id == msg.Id);
         return Mapper.Map<Message, MessageDto>(res);
-    }
-
-    public async Task<RoomDto> GetRoom(Guid chatId, Guid senderId)
-    {
-        var room = Context.Rooms
-                       .FirstOrDefault(x => x.Id == chatId) ??
-                   Context.Rooms
-                       .FirstOrDefault(x =>
-                           x.UserRooms.Count == 2 &&
-                           x.UserRooms.Any(y => y.UserId == chatId) &&
-                           x.UserRooms.Any(y => y.UserId == senderId));
-
-        if (room == null)
-        {
-            var temp = Context.Users.FirstOrDefault(x => x.Id == chatId);
-            room = new Room()
-            {
-                Title = temp?.FirstName + " " + temp?.LastName
-            };
-            
-            room.UserRooms = new List<UserRoom>
-            {
-                new() { Room = room, UserId = senderId },
-                new() { Room = room, UserId = chatId },
-            };
-            Context.Rooms.Add(room);
-            await Context.SaveChangesAsync();
-        }
-        
-        var res = Context.Rooms
-            .Include(c => c.Messages.OrderByDescending(x=>x.When).Take(20))
-                .ThenInclude(x=>x.User)
-            .FirstOrDefault(x => x.Id == room.Id);
-
-        if (res == null)
-            throw new MessagesExceptions("Messages Exceptions");
-        
-        return Mapper.Map<Room, RoomDto>(res);
     }
 }

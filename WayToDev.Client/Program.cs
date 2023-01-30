@@ -51,6 +51,7 @@ builder.Services.AddScoped<ICompanyService, CompanyService>();
 builder.Services.AddScoped<IVacancyService, VacancyService>();
 builder.Services.AddScoped<IMailClient, MailClient>();
 builder.Services.AddScoped<IMailService, MailService>();
+builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddSingleton<IPinGenerator, PinGenerator>();
 builder.Services.AddSwaggerGen(options =>
 {

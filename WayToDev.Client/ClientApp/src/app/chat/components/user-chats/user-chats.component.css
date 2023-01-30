@@ -1,0 +1,25 @@
+.chats-list{
+  padding: 10px;
+  margin: 0;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.chats-list .chat-preview-item{
+  background-color: #edf2f4;
+  padding: 15px;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: 0.3s;
+  display: flex;
+  flex-direction: column;
+
+}
+.chat-preview-item:hover{
+  background-color: #b5acad;
+  border-radius: 10px;
+}
+
+.chat-preview-item.active-chat{
+  background: #9cb8f0 !important;
+}
