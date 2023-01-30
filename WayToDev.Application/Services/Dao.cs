@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using WayToDev.Core.Exceptions;
 using WayToDev.Core.Interfaces.DAOs.Base;
 using WayToDev.Db.EF;
 
@@ -25,7 +26,7 @@ public class Dao<T> : IDao<T>
     {
         if (entity == null)
         {
-            throw new NotImplementedException();
+            throw new DataAccessException("Entity not inserted");
         }
 
         Entities.Add(entity);
@@ -36,7 +37,7 @@ public class Dao<T> : IDao<T>
     {
         if (entity == null)
         {
-            throw new NotImplementedException();
+            throw new DataAccessException("Entity not Updated");
         }
 
         Entities.Update(entity);
@@ -47,7 +48,7 @@ public class Dao<T> : IDao<T>
     {
         if (entity == null)
         {
-            throw new NotImplementedException();
+            throw new DataAccessException("Entity not deleted");
         }
 
         Entities.Remove(entity);

@@ -46,6 +46,7 @@ public class NewsService : Dao<News>, INewsService
     }
 
     public List<NewsDto> GetNews() => Mapper.Map<List<News>, List<NewsDto>>(Context.NewsSet.ToList());
+    
     public async Task Delete(Guid id)
     {
         var news = Context.NewsSet.FirstOrDefault(x => x.Id == id);
