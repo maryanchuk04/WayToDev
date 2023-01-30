@@ -3,12 +3,13 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { NewsService } from './news.service';
 import { mockOneNews, mockPaginationNewsArray } from 'src/app/mocks/news-mocks';
 import { NewsFilterModel } from '../models/newsFilterModel';
+import { environment } from 'src/environments/environment';
 
 describe('News Service Tests', () => {
   let service: NewsService;
   let httpController: HttpTestingController;
 
-  let url = 'https://localhost:7218/api';
+  let url = `${environment.basePath}`;
 
   //set up test
   beforeEach(() => {
@@ -37,7 +38,7 @@ describe('News Service Tests', () => {
 
     const req = httpController.expectOne({
       method: 'GET',
-      url: `${url}/news/${id}`,
+      url: `${url}news/${id}`,
     });
 
     req.flush(mockOneNews);
@@ -60,7 +61,7 @@ describe('News Service Tests', () => {
 
     const req = httpController.expectOne({
       method: "GET",
-      url: `${url}/news?Page=${newsFilterModel.page}&PageSize=${newsFilterModel.pageSize}&SearchWord=${newsFilterModel.searchWord}&SortBy=${newsFilterModel.sortBy}`
+      url: `${url}news?Page=${newsFilterModel.page}&PageSize=${newsFilterModel.pageSize}&SearchWord=${newsFilterModel.searchWord}&SortBy=${newsFilterModel.sortBy}`
     })
 
     req.flush(mockPaginationNewsArray);

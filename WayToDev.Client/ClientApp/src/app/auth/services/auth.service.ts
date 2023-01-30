@@ -7,7 +7,6 @@ import { Injectable } from '@angular/core';
 import {BehaviorSubject, catchError, Observable, throwError} from 'rxjs';
 import { LoginModel } from '../models/loginModel';
 import { RegistrationModel } from '../models/registrationModel';
-import { AlertService } from 'src/app/ui/alert/alert.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from 'src/environments/environment';
 
@@ -29,7 +28,6 @@ export class AuthService {
 
   constructor(
     private httpClient: HttpClient,
-    private alertService: AlertService,
     public jwtHelper: JwtHelperService
   ) {}
 
