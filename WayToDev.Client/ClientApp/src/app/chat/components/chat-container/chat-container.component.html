@@ -6,8 +6,8 @@
         <h3>{{chat.title}}</h3>
       </div>
       <div class="container messages-zone " #scroll style="scroll-behavior: smooth;">
-        <app-message *ngFor="let item of messages" [class]="item.from.id == 'me' ?  'right' : 'left'" [message]="item"
-          [isMy]="item.from.id == 'me' ? true : false">
+        <app-message *ngFor="let item of chat.messages" [class]="item.senderId == userId  ?  'right' : 'left'" [message]="item"
+          [isMy]="item.senderId == userId ? true : false">
         </app-message>
       </div>
       <form class="sender" [formGroup]="messageForm" (ngSubmit)="sendMessage()">

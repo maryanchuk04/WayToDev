@@ -1,4 +1,4 @@
 <div class="message" [style]="isMy ? 'background: #98aadf;' : ''">
   <p class="text">{{message.text}}</p>
-  <p class = "date">{{message.when}}</p>
+  <p class = "date">{{message.when | date :'short'}}</p>
 </div>

@@ -40,7 +40,7 @@ public class AuthController : ControllerBase
         {
             var authResponseModel = await _authService.AuthenticateAsync(authenticateViewModel.Email, authenticateViewModel.Password);
             HttpContext.SetTokenCookie(authResponseModel);        
-            return Ok(new { Token = authResponseModel.JwtToken, authResponseModel.Role });
+            return Ok(new { Token = authResponseModel.JwtToken, authResponseModel.Role, authResponseModel.Id });
         }
         catch (AuthenticateException e)
         {

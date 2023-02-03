@@ -2,7 +2,7 @@
   height: calc(100% + 4vh);
   width: 90%;
   display: grid;
-  grid-template-rows: 60px auto;
+  grid-template-rows: 60px 1fr auto;
 }
 
 .chat-zone .chat-header{

@@ -1,5 +1,7 @@
 <div class = "item">
   <h5>{{chatItem.title}}</h5>
-  <p class = "last-message">{{chatItem.lastMessage.text}}</p>
-  <p class ="date">{{chatItem.lastMessage.when}}</p>
+  <div *ngIf="chatItem.lastMessage">
+    <p class = "last-message">{{chatItem.lastMessage.sender.userName + ": " + chatItem.lastMessage.text}}</p>
+    <p class ="date">{{chatItem.lastMessage.when | date:'medium'}}</p>
+  </div>
 </div>

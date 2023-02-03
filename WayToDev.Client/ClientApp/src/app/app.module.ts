@@ -24,6 +24,8 @@ import {popupReducers} from "./ui/sidebar-popup/store/popup.reducers";
 import {UiModule} from "./ui/ui.module";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgParticlesModule } from "ng-particles";
+import { newsReducers } from './news/store/news.reducers';
+import { chatReducers } from './chat/store/chat.reducers';
 
 
 export function tokenGetter() {
@@ -47,7 +49,9 @@ export function tokenGetter() {
     BrowserAnimationsModule,
     StoreModule.forRoot({
       profile: profileReducers,
-      popup: popupReducers
+      popup: popupReducers,
+      news: newsReducers,
+      chat: chatReducers
     }),
     EffectsModule.forRoot(),
     StoreDevtoolsModule.instrument({

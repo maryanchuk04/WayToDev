@@ -11,44 +11,28 @@ namespace WayToDev.Application.Services;
 public class RoomService : Dao<Room>, IRoomService
 {
     private readonly ISecurityContext _securityContext;
-    
-    public RoomService(ApplicationContext context, ISecurityContext securityContext, IMapper mapper = null) : base(context, mapper)
+    private readonly IUserService _userService;
+    public RoomService(ApplicationContext context, ISecurityContext securityContext, IUserService userService, IMapper mapper = null) : base(context, mapper)
     {
         _securityContext = securityContext;
+        _userService = userService;
     }
 
-    public async Task<RoomDto> GetRoom(Guid chatId, Guid senderId)
+    public async Task<RoomDto> GetRoom(Guid chatId, Guid userId)
     {
-        var room = Context.Rooms
-                       .FirstOrDefault(x => x.Id == chatId) ??
-                   Context.Rooms
-                       .FirstOrDefault(x =>
-                           x.UserRooms.Count == 2 &&
-                           x.UserRooms.Any(y => y.UserId == chatId) &&
-                           x.UserRooms.Any(y => y.UserId == senderId));
+        var currentUserId = _userService.GetCurrentUserId();
 
-        if (room == null)
-        {
-            var temp = Context.Users.FirstOrDefault(x => x.Id == chatId);
-            room = new Room()
-            {
-                Title = temp?.FirstName + " " + temp?.LastName
-            };
-            
-            room.UserRooms = new List<UserRoom>
-            {
-                new() { Room = room, UserId = senderId },
-                new() { Room = room, UserId = chatId },
-            };
-            Context.Rooms.Add(room);
-            await Context.SaveChangesAsync();
-        }
-        
+        if (!Context.Rooms.Any(x=>x.Id == chatId))
+            return await CreateRoom(userId);
+
         var res = Context.Rooms
-            .Include(c => c.Messages.OrderByDescending(x=>x.When).Take(20))
-            .ThenInclude(x=>x.User)
-            .FirstOrDefault(x => x.Id == room.Id);
-
+            .Include(x=>x.UserRooms)
+                .ThenInclude(x=>x.User)
+            .Include(c => c.Messages)
+                .ThenInclude(x=>x.Sender)
+                    .ThenInclude(x=>x.Image)
+            .FirstOrDefault(x => x.Id == chatId);
+        
         if (res == null)
             throw new MessagesExceptions("Messages Exceptions");
         
@@ -57,40 +41,57 @@ public class RoomService : Dao<Room>, IRoomService
 
     public async Task<List<RoomPreviewDto>> GetUserRooms()
     {
-        var rooms = await Context.Rooms
+        var rooms = Context.Rooms
+            .Include(x=>x.UserRooms)
+                .ThenInclude(x=>x.User)
+            .Where(x => x.UserRooms.Any(u => u.User.AccountId == _securityContext.GetCurrentAccountId()));
+
+        if (!rooms.Any())
+        {
+            return new List<RoomPreviewDto>();
+        }
+
+        var res = await rooms.Include(x => x.Messages)
             .Include(x => x.UserRooms)
                 .ThenInclude(x => x.User)
-            .Include(m => m.Messages)
-            .Where(x => x.UserRooms.Any(u => u.User.AccountId == _securityContext.GetCurrentAccountId()))
+                        .ThenInclude(x=>x.Image)
             .ToListAsync();
 
-        return Mapper.Map<List<Room>, List<RoomPreviewDto>>(rooms);
+        foreach (var item in res)
+        {
+            item.UserRooms = item.UserRooms.Where(x => x.UserId != _userService.GetCurrentUserId()).ToList();
+        }
+        
+        return Mapper.Map<List<Room>, List<RoomPreviewDto>>(res);
     }
 
     public async Task<RoomDto> CreateRoom(Guid userId)
     {
-        var currentUserId = _securityContext.GetCurrentAccountId();
-        if (Context.Rooms
-            .Include(x=>x.UserRooms)
-            .ThenInclude(x=>x.User)
-            .Any(x => x.UserRooms.Any(
-                userRoom => userRoom.User.AccountId == currentUserId 
-                            && userRoom.UserId == userId))
-            )
+        var currentUserId = _userService.GetCurrentUserId();
+        
+        if (Context.Rooms.Any(x => x.UserRooms
+                .Any(userRoom => userRoom.UserId == currentUserId && userRoom.UserId == userId)))
         {
             throw new RoomsException("Chat is already exist");
         }
+
+        var room = new Room()
+        {
+            Messages = new List<Message>(),
+            Id = Guid.NewGuid()
+        };
+        room.Title = $"{Context.Users.FirstOrDefault(x => x.Id == userId).UserName} and {Context.Users.FirstOrDefault(x => x.Id == currentUserId).UserName} chat";
         
-        var room = new Room();
         room.UserRooms = new List<UserRoom>()
         {
-            new() {Room = room, UserId = currentUserId},
-            new() {Room = room, UserId = userId}
+            new() { UserId = currentUserId, RoomId = room.Id, Room = room},
+            new() { UserId = userId, RoomId = room.Id, Room = room },
         };
 
-        Context.Rooms.Add(room);
+        Insert(room);
         await Context.SaveChangesAsync();
-
+        
+        
         return Mapper.Map<Room, RoomDto>(room);
     }
 }

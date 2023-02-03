@@ -1,4 +1,4 @@
 <ul class='chats-list'>
   <app-chat-list-item routerLinkActive="active-chat" class="chat-preview-item" *ngFor="let item of chats"
-    [chatItem]="item" [routerLink]="item.id"></app-chat-list-item>
+    [chatItem]="item" [routerLink]="item.id +'/'+ item.user.id"></app-chat-list-item>
 </ul>

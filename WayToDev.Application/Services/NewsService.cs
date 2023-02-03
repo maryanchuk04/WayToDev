@@ -54,7 +54,7 @@ public class NewsService : Dao<News>, INewsService
         await Context.SaveChangesAsync();
     }
 
-    public IEnumerable<NewsDto> GetFilteredNews(NewsFilterViewModel model, out int count)
+    public IEnumerable<NewsDto> GetFilteredNews(FilterViewModel model, out int count)
     {
         var news = Context.NewsSet
             .Include(x => x.Image)

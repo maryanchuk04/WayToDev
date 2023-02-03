@@ -31,6 +31,7 @@
     "@coreui/icons-angular": "^4.2.15",
     "@ctrl/ngx-emoji-mart": "^7.1.0",
     "@microsoft/signalr": "^7.0.0",
+    "@ng-bootstrap/ng-bootstrap": "^14.0.1",
     "@ngrx/core": "^1.2.0",
     "@ngrx/effects": "^14.3.2",
     "@ngrx/router-store": "^14.3.2",

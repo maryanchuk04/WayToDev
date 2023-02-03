@@ -2,6 +2,7 @@ import {Gender} from "./gender";
 import {TechItem} from "../../models/techItem";
 
 export interface User{
+  id: string
   firstName: string
   lastName: string
   userName: string

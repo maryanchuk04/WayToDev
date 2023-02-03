@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {NewsShortInfo} from 'src/app/models/newsShortInfo';
 import {Store} from "@ngrx/store";
-import {AppState} from "../../../store/appState";
 import * as NewsActions from '../../../../app/news/store/news.actions'
 import {Observable} from "rxjs";
 import {News} from "../../../news/models/news";
 import {select} from "@ngrx/store";
 import {newsPreviewSelector, newsSelector} from "../../../news/store/news.selectors";
+import { AppState } from 'src/app/store/app-state';
 
 @Component({
   selector: 'app-main-news',

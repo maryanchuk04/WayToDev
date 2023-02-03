@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -39,11 +40,13 @@ builder.Services.AddAutoMapper(typeof(UserMapperProfile).GetTypeInfo().Assembly)
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<INewsService, NewsService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITagService, TagService>();
 builder.Services.AddSignalR();
+builder.Services.AddSingleton<IUserIdProvider, SignalRUserIdProvider>();
 builder.Services.AddScoped<IAccountManager, AccountManager>();
 builder.Services.AddTransient<IPasswordHelper, PasswordHelper>();
 builder.Services.AddTransient<ISecurityContext, SecurityContextService>();
@@ -53,6 +56,7 @@ builder.Services.AddScoped<IMailClient, MailClient>();
 builder.Services.AddScoped<IMailService, MailService>();
 builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddSingleton<IPinGenerator, PinGenerator>();
+builder.Services.AddSession();
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -104,7 +108,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
             // If the request is for our hub...
             var path = context.HttpContext.Request.Path;
             if (!string.IsNullOrEmpty(accessToken) &&
-                path.StartsWithSegments("/chatRoom"))
+                path.StartsWithSegments("/chatHub"))
             {
                 // Read the token out of the query string
                 context.Token = accessToken;
@@ -140,6 +144,7 @@ app.UseCors(x =>
 });
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseSession();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapHub<ChatHub>("/chatHub");

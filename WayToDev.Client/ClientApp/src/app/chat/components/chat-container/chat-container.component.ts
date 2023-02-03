@@ -10,8 +10,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { Chat } from '../../models/chat';
 import { Message } from '../../models/message';
-import { ChatService } from '../../services/chat.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SignalrService } from '../../services/signalr.service';
+import { select, Store } from '@ngrx/store';
+import { AppState } from 'src/app/store/app-state';
+import { getChat } from '../../store/chat.actions';
+import { chatSelector } from '../../store/chat.selector';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-chat-container',
@@ -19,14 +24,14 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./chat-container.component.css'],
 })
 export class ChatContainerComponent
-  implements OnInit, AfterViewInit, OnDestroy
-{
+  implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('scroll') scroll: ElementRef;
-  chat$: Observable<Chat>;
+  chat$: Observable<Chat | null>;
   messageForm: FormGroup;
-  messages: Message[];
   subscription: Subscription;
   isEmojiPickerVisible: boolean;
+  chatId: string;
+  userId: string = this.service.getUserId();
 
   public addEmoji(event: any) {
     this.messageForm.controls['message'].setValue(
@@ -36,9 +41,50 @@ export class ChatContainerComponent
 
   constructor(
     private formBuilder: FormBuilder,
-    private chatService: ChatService,
-    private router: ActivatedRoute
+    private router: ActivatedRoute,
+    private signalr: SignalrService,
+    private store: Store<AppState>,
+    private service: TokenService, 
   ) {
+    this.buildForm();
+  
+    this.router.params.subscribe((params) => {
+      this.store.dispatch(getChat({ roomId : params['roomId'], userId: params['userId']}));
+
+      this.chat$ = this.store.pipe(select(chatSelector));
+      
+      this.scrollDown();
+      this.chatId = params.roomId;
+    });
+  }
+
+  ngAfterViewInit() {
+    this.scrollDown();
+  }
+
+  ngOnInit(): void {
+  }
+
+  sendMessage() {
+    this.signalr.sendMessage(this.chatId, this.messageForm.value.message.trim())
+    this.scrollDown();
+    this.messageForm.reset();
+  }
+
+  private scrollDown() {
+    setTimeout(() => {
+      this.scroll?.nativeElement.scrollTo(
+        0,
+        this.scroll?.nativeElement.scrollHeight + 100
+      );
+    }, 100);
+  }
+
+  ngOnDestroy(): void {
+    this.signalr.disconnectFromRoom(this.chatId);
+  }
+
+  private buildForm() {
     this.messageForm = this.formBuilder.group({
       message: [
         '',
@@ -48,43 +94,5 @@ export class ChatContainerComponent
         ]),
       ],
     });
-    this.router.params.subscribe((params) => {
-      this.chat$ = this.chatService.getChatById(params['id']);
-      this.scrollDown();
-    });
-  }
-
-  ngAfterViewInit() {
-    this.scrollDown();
-  }
-
-  ngOnInit(): void {
-    this.subscription = this.chat$.subscribe((_) => {
-      this.messages = _.messages;
-    });
-  }
-
-  sendMessage() {
-    this.messages.push({
-      text: this.messageForm.value.message.trim(),
-      when: new Date().toLocaleString(),
-      from: { id: 'me' },
-    });
-
-    this.scrollDown();
-    this.messageForm.reset();
-  }
-
-  private scrollDown() {
-    setTimeout(() => {
-      this.scroll.nativeElement.scrollTo(
-        0,
-        this.scroll.nativeElement.scrollHeight + 100
-      );
-    }, 100);
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
   }
 }

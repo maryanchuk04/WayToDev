@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {TokenService} from "../../../services/token.service";
+import { Role } from 'src/app/models/role';
 
 @Component({
   selector: 'app-registration-success',
@@ -36,7 +37,10 @@ export class RegistrationSuccessComponent implements OnInit {
     let verifyCode = (Object.values(this.verifyForm.value).join(""));
     this.authService.confirmEmail(this.accountId, verifyCode).subscribe(_=>{
       if(_.ok){
-        this.tokenService.setAuthData({ role : _.body.role, token : _.body.token})
+        if(Role.user)
+          this.tokenService.setUserAuthData({ role : _.body.role, token : _.body.token, id: _.id})
+        else 
+          this.tokenService.setAuthData({ role : _.body.role, token : _.body.token})
         this.route.navigate(["/profile"]);
       }
       else{

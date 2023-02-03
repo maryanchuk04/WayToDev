@@ -4,5 +4,5 @@ namespace WayToDev.Core.Interfaces.Services;
 
 public interface IMessageService
 {
-    Task<MessageDto> Send(Guid chatId,Guid senderId, string message);
+    Task<MessageDto> Send(Guid chatId, string message);
 }

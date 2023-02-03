@@ -1,19 +1,20 @@
 <div class="h-100">
-  <mat-drawer-container class="chats-container" >
-    <mat-drawer #drawer mode="side" style="background-color: #edf2f4; width: 20%" >
+  <mat-drawer-container class="chats-container" *ngIf="chats$ | async as chats" >
+    <mat-drawer #drawer mode="side" id = "side-drawer" >
       <div class="chats-sidenav">
         <div class="head w-100">
-          <h2 class="text-center mt-3">Chats</h2>
-          <div class="help-bar">
-            <input type="text" placeholder="Search" class = "input-style" style="width: 90%; margin: auto;">
-            <button mat-icon-button>
+          <h2 class="text-center mt-3">Chats
+            <button mat-icon-button >
               <i class="fa-solid fa-user-plus"></i>
             </button>
+          </h2>
+          <div class="help-bar">
+            <input type="text" placeholder="Search" class = "input-style" style="width: 90%; margin: auto;">
           </div>
           <hr>
         </div>
         <div class="h-100" style="overflow: auto;">
-          <app-user-chats></app-user-chats>
+          <app-user-chats [chats] = "chats"></app-user-chats>
         </div>
       </div>
     </mat-drawer>

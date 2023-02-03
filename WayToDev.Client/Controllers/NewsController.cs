@@ -55,7 +55,7 @@ public class NewsController : ControllerBase
     /// </summary>
     /// <returns>200 - with List of News</returns>
     [HttpGet]
-    public IActionResult GetFilteredNews([FromQuery] NewsFilterViewModel model)
+    public IActionResult GetFilteredNews([FromQuery] FilterViewModel model)
     {
         try
         {

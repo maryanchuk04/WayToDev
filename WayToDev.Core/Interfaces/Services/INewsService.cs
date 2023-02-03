@@ -9,5 +9,5 @@ public interface INewsService
     NewsDto GetNewsById(Guid id);
     List<NewsDto> GetNews();
     Task Delete(Guid id);
-    IEnumerable<NewsDto> GetFilteredNews(NewsFilterViewModel model, out int count);
+    IEnumerable<NewsDto> GetFilteredNews(FilterViewModel model, out int count);
 }

@@ -25,7 +25,7 @@ public class ChatController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    public async Task<IActionResult> GetUsersChats()
+    public async Task<IActionResult> Get()
     {
         try
         {
@@ -38,16 +38,34 @@ public class ChatController : ControllerBase
     }
     
     /// <summary>
-    /// Get all users active chats
+    /// Start new chat with user
     /// </summary>
     /// <returns></returns>
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetUserChat(Guid id)
+    [HttpPost("{id}")]
+    public async Task<IActionResult> StartChat(Guid id)
     {
         try
         {
-            //await _messageService.GetRoom(id)
-            return Ok();
+            var res = await _roomService.CreateRoom(id);
+            return CreatedAtAction(nameof(Get), new {id = res.Id}, res);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(new ErrorResponseModel(e.Message));
+        }
+    }
+
+    /// <summary>
+    /// Get Chat By id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpGet("{id}/{userId}")]
+    public async Task<IActionResult> GetChat(Guid id, Guid userId)
+    {
+        try
+        {
+            return Ok(await _roomService.GetRoom(id, userId));
         }
         catch (Exception e)
         {

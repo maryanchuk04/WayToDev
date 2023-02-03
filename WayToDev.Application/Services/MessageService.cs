@@ -11,24 +11,27 @@ namespace WayToDev.Application.Services;
 public class MessageService : Dao<Message>, IMessageService
 {
     private readonly ISecurityContext _securityContext;
-    public MessageService(ApplicationContext context, ISecurityContext securityContext, IMapper mapper = null) : base(context, mapper)
+    private readonly IUserService _userService;
+    
+    public MessageService(ApplicationContext context, ISecurityContext securityContext, IUserService userService, IMapper mapper = null) : base(context, mapper)
     {
         _securityContext = securityContext;
+        _userService = userService;
     }
 
-    public async Task<MessageDto> Send(Guid chatId, Guid senderId, string message)
+    public async Task<MessageDto> Send(Guid chatId, string message)
     {
+        var senderId = _userService.GetCurrentUserId();
         var room = Context.Rooms
-            .FirstOrDefault(x => x.Id == chatId) 
-                   ?? Context.Rooms
-            .First(x => x.UserRooms.Count == 2 
-                        && x.UserRooms.Any(y => y.UserId == chatId) 
-                        && x.UserRooms.Any(y => y.UserId == senderId));
+            .Include(x=>x.Messages)
+            .FirstOrDefault(x => x.Id == chatId);
+        if (room == null)
+            throw new MessagesExceptions("Room not found");
         
-        var msg = Insert(new Message { RoomId = room.Id, SenderId = senderId, Text = message });
+        var msg = Insert(new Message { RoomId = chatId, SenderId = senderId, Text = message });
         await Context.SaveChangesAsync();
         
-        var res = Context.Messages.Include(x=>x.User).First(x => x.Id == msg.Id);
+        var res = Context.Messages.Include(x=>x.Sender).First(x => x.Id == msg.Id);
         return Mapper.Map<Message, MessageDto>(res);
     }
 }
