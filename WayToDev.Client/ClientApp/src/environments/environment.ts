@@ -5,6 +5,8 @@
 export const environment = {
   production: false,
   basePath: 'https://localhost:7218/api/',
+  defaultImageAPI: 'https://ui-avatars.com/api',
+  defaultImagesUrl: '/assets/default-images/',
 };
 
 /*

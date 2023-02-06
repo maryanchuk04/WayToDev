@@ -59,7 +59,10 @@
         <div class="avatar">
           <img [src]="user.imageUrl" [alt]="user.userName +'-avatar'">
         </div>
-        <app-upload-image></app-upload-image>
+        <button mat-raised-button (click)="openModal()" style="padding: 0;">
+          <app-upload-image></app-upload-image>
+        </button>
+        
       </div>
     </div>
     <hr>

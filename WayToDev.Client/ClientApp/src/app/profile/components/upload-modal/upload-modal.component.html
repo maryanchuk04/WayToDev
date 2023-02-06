@@ -1,0 +1,37 @@
+<div class="upload-modal">
+	<h1 class="text-center">Choose avatar</h1>
+	<hr>
+	<div class="avatar">
+		<img [src]="avatarUrl" alt="">
+	</div>
+	<div class="modal-container">
+		<div class="default">
+			<div class="my-3">
+				<h5>Personalize default avatar:</h5>
+				<div class="personalize">
+					<div class="swatch">
+						<input type="color" name="color" value="#FFFFFF" [ngModel] = "color" (ngModelChange)="colorSelected($event)">
+						<div class="info">
+							<h4>Choose</h4>
+							<h5>Font color</h5>
+						</div>
+					</div>
+					<div class="swatch">
+						<input type="color" name="color" value="#FF0000" [ngModel] = "bgColor" (ngModelChange)="bgColorSelected($event)">
+						<div class="info">
+							<h4>Choose</h4>
+							<h5>Background color</h5>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="default-avatar-galery">
+			<button mat-button *ngFor="let item of defaultImages" (click)="chooseDefaultImage(item)" style="border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+				<img [src]="item" alt="item" >
+			</button>
+			
+		</div>
+	</div>
+	
+</div>

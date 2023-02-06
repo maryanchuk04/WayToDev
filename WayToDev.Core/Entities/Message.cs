@@ -8,4 +8,4 @@ public class Message : BaseEntity
     public Guid SenderId { get; set; }
     public Guid RoomId { get; set; }
     public Room Room { get; set; }
-}
+}Ф
