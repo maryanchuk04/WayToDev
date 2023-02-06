@@ -1,5 +1,6 @@
 import {createSelector} from "@ngrx/store";
-import {AppState} from "../../store/appState";
+import { AppState } from "src/app/store/app-state";
+
 
 const selectorFeature = (state: AppState) => state.news
 export const newsSelector = createSelector(

@@ -12,4 +12,5 @@ public interface IUserService
         Gender? gender, List<TagDto> tagDtos);
     void UpdateUserTechnologies(IEnumerable<Guid> technologiesIds, User user);
     UserDto GetUserById(Guid id);
+    Guid GetCurrentUserId();
 }

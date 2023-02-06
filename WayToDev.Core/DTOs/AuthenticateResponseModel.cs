@@ -14,9 +14,18 @@ public class AuthenticateResponseModel
         RefreshToken = refreshToken;
         Role = role;
     }
+    
+    public AuthenticateResponseModel(string jwtToken, string refreshToken, Role role, Guid id)
+    {
+        JwtToken = jwtToken;
+        RefreshToken = refreshToken;
+        Role = role;
+        Id = id;
+    }
 
     public string JwtToken { get; set; }
 
     public string RefreshToken { get; set; }
     public Role? Role { get; set; }
+    public Guid Id { get; set; }
 }

@@ -31,7 +31,6 @@ export const updateTagsForUser = createAction(
   props<{ tags : TechItem[] }>()
 )
 
-
 export const getCurrentCompany = createAction('[Company] Get current company');
 
 export const getCurrentCompanySuccess = createAction('[Company] Get company success', props<{ company: Company}>());

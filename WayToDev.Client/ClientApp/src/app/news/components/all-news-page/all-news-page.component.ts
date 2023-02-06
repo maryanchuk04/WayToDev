@@ -1,5 +1,4 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {AppState} from "../../../store/appState";
 import {select, Store} from "@ngrx/store";
 import {debounceTime, distinctUntilChanged, distinctUntilKeyChanged, fromEvent, Observable, tap} from "rxjs";
 import {News} from "../../models/news";
@@ -7,6 +6,7 @@ import {getNews} from "../../store/news.actions";
 import {newsSelector} from "../../store/news.selectors";
 import {PaginationResponseModel} from "../../../models/paginationResponseModel";
 import {PaginationInstance} from "ngx-pagination";
+import { AppState } from 'src/app/store/app-state';
 
 @Component({
   selector: 'app-all-news-page',

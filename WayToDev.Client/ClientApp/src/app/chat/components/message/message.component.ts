@@ -7,6 +7,7 @@ import { Message } from '../../models/message';
   styleUrls: ['./message.component.css']
 })
 export class MessageComponent implements OnInit {
+  @Input() isMy: boolean = false;
   @Input() message: Message;
   constructor() { }
 

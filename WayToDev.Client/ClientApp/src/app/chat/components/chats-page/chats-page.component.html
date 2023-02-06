@@ -1,17 +1,29 @@
 <div class="h-100">
-  <mat-drawer-container class="chats-container" autosize>
-    <mat-drawer #drawer class="chats-sidenav" mode="side" style="overflow: inherit">
-      <h2 class="text-center mt-3">Chats</h2>
-      <ul class = 'chats-list'>
-        <app-chat-list-item routerLinkActive="active-chat" class="chat-preview-item" *ngFor="let item of chatsList" [chatItem] = "item" [routerLink]="item.id"></app-chat-list-item>
-      </ul>
+  <mat-drawer-container class="chats-container" *ngIf="chats$ | async as chats" >
+    <mat-drawer #drawer mode="side" id = "side-drawer" >
+      <div class="chats-sidenav">
+        <div class="head w-100">
+          <h2 class="text-center mt-3">Chats
+            <button mat-icon-button >
+              <i class="fa-solid fa-user-plus"></i>
+            </button>
+          </h2>
+          <div class="help-bar">
+            <input type="text" placeholder="Search" class = "input-style" style="width: 90%; margin: auto;">
+          </div>
+          <hr>
+        </div>
+        <div class="h-100" style="overflow: auto;">
+          <app-user-chats [chats] = "chats"></app-user-chats>
+        </div>
+      </div>
     </mat-drawer>
-    <div class = "chat-zone container">
-      <button type="button" class = 'burger' (click)="drawer.toggle()">
-        <i *ngIf="drawer.opened" class = "fas fa-arrow-left-long"></i>
-        <i *ngIf="!drawer.opened" class = "fas fa-comment-dots"></i>
+    <div class="chat-zone container">
+      <button type="button" class="burger" (click)="drawer.toggle()">
+        <i *ngIf="drawer.opened" class="fas fa-arrow-left-long"></i>
+        <i *ngIf="!drawer.opened" class="fas fa-comment-dots"></i>
       </button>
       <router-outlet></router-outlet>
     </div>
-</mat-drawer-container>
+  </mat-drawer-container>
 </div>

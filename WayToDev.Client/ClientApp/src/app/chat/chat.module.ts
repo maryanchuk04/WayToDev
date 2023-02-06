@@ -11,13 +11,19 @@ import { MatButtonModule } from '@angular/material/button';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {PickerModule} from "@ctrl/ngx-emoji-mart";
 import {AutosizeModule} from "ngx-autosize";
+import { UserChatsComponent } from './components/user-chats/user-chats.component';
+import { chatReducers } from './store/chat.reducers';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { ChatEffects } from './store/chat.effects';
 
 @NgModule({
   declarations: [
     ChatsPageComponent,
     ChatListItemComponent,
     ChatContainerComponent,
-    MessageComponent
+    MessageComponent,
+    UserChatsComponent
   ],
   imports: [
     CommonModule,
@@ -28,7 +34,9 @@ import {AutosizeModule} from "ngx-autosize";
     ReactiveFormsModule,
     PickerModule,
     FormsModule,
-    AutosizeModule
+    AutosizeModule,
+    StoreModule.forFeature('chat', chatReducers),
+    EffectsModule.forFeature([ChatEffects])
   ]
 })
 export class ChatModule { }

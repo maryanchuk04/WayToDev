@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   basePath: 'https://localhost:7218/api/',
+  hubPath: 'https://localhost:7218/chatHub'
 };
 
 /*

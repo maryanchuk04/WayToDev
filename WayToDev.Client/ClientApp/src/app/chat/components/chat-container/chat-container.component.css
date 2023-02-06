@@ -1,8 +1,8 @@
 .chat-zone{
-  height: 100%;
+  height: calc(100% + 4vh);
   width: 90%;
   display: grid;
-  grid-template-rows: 60px auto;
+  grid-template-rows: 60px 1fr auto;
 }
 
 .chat-zone .chat-header{
@@ -41,6 +41,7 @@
   margin-top: 10px;
   flex-direction: row-reverse;
   text-align: right;
+
 }
 
 
@@ -128,12 +129,13 @@
   border-radius: 15px;
   border: none;
   outline: none;
-  padding: 0.7vw 20px 0;
+  padding: 5px 20px;
   width: 100%;
   transition: .4s;
   resize: none;
   padding-right: 50px;
   overflow: hidden;
+
 }
 
 #messageInput:hover {

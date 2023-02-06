@@ -1,42 +1,38 @@
-<app-spinner-wrapper [condition]="chat == null"  *ngIf="chat$ | async as chat">
-  <div class="h-100">
-    <div class="container chat-zone">
-      <div class="chat-header">
-        <img [src]="chat.image" alt="">
-        <h3>{{chat.title}}</h3>
-      </div>
-      <div class="container messages-zone " #scroll style="scroll-behavior: smooth;">
-        <app-message *ngFor="let item of messages"
-                     [class]="item.from.id == 'me' ?  'right' : 'left'"
-                     [message]="item">
-        </app-message>
-      </div>
-      <form class="sender" [formGroup]="messageForm" (ngSubmit)="sendMessage()">
-        <div class="send-box">
-      <textarea [rows]="1"  autosize formControlName="message" id="messageInput" autocomplete="off"
-                name="textarea"></textarea>
-          <button type="button" (click)="isEmojiPickerVisible = !isEmojiPickerVisible;">😀</button>
-          <br>
-          <emoji-mart class="emoji-mart" *ngIf="isEmojiPickerVisible" (emojiSelect)="addEmoji($event)"
-                      title="Choose your emoji"></emoji-mart>
-        </div>
-        <button id="send" type='submit' [disabled]="!messageForm.valid">
-          <div class="svg-wrapper-1">
-            <div class="svg-wrapper">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                <path fill="none" d="M0 0h24v24H0z"></path>
-                <path fill="currentColor"
-                      d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path>
-              </svg>
-            </div>
-          </div>
-          <span>Send</span>
-        </button>
-      </form>
-    </div>
-
-
-  </div>
-
-
+<app-spinner-wrapper [condition]="chat == null" *ngIf="chat$ | async as chat">
+	<div class="h-100" style='margin-top: -4vh'>
+		<div class="container chat-zone">
+			<div class="chat-header">
+				<img [src]="chat.image" alt="">
+				<h3>{{chat.title}}</h3>
+			</div>
+			<div class="container messages-zone " #scroll style="scroll-behavior: smooth;">
+				<app-message *ngFor="let item of chat.messages" [class]="item.senderId == userId  ?  'right' : 'left'"
+					[message]="item" [isMy]="item.senderId == userId ? true : false">
+				</app-message>
+			</div>
+			<form class="sender" [formGroup]="messageForm" (ngSubmit)="sendMessage()">
+				<div class="send-box">
+					<textarea [rows]="1" autosize formControlName="message" id="messageInput" autocomplete="off"
+						name="textarea"></textarea>
+					<button type="button" (click)="isEmojiPickerVisible = !isEmojiPickerVisible;">😀</button>
+					<br>
+					<emoji-mart class="emoji-mart" *ngIf="isEmojiPickerVisible" (emojiSelect)="addEmoji($event)"
+						title="Choose your emoji"></emoji-mart>
+				</div>
+				<button id="send" type='submit' [disabled]="!messageForm.valid">
+					<div class="svg-wrapper-1">
+						<div class="svg-wrapper">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+								<path fill="none" d="M0 0h24v24H0z"></path>
+								<path fill="currentColor"
+									d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z">
+								</path>
+							</svg>
+						</div>
+					</div>
+					<span>Send</span>
+				</button>
+			</form>
+		</div>
+	</div>
 </app-spinner-wrapper>

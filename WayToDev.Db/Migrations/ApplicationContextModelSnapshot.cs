@@ -153,8 +153,6 @@ namespace WayToDev.Db.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.HasIndex("TechStackId");
-
                     b.ToTable("Companies");
                 });
 
@@ -234,14 +232,11 @@ namespace WayToDev.Db.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("RoomId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("SenderId");
 
                     b.ToTable("Messages");
                 });
@@ -286,16 +281,11 @@ namespace WayToDev.Db.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ImageId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ImageId");
 
                     b.ToTable("Rooms");
                 });
@@ -462,17 +452,6 @@ namespace WayToDev.Db.Migrations
                     b.ToTable("VacancyStacks");
                 });
 
-            modelBuilder.Entity("WayToDev.Core.Entities.Account", b =>
-                {
-                    b.HasOne("WayToDev.Core.Entities.User", "User")
-                        .WithOne("Account")
-                        .HasForeignKey("WayToDev.Core.Entities.Account", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("WayToDev.Core.Entities.AccountToken", b =>
                 {
                     b.HasOne("WayToDev.Core.Entities.Account", "Account")
@@ -549,35 +528,22 @@ namespace WayToDev.Db.Migrations
 
             modelBuilder.Entity("WayToDev.Core.Entities.Message", b =>
                 {
-                    b.HasOne("WayToDev.Core.Entities.Room", "Room")
+                    b.HasOne("WayToDev.Core.Entities.Room", null)
                         .WithMany("Messages")
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("WayToDev.Core.Entities.User", "User")
+                    b.HasOne("WayToDev.Core.Entities.User", "Sender")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Room");
-
-                    b.Navigation("User");
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("WayToDev.Core.Entities.News", b =>
-                {
-                    b.HasOne("WayToDev.Core.Entities.Image", "Image")
-                        .WithMany()
-                        .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Image");
-                });
-
-            modelBuilder.Entity("WayToDev.Core.Entities.Room", b =>
                 {
                     b.HasOne("WayToDev.Core.Entities.Image", "Image")
                         .WithMany()
@@ -634,7 +600,10 @@ namespace WayToDev.Db.Migrations
 
                     b.HasOne("WayToDev.Core.Entities.Image", "Image")
                         .WithMany()
-                        .HasForeignKey("ImageId");
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Account");
 
                     b.Navigation("Image");
                 });
@@ -644,13 +613,13 @@ namespace WayToDev.Db.Migrations
                     b.HasOne("WayToDev.Core.Entities.Room", "Room")
                         .WithMany("UserRooms")
                         .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WayToDev.Core.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Room");
@@ -663,13 +632,13 @@ namespace WayToDev.Db.Migrations
                     b.HasOne("WayToDev.Core.Entities.Company", "Company")
                         .WithMany()
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WayToDev.Core.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Company");
@@ -682,13 +651,13 @@ namespace WayToDev.Db.Migrations
                     b.HasOne("WayToDev.Core.Entities.Tag", "Tag")
                         .WithMany()
                         .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WayToDev.Core.Entities.Vacancy", "Vacancy")
                         .WithMany("VacancyStack")
                         .HasForeignKey("VacancyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Tag");

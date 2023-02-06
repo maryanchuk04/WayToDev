@@ -56,7 +56,7 @@ public class AuthService : Dao<Account>, IAuthService
         Update(account);
         await Context.SaveChangesAsync();
         return account.Company == null 
-            ? new AuthenticateResponseModel(jwtToken, refreshToken.Token, Role.User) 
+            ? new AuthenticateResponseModel(jwtToken, refreshToken.Token, Role.User, account.User.Id) 
             : new AuthenticateResponseModel(jwtToken, refreshToken.Token, Role.Company);
     }
 

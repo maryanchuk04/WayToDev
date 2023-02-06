@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { LoginModel } from '../../models/loginModel';
 import { HttpResponse } from '@angular/common/http';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-sign-in-form',
@@ -17,7 +18,8 @@ export class SignInFormComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private tokenService: TokenService
   ) {}
 
   ngOnInit(): void {
@@ -37,16 +39,16 @@ export class SignInFormComponent implements OnInit {
       console.log(this.signInForm);
       this.authService.authenticate(new LoginModel(this.signInForm.value.email, this.signInForm.value.password))
         .subscribe((response: HttpResponse<any>)=>{
-          console.log(response)
           if(response.ok){
-            localStorage.setItem("token", (response.body.token));
-            localStorage.setItem("role", (response.body.role));
+            console.log(response)
             if(response.body.role == 0){
+              this.tokenService.setUserAuthData({ token: response.body.token, id: response.body.id, role: response.body.role});
               this.router.navigate(["/profile"]);
               console.log(response.body)
             }
 
             if(response.body.role == 1)
+              this.tokenService.setAuthData({ token: response.body.token, role: response.body.role});
               this.router.navigate(["/profile-company"])
           }
         });

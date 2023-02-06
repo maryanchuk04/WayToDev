@@ -113,6 +113,11 @@ public class UserService : Dao<User>, IUserService
         return Mapper.Map<User, UserDto>(user);
     }
 
+    public Guid GetCurrentUserId()
+    {
+        return GetCurrentUser().Id;
+    }
+
     private User GetCurrentUser() => Context.Users
                                          .Include(x=>x.Image)
                                          .Include(x=>x.TechStack)
