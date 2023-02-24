@@ -1,5 +1,6 @@
 export interface NewsShortInfo{
   id: string
   title: string
-  text: string
+  shortDescription: string
+  date: string
 }
