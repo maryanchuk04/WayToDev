@@ -1,0 +1,42 @@
+.confirmation-container{
+  display: grid;
+  grid-template-columns: 40% 1fr;
+}
+
+.confirmation-container .conf-form{
+
+}
+
+
+.confirmation-container .image{
+  width: 100%;
+}
+
+.confirmation-container .image img{
+  width: 100%;
+
+}
+.confirmation-container .conf-form{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.conf-form .inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  width: 100%;
+  grid-gap: 10px;
+  place-items: center;
+}
+
+.conf-form .inputs input{
+  width: inherit;
+  padding: 10px 20px;
+  font-size: 30px;
+  border-radius: 15px;
+  text-align: center;
+}
+

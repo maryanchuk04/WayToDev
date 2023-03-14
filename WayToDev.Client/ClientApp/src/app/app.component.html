@@ -1,4 +1,6 @@
 <app-header></app-header>
 <div class="content">
   <router-outlet></router-outlet>
+
 </div>
+<app-sidebar-component class = 'side' *ngIf="popup.open" [open] = 'popup.open'></app-sidebar-component>

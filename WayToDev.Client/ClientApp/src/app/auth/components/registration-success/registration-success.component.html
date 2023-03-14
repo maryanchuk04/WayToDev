@@ -1,0 +1,21 @@
+<div class="container h-100 d-flex justify-content-center align-items-center">
+  <div class = 'confirmation-container'>
+    <form class="conf-form" [formGroup]="verifyForm" (ngSubmit)="submit()">
+        <h1 class="my-2">Email verification</h1>
+        <h4 class="fw-light my-2">We have sent a confirmation code to your mail,<br> check it and confirm the registration</h4>
+        <div class="inputs my-4 text-center" >
+          <input class = 'form-control' digitOnly maxlength="1" formControlName = 'inp1'/>
+          <input class = 'form-control' digitOnly maxlength="1" formControlName = 'inp2'/>
+          <input class = 'form-control' digitOnly maxlength="1" formControlName = 'inp3'/>
+          <input class = 'form-control' digitOnly maxlength="1" formControlName = 'inp4'/>
+          <!-- Add styles for button -->
+
+        </div>
+      <app-submit-button [disabled]="!verifyForm.valid">Verify</app-submit-button>
+    </form>
+    <div class = 'image'>
+      <img src="https://i.ibb.co/djfd56f/person-managing-it-settings.png" alt="">
+    </div>
+  </div>
+  <app-dynamic-waves></app-dynamic-waves>
+</div>

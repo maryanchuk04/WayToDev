@@ -4,19 +4,33 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using WayToDev.Application.Managers;
 using WayToDev.Application.Services;
+using WayToDev.Client.Hubs;
 using WayToDev.Client.Mapping;
-using WayToDev.Core.Interfaces.DAOs;
+using WayToDev.Core.Configuration;
+using WayToDev.Core.Interfaces.Infrastructure;
+using WayToDev.Core.Interfaces.Managers;
 using WayToDev.Core.Interfaces.Services;
-
+using WayToDev.Db.Bridge;
 using WayToDev.Db.EF;
+using WayToDev.Infrastructure.Configurations;
+using WayToDev.Infrastructure.MailSender;
 
 var builder = WebApplication.CreateBuilder(args);
 
 #region ConfigureServices
 
+//binding configuration mail client
+var mailConfig = new MailSenderConfiguration();
+builder.Configuration.GetSection("MailClient").Bind(mailConfig);
+builder.Services.AddSingleton(mailConfig);
+//configuration urls
+builder.Services.AddSingleton(new EmailTemplatePathModel { RootPath = builder.Environment.WebRootPath });
+var appUrlsConfig = new ApplicationUrlsConfiguration();
+builder.Configuration.GetSection("BaseUrls").Bind(appUrlsConfig);
+builder.Services.AddSingleton(appUrlsConfig);
 builder.Services.AddControllersWithViews();
-
 builder.Services.AddDbContext<ApplicationContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("ConnString"),
         b => b.MigrationsAssembly("WayToDev.Db")));
@@ -25,8 +39,19 @@ builder.Services.AddAutoMapper(typeof(UserMapperProfile).GetTypeInfo().Assembly)
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<INewsService, NewsService>();
-
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITagService, TagService>();
+builder.Services.AddSignalR();
+builder.Services.AddScoped<IAccountManager, AccountManager>();
+builder.Services.AddTransient<IPasswordHelper, PasswordHelper>();
+builder.Services.AddTransient<ISecurityContext, SecurityContextService>();
+builder.Services.AddScoped<ICompanyService, CompanyService>();
+builder.Services.AddScoped<IVacancyService, VacancyService>();
+builder.Services.AddScoped<IMailClient, MailClient>();
+builder.Services.AddScoped<IMailService, MailService>();
+builder.Services.AddSingleton<IPinGenerator, PinGenerator>();
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -51,7 +76,10 @@ builder.Services.AddSwaggerGen(options =>
             },
             new List<string>()
         }
+        
     });
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -86,18 +114,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 builder.Services.AddAuthorization();
-
 #endregion
 
 
 var app = builder.Build();
 app.UseSwaggerUI();
-// Configure the HTTP request pipeline.
+
 if (!app.Environment.IsDevelopment())
 {
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -107,8 +134,15 @@ app.UseCors(x =>
 {
     x.AllowAnyMethod()
         .AllowAnyHeader()
-        .SetIsOriginAllowed(origin => true) // allow any origin
+        .SetIsOriginAllowed(origin => true)
         .AllowCredentials();
+});
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<ChatHub>("/chatHub");
+    endpoints.MapControllerRoute("default", "{controller}/{action=Index}/{id?}");
 });
 
 app.MapControllerRoute(

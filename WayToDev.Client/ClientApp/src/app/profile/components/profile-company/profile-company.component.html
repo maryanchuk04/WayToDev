@@ -1,0 +1,84 @@
+<app-spinner-wrapper [condition]="company == null" >
+  <div class="container" *ngIf="company != null">
+    <div class="d-flex justify-content-between pb-2">
+      <h3>Edit profile your company</h3>
+      <div class="d-flex">
+        <button mat-raised-button color="primary" class="mx-4" (click)="save()">Save</button>
+        <button mat-raised-button color="">Cancel</button>
+      </div>
+    </div>
+    <hr>
+    <form [formGroup]="companyForm" class = "edit-info-container">
+      <div class="field">
+        <div class="text">
+          <h5>Company name: </h5>
+          <p class="fw-light">Change company name</p>
+        </div>
+
+        <input class = 'input-style' formGroupName = "companyName" [defaultValue]="company.companyName"/>
+      </div>
+      <hr>
+      <div class="field">
+        <div class="text">
+          <h5>Company name: </h5>
+          <p class="fw-light">Change company email</p>
+        </div>
+        <input class = 'input-style' formGroupName = "email" [defaultValue]="company.email"/>
+      </div>
+      <hr>
+      <div class="photo-field">
+        <div class="text">
+          <h5>Logo</h5>
+          <p class = 'fw-light'>Upload logo for your company</p>
+        </div>
+        <div class = "controls">
+          <div class="avatar">
+            <img [src]="company.imageUrl" [alt]="company.companyName +'-avatar'">
+          </div>
+          <app-upload-image></app-upload-image>
+        </div>
+      </div>
+      <hr>
+      <div class="field">
+        <div class="text">
+          <h5>Description</h5>
+          <p class = 'fw-light'>Write a short introduction about company</p>
+        </div>
+        <div class="controls">
+          <textarea class = "input-style" formControlName="description" [defaultValue]="company.description" rows="4" placeholder="Input information about your company..."></textarea>
+        </div>
+      </div>
+      <hr>
+      <div class="field">
+        <div class="text">
+          <h5>Technologies stack</h5>
+          <p class = 'fw-light'>Add technologies which provide our company</p>
+        </div>
+        <div class = 'tech-field'>
+          <mat-select class="input-style" placeholder="Choose Technology">
+            <mat-option *ngFor="let item of tags" [value]="item.tagName" (click) = "addTag(item)">
+              {{item.tagName}}
+            </mat-option>
+          </mat-select>
+          <app-techstack-field class="my-5" [techStack]="company.tags" (deleteEmitter)="removeTag($event)"></app-techstack-field>
+        </div>
+      </div>
+      <hr>
+      <div class="field">
+        <div class="text">
+          <h5>Count of peoples</h5>
+          <p class = 'fw-light'>Select the range - the number of people working in the company</p>
+        </div>
+        <div>
+          <mat-select class="input-style" placeholder="Choose count of person" formControlName = 'countOfWorkers'>
+            <mat-option *ngFor="let item of variants" [value]="item">
+              {{item}}
+            </mat-option>
+          </mat-select>
+        </div>
+      </div>
+      <hr>
+    </form>
+  </div>
+
+</app-spinner-wrapper>

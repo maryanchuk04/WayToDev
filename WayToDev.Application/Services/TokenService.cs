@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using WayToDev.Application.Exceptions;
 using WayToDev.Core.DTOs;
 using WayToDev.Core.Entities;
+using WayToDev.Core.Enums;
 using WayToDev.Core.Exceptions;
 using WayToDev.Core.Interfaces.Services;
 using WayToDev.Db.EF;
@@ -20,17 +21,18 @@ public class TokenService :  Dao<AccountToken>, ITokenService
 {
     private readonly IConfiguration _configuration;
     private readonly IHttpContextAccessor _httpContextAccessor;
-
+    private readonly IPinGenerator _pinGenerator;
+    
     public TokenService(ApplicationContext context,
-        IConfiguration configuration, 
-        IHttpContextAccessor httpContextAccessor, 
-        IMapper mapper = null) 
+        IConfiguration configuration,
+        IHttpContextAccessor httpContextAccessor, IPinGenerator pinGenerator, IMapper mapper = null)
         : base(context, mapper)
     {
         _configuration = configuration;
         _httpContextAccessor = httpContextAccessor;
+        _pinGenerator = pinGenerator;
     }
-    
+
     public string GenerateAccessToken(Account account)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -52,7 +54,6 @@ public class TokenService :  Dao<AccountToken>, ITokenService
 
     public AccountToken GenerateRefreshToken()
     {
-
         var randomNumber = new byte[32];
         using var rng = RandomNumberGenerator.Create();
         rng.GetBytes(randomNumber);
@@ -70,14 +71,14 @@ public class TokenService :  Dao<AccountToken>, ITokenService
         var account = Context.Accounts
             .Include(a => a.RefreshTokens)
             .SingleOrDefault(a => a.RefreshTokens.Any(t => t.Token.Equals(token)));
-        
+
         if (account == null)
         {
             throw new AccountNotFoundException("Account with this token, not found");
         }
 
         var refreshToken = account.RefreshTokens.Single(x => x.Token == token);
-        
+
         if (refreshToken.Expires < DateTime.Now && refreshToken.Revoked == null)
         {
             return null;
@@ -91,7 +92,7 @@ public class TokenService :  Dao<AccountToken>, ITokenService
         Context.Update(account);
         Update(refreshToken);
         await Context.SaveChangesAsync();
-        
+
         // generate new jwt
         var jwtToken = GenerateAccessToken(account);
         return new AuthenticateResponseModel(jwtToken, newRefreshToken.Token);
@@ -104,7 +105,7 @@ public class TokenService :  Dao<AccountToken>, ITokenService
         {
             throw new TokenException("Refresh token is not exist");
         }
-        
+
         if (refreshToken.Revoked == null && DateTime.UtcNow >= refreshToken.Expires)
         {
             return false;
@@ -113,8 +114,40 @@ public class TokenService :  Dao<AccountToken>, ITokenService
         refreshToken.Revoked = DateTime.Now;
         Update(refreshToken);
         await Context.SaveChangesAsync();
-        
+
         _httpContextAccessor.HttpContext?.Response.Cookies.Delete("refreshToken");
         return true;
+    }
+
+    public async Task<AccountToken> GenerateEmailConfirmationToken(Guid accountId)
+    {
+        var emailToken = new AccountToken()
+        {
+            Token = _pinGenerator.Generate().ToString(),
+            Expires = DateTime.Now.AddDays(7),
+            Created = DateTime.Now,
+            AccountId = accountId,
+            Type = TokenType.EmailConfirmationType
+        };
+
+        Insert(emailToken);
+        await Context.SaveChangesAsync();
+
+        return emailToken;
+    }
+
+    public async Task<Account> VerifyEmailConfirmationTokenAsync(Guid accountId, string token)
+    {
+        var userTokens = await Context.AccountTokens
+            .Include(x=>x.Account)
+            .FirstOrDefaultAsync(x => x.Token == token && x.AccountId == accountId);
+        
+        if (userTokens == null)
+            throw new TokenException("Error in confirmation token");
+
+        if (DateTime.UtcNow >= userTokens.Expires)
+            throw new TokenException("Confirmation token time is over");
+        
+        return userTokens.Account;
     }
 }

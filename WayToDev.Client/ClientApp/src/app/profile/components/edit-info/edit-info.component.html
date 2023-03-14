@@ -1,0 +1,95 @@
+<div class="d-flex justify-content-between align-items-center">
+  <div class="text">
+    <h2>Personal info</h2>
+    <p class='fw-light'>Update your photo and personal details here.</p>
+  </div>
+  <div class="buttons">
+    <button class="mx-2" mat-button (click)="cancel()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="saveInfo()" >Save</button>
+  </div>
+</div>
+<hr>
+<app-spinner-wrapper [condition] = "user == null">
+  <form class="edit-profile pb-4"  [formGroup]="profileForm" *ngIf="user != null">
+    <div class="field">
+      <h5>User Name</h5>
+      <div class="controls">
+        <input class="input-style"  placeholder="UserName" formControlName="userName"/>
+      </div>
+    </div>
+    <hr>
+    <div class="field">
+      <h5>Firstname & Lastname</h5>
+      <div class="controls">
+        <input class="input-style" style="margin-right: 1em" placeholder="FirstName" formControlName="firstName"/>
+        <input class="input-style"  placeholder="LastName" formControlName="lastName"/>
+      </div>
+    </div>
+    <hr>
+    <div class="field">
+      <div class="text">
+        <h5>Email address</h5>
+      </div>
+      <input type="text" class="input-style" formControlName="email"/>
+    </div>
+    <hr>
+    <div class="field">
+      <div class="text">
+        <h5>Gender</h5>
+      </div>
+      <select class="input-style" formControlName = "gender">
+        <option [value]="0">Male</option>
+        <option [value]="1">Female</option>
+      </select>
+    </div>
+    <hr>
+    <div class="field">
+      <h5>Birthday</h5>
+      <div>
+        <input type = "date" formControlName="birthday" class="input-style"/>
+      </div>
+    </div>
+    <hr>
+    <div class="photo-field">
+      <div class="text">
+        <h5>Photo</h5>
+        <p class = 'fw-light'>Upload photo for your profile</p>
+      </div>
+      <div class = "controls">
+        <div class="avatar">
+          <img [src]="user.imageUrl" [alt]="user.userName +'-avatar'">
+        </div>
+        <app-upload-image></app-upload-image>
+      </div>
+    </div>
+    <hr>
+    <div class="field">
+      <div class="text">
+        <h5>Bio</h5>
+        <p class = 'fw-light'>Write a short introduction</p>
+      </div>
+      <div class="controls">
+        <textarea class = "input-style" rows="4" placeholder="Input information about you..."></textarea>
+      </div>
+    </div>
+    <hr>
+    <div class="field">
+      <div class="text">
+        <h5>Technologies stack</h5>
+        <p class = 'fw-light'>Add technologies which you knows</p>
+      </div>
+      <div class = 'tech-field'>
+        <mat-select class="input-style" placeholder="Choose Technology">
+          <mat-option *ngFor="let item of tags" [value]="item.tagName" (click) = "addTag(item)">
+            {{item.tagName}}
+          </mat-option>
+        </mat-select>
+        <app-techstack-field class="my-5" [techStack]="user.tags" (deleteEmitter)="removeTag($event)"></app-techstack-field>
+      </div>
+    </div>
+    <hr>
+    <!-- add company for user$ -->
+    <!-- add role in company-->
+  </form>
+</app-spinner-wrapper>
+

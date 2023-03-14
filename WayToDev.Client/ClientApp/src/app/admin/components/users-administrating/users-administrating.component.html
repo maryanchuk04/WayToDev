@@ -1,0 +1,10 @@
+<div class="container">
+    <div class="head">
+        <h2>Administration of users</h2>
+        <app-search></app-search>
+    </div>
+    <hr>
+    <div class="content">
+        <app-user-list-item *ngFor="let item of usersList" [user] = "item"></app-user-list-item>
+    </div>
+</div>

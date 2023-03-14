@@ -3,6 +3,9 @@ using WayToDev.Core.Interfaces.Services;
 
 namespace WayToDev.Client.Controllers;
 
+/// <summary>
+/// Token Api controller
+/// </summary>
 [ApiController]
 [Route("api/token")]
 public class TokenController : ControllerBase
@@ -36,7 +39,7 @@ public class TokenController : ControllerBase
     }
     
     
-    [HttpPost("revoke-token")]
+    [HttpPut]
     public async Task<IActionResult> Revoke()
     {
         var token = Request.Cookies["refreshToken"];
